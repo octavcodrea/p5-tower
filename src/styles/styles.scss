@@ -1,0 +1,113 @@
+body {
+    background-color: #222;
+    color: white;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+
+    * {
+        font-family: "Courier New", Courier, monospace;
+    }
+}
+
+button {
+    cursor: pointer;
+    font-size: 2vh;
+    padding: 1vh 2vh;
+
+    background-color: #222;
+    color: white;
+    border: 1px solid #777;
+    margin: 0.5vh;
+
+    &:hover {
+        background-color: #333;
+    }
+
+    &:active {
+        background-color: #444;
+    }
+}
+
+.container {
+    margin: auto;
+    display: flex;
+
+    canvas {
+        border: 1px solid #777;
+    }
+
+    #menu {
+        font-size: 2vh;
+        margin-left: 20px;
+        // padding: 10px;
+        padding: 0.5vh;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #777;
+
+        input {
+            font-size: 2vh;
+            padding: 0.5vh;
+        }
+
+        #new-seed {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.my-20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.dev-mode-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        position: relative;
+        margin: 0 0.5vh;
+        display: inline-block;
+        width: 2vh;
+        height: 2vh;
+        border: 1px solid #777;
+        border-radius: 10%;
+        cursor: pointer;
+    }
+
+    input:checked ~ .checkmark {
+        background-color: #2196f3;
+        color: white;
+    }
+
+    // add an X to the checkmark if checked
+    input:checked ~ .checkmark:after {
+        content: "Y";
+        position: absolute;
+        display: block;
+        left: 20%;
+    }
+
+    .checkmark:after {
+        content: "N";
+        position: absolute;
+        display: block;
+        left: 20%;
+    }
+}

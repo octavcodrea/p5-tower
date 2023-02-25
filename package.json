@@ -1,0 +1,27 @@
+{
+  "name": "p5-gradient",
+  "version": "1.0.0",
+  "description": "p5 gradient",
+  "main": "app.js",
+  "dependencies": {
+    "p5": "^1.5.0",
+    "parcel": "^2.8.2",
+    "sass": "^1.57.1",
+    "seedrandom": "^3.0.5",
+    "zustand": "^4.1.5"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
+    "@types/p5": "^1.4.3",
+    "@types/seedrandom": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx parcel public/index.html"
+  },
+  "keywords": [
+    "p5"
+  ],
+  "author": "octav codrea",
+  "license": "ISC"
+}
