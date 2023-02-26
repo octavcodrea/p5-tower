@@ -4,18 +4,21 @@ import noiseMono from "./assets/images/noise-mono.png";
 
 import noiseColorSmall from "./assets/images/noise-color-small.png";
 import noiseMonoSmall from "./assets/images/noise-mono-small.png";
+import test1png from "./assets/images/test1.png";
 
 import Palettes from "./assets/palettes";
 import { store } from "./store";
 import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
+import { drawImageWithBrushes } from "./utils/p5utils";
+import { tilesets } from "./tilesets";
+import { Grid, TileSet } from "./types";
+import { addGridLayer, createGridLayer } from "./tower-utils";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
 const unit = canvasWidth / 1000;
 let deltaTime = 0;
-
-let lightPoint = { x: canvasWidth / 2, y: canvasHeight / 2 };
 
 export function u(x: number) {
     if (typeof x === "number") {
@@ -26,11 +29,8 @@ export function u(x: number) {
     }
 }
 
-let agents: drawingAgent[] = [];
-
-const addAgent = (agent: drawingAgent) => {
-    agents.push(agent);
-};
+let grid: Grid = [];
+let tilesDrawn = false;
 
 const sketch = (p5: P5) => {
     let seed = Math.floor(Math.random() * 1000000000000000).toString();
@@ -133,6 +133,12 @@ const sketch = (p5: P5) => {
     let noiseImgColor: P5.Image;
     let noiseImgMono: P5.Image;
 
+    let test1: P5.Image;
+
+    let loadedTilesets: TileSet[] = [];
+    const tileSize = 64;
+    console.log("tileSize: ", tileSize);
+
     p5.preload = () => {
         noiseImgColor =
             p5.width < 1500
@@ -142,6 +148,33 @@ const sketch = (p5: P5) => {
             p5.width < 1500
                 ? p5.loadImage(noiseMonoSmall)
                 : p5.loadImage(noiseMono);
+
+        test1 = p5.loadImage(test1png);
+
+        loadedTilesets = tilesets.map((tileset) => {
+            const { leftEdge, rightEdge, middle, ...rest } = tileset;
+            const loadedLeftEdge = {
+                ...leftEdge,
+                image: p5.loadImage(leftEdge.imageSrc),
+            };
+            const loadedMiddle = middle.map((m) => {
+                return {
+                    ...m,
+                    image: p5.loadImage(m.imageSrc),
+                };
+            });
+            const loadedRightEdge = {
+                ...rightEdge,
+                image: p5.loadImage(rightEdge.imageSrc),
+            };
+
+            return {
+                ...rest,
+                leftEdge: loadedLeftEdge,
+                middle: loadedMiddle,
+                rightEdge: loadedRightEdge,
+            };
+        });
 
         store.setState({ selectedPalette: selectedPalette });
     };
@@ -158,43 +191,46 @@ const sketch = (p5: P5) => {
 
             p5.blendMode(p5.BLEND);
 
-            p5.background(
-                p5.color(Palettes[selectedPalette].background).toString()
-            );
+            p5.background(p5.color("#000").toString());
 
-            agents = [];
+            // const c1 = p5.color("#000");
+            // const c2 = p5.color("#222");
 
-            lightPoint = {
-                x: p5.random(p5.width),
-                y: p5.random(p5.height),
-            };
+            // for (let y = 0; y < canvasHeight; y++) {
+            //     const n = p5.map(y, 0, canvasHeight, 0, 1);
+            //     let newc = p5.lerpColor(c1, c2, n);
+            //     p5.stroke(newc);
+            //     p5.line(0, y, canvasWidth, y);
+            // }
 
-            //draw an ellipse at the light point
-            p5.ellipse(lightPoint.x, lightPoint.y, 10, 10);
-            p5.fill(p5.color(255));
+            tilesDrawn = false;
 
-            const c1 = p5.color("#2E5077");
-            const c2 = p5.color("#4DA1A9");
+            for (let i = 0; i < 26; i++) {
+                const thisTileset = loadedTilesets[i % loadedTilesets.length];
 
-            for (let y = 0; y < canvasHeight; y++) {
-                const n = p5.map(y, 0, canvasHeight, 0, 1);
-                let newc = p5.lerpColor(c1, c2, n);
-                p5.stroke(newc);
-                p5.line(0, y, canvasWidth, y);
+                const thisLayer = createGridLayer(
+                    p5,
+                    seed + i,
+                    thisTileset,
+                    []
+                );
+
+                addGridLayer(grid, thisLayer, tileSize, p5.width, p5.height);
             }
 
-            //blend mode
-            p5.blendMode(p5.OVERLAY);
+            // // noise setup
+            // //blend mode
+            // p5.blendMode(p5.OVERLAY);
 
-            //image opacity
-            p5.tint(255, 0.2);
+            // //image opacity
+            // p5.tint(255, 0.2);
 
-            //image
-            for (let i = 0; i < p5.width; i += noiseImgMono.width) {
-                for (let j = 0; j < p5.height; j += noiseImgMono.height) {
-                    p5.image(noiseImgMono, i, j);
-                }
-            }
+            // //image
+            // for (let i = 0; i < p5.width; i += noiseImgMono.width) {
+            //     for (let j = 0; j < p5.height; j += noiseImgMono.height) {
+            //         p5.image(noiseImgMono, i, j);
+            //     }
+            // }
 
             console.log("added noise setup");
 
@@ -211,26 +247,7 @@ const sketch = (p5: P5) => {
                 selectedPalette: selectedPalette,
             });
 
-            agents.push(
-                new treetrunkAgent({
-                    p5: p5,
-                    x: p5.width / 2,
-                    y: p5.height * 0.9,
-                    agentIndex: 0,
-                    baseVector: p5.createVector(0, -1),
-                    colors: Palettes[selectedPalette].colorsA.map((c) =>
-                        p5.color(c.color)
-                    ),
-                    deltaTime: deltaTime,
-                    strokeWidth: 1,
-                    zIndex: 0,
-                    seed: seed,
-                    size: u(100),
-
-                    addAgent: addAgent,
-                    lightPoint: lightPoint,
-                })
-            );
+            p5.blendMode(p5.BLEND);
         }
 
         doSetup();
@@ -265,10 +282,30 @@ const sketch = (p5: P5) => {
             frameCountUI.innerHTML = p5.frameCount.toString();
         }
 
-        agents.sort((a, b) => a.zIndex - b.zIndex);
+        if (!tilesDrawn) {
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].tiles.length; j++) {
+                    const thisTile = grid[i].tiles[j];
 
-        for (let i = 0; i < agents.length; i++) {
-            agents[i].update();
+                    console.log("thisTile", thisTile);
+
+                    if (thisTile.image) {
+                        drawImageWithBrushes(
+                            p5,
+                            thisTile.x,
+                            thisTile.y,
+                            thisTile.image,
+                            "rectangle",
+                            Math.ceil(tileSize / 16),
+                            // 4,
+                            Palettes[selectedPalette].hexColors.map((c) =>
+                                p5.color(c)
+                            )
+                        );
+                    }
+                }
+            }
+            tilesDrawn = true;
         }
 
         //end of draw

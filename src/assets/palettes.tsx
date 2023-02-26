@@ -407,42 +407,45 @@ const Palettes: PaletteType[] = [
     // },
 
     {
-        background: "#2E5077",
-        accent: "#293b56",
+        background: "#000",
         name: "Crake",
-        blendMode: "multiply",
 
-        accentDark: "#234061",
-        pencilColor: "#417390",
-
-        trianglesColor: "#274568",
-        stripLinesColor: "#fafafb",
-
-        colorsA: [
-            // { color: "#8E294E", opacity: 1 },
-
-            { color: "#293b56", opacity: 1 },
-            { color: "#2E5077", opacity: 1 },
-            { color: "#4DA1A9", opacity: 1 },
-            { color: "#D7E8BA", opacity: 1 },
-            // { color: "#FFA630", opacity: 1 },
-        ],
-        colorsB: [
-            { color: "#8E294E", opacity: 1 },
-            { color: "#2E5077", opacity: 1 },
-            { color: "#4DA1A9", opacity: 1 },
-        ],
-        colorsC: [
-            { color: "#4DA1A9", opacity: 1 },
-            { color: "#3a7183", opacity: 1 },
-            { color: "#334152", opacity: 1 },
+        hexColors: [
+            "#293b56",
+            "#2E5077",
+            "#3a7183",
+            "#4DA1A9",
+            "#48cb9b",
+            "#D7E8BA",
+            "#f3f8ce",
+            "#fdfbdd",
         ],
 
-        colorsD: [
-            { color: "#8E294E", opacity: 1 },
-            { color: "#2E5077", opacity: 1 },
-            { color: "#FFA630", opacity: 1 },
-        ],
+        // colorsA: [
+        //     // { color: "#8E294E", opacity: 1 },
+
+        //     { color: "#293b56", opacity: 1 },
+        //     { color: "#2E5077", opacity: 1 },
+        //     { color: "#4DA1A9", opacity: 1 },
+        //     { color: "#D7E8BA", opacity: 1 },
+        //     // { color: "#FFA630", opacity: 1 },
+        // ],
+        // colorsB: [
+        //     { color: "#8E294E", opacity: 1 },
+        //     { color: "#2E5077", opacity: 1 },
+        //     { color: "#4DA1A9", opacity: 1 },
+        // ],
+        // colorsC: [
+        //     { color: "#4DA1A9", opacity: 1 },
+        //     { color: "#3a7183", opacity: 1 },
+        //     { color: "#334152", opacity: 1 },
+        // ],
+
+        // colorsD: [
+        //     { color: "#8E294E", opacity: 1 },
+        //     { color: "#2E5077", opacity: 1 },
+        //     { color: "#FFA630", opacity: 1 },
+        // ],
     },
 
     // {

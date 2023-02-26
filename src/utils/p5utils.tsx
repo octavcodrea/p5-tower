@@ -1471,3 +1471,55 @@ export function angleToVector(p5: P5, angle: number) {
 export function randomFromArray<T>(array: T[]) {
     return array[Math.floor(Math.random() * array.length)];
 }
+
+export const drawImageWithBrushes = (
+    p5: P5,
+    x: number,
+    y: number,
+    image: P5.Image,
+    brushMode: "rectangle",
+    brushSize: number,
+    colorPalette: P5.Color[]
+) => {
+    const imageWidth = image.width;
+    const imageHeight = image.height;
+
+    image.loadPixels();
+    const pixels = image.pixels;
+
+    console.log(
+        "will draw at",
+        x,
+        y,
+        "with size",
+        imageWidth * brushSize,
+        imageHeight * brushSize
+    );
+
+    for (let i = 0; i < imageHeight; i++) {
+        for (let j = 0; j < imageWidth; j++) {
+            const index = (i * imageWidth + j) * 4;
+
+            const r = pixels[index];
+            const g = pixels[index + 1];
+            const b = pixels[index + 2];
+
+            // console.log("r", r, "g", g, "b", b);
+
+            p5.colorMode(p5.RGB);
+            const color = p5.color(r, g, b);
+
+            const xPos = x + j * brushSize;
+            const yPos = y + i * brushSize;
+
+            const brushColor = colorPalette[Math.floor(r / 32)];
+
+            if (brushMode === "rectangle") {
+                p5.fill(brushColor);
+                p5.noStroke();
+                p5.rect(xPos, yPos, brushSize, brushSize);
+                // p5.ellipse(xPos, yPos, brushSize, brushSize);
+            }
+        }
+    }
+};
