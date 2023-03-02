@@ -11,9 +11,9 @@ import { store } from "./store";
 import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
 import { drawImageWithBrushes } from "./utils/p5utils";
-import { tilesets } from "./tilesets";
+import { tilesets } from "./assets/tilesets/tilesets";
 import { Grid, TileSet } from "./types";
-import { addGridLayer, createGridLayer } from "./tower-utils";
+import { addGridLayer, createGridLayer, getTileColors } from "./tower-utils";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
@@ -298,8 +298,12 @@ const sketch = (p5: P5) => {
                             "rectangle",
                             Math.ceil(tileSize / 16),
                             // 4,
-                            Palettes[selectedPalette].hexColors.map((c) =>
-                                p5.color(c)
+                            getTileColors(
+                                grid[i].tiles.length,
+                                j,
+                                Palettes[selectedPalette].hexColors.map((c) =>
+                                    p5.color(c)
+                                )
                             )
                         );
                     }

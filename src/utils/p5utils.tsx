@@ -6,6 +6,7 @@ import {
     calculate3DDistance,
     calculateAngleBetweenPoints,
     calculatePointFromAngle,
+    fcInt,
     floorCeiling,
     hexToRgb,
     hsvToRgb,
@@ -1500,6 +1501,9 @@ export const drawImageWithBrushes = (
         for (let j = 0; j < imageWidth; j++) {
             const index = (i * imageWidth + j) * 4;
 
+            const a = pixels[index + 3];
+            if (a === 0) continue;
+
             const r = pixels[index];
             const g = pixels[index + 1];
             const b = pixels[index + 2];
@@ -1512,7 +1516,10 @@ export const drawImageWithBrushes = (
             const xPos = x + j * brushSize;
             const yPos = y + i * brushSize;
 
-            const brushColor = colorPalette[Math.floor(r / 32)];
+            const brushColor =
+                colorPalette[
+                    fcInt(Math.floor(r / 32), 0, colorPalette.length - 1)
+                ];
 
             if (brushMode === "rectangle") {
                 p5.fill(brushColor);

@@ -35,11 +35,21 @@ export const createGridLayer = (
     for (let i = 0; i < middleTiles; i++) {
         let tile = tileset.middle[0];
 
+        // if (tileset.middle.length > 1) {
+        //     if (i % tileset.middle.length === 0) {
+        //         tile = tileset.middle[tileset.middle.length - 1];
+        //     } else {
+        //         tile = tileset.middle[i % tileset.middle.length];
+        //     }
+        // }
+
         if (tileset.middle.length > 1) {
-            if (i % tileset.middle.length === 0) {
-                tile = tileset.middle[tileset.middle.length - 1];
-            } else {
-                tile = tileset.middle[i % tileset.middle.length];
+            if (tileset.middle.length === 2) {
+                if (i % 2 === 0) {
+                    tile = tileset.middle[0];
+                } else {
+                    tile = tileset.middle[1];
+                }
             }
         }
 
@@ -76,23 +86,32 @@ export const addGridLayer = (
     canvasWidth: number,
     canvasHeight: number
 ) => {
+    // for every layer in the grid, add the ySize:
+    let yPos = 0;
+    for (let i = 0; i < grid.length; i++) {
+        yPos += grid[i].ySize * tileSize;
+    }
+
+    let totalXTiles = 0;
+    for (let i = 0; i < gridLayer.tiles.length; i++) {
+        totalXTiles += gridLayer.tiles[i].xSize;
+    }
+
+    const xStartPoint = (canvasWidth - totalXTiles * tileSize) / 2;
+    let currentX = xStartPoint;
+
     const layer = {
         ...gridLayer,
         yIndex: grid.length,
-        y: grid.length * gridLayer.ySize * tileSize,
+        y: yPos,
 
         tiles: gridLayer.tiles.map((tile) => {
-            let xPos = canvasWidth / 2;
+            let xPos = xStartPoint;
 
-            if (tile.xIndex < gridLayer.tiles.length / 2) {
-                xPos =
-                    canvasWidth / 2 -
-                    (gridLayer.tiles.length / 2 - tile.xIndex) * tileSize;
-            } else if (tile.xIndex > gridLayer.tiles.length / 2) {
-                xPos =
-                    canvasWidth / 2 +
-                    (tile.xIndex - gridLayer.tiles.length / 2) * tileSize;
+            if (tile.xIndex > 0) {
+                xPos = currentX;
             }
+            currentX += tile.xSize * tileSize;
 
             let yPos = 0;
             if (grid.length > 0 && grid[grid.length - 1].y !== undefined) {
@@ -114,4 +133,22 @@ export const addGridLayer = (
     console.log("fmm:", layer.tiles.length);
 
     grid.push(layer);
+};
+
+export const getTileColors = (
+    numberOfTiles: number,
+    tileIndex: number,
+    palette: p5.Color[]
+) => {
+    const p = palette;
+    if (Math.abs(numberOfTiles / 2 - tileIndex - 0.5) <= numberOfTiles / 3) {
+        if (
+            Math.abs(numberOfTiles / 2 - tileIndex - 0.5) <=
+            numberOfTiles / 6
+        ) {
+            return p.slice(2);
+        } else {
+            return p.slice(1);
+        }
+    } else return p;
 };

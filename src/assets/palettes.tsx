@@ -411,14 +411,15 @@ const Palettes: PaletteType[] = [
         name: "Crake",
 
         hexColors: [
-            "#293b56",
-            "#2E5077",
-            "#3a7183",
-            "#4DA1A9",
-            "#48cb9b",
-            "#D7E8BA",
-            "#f3f8ce",
-            "#fdfbdd",
+            "#080e26",
+            "#080e26",
+            "#0c1a30",
+            "#163146",
+            "#20485e",
+            "#296377",
+            "#388087",
+            "#6da68a",
+            "#f5e9a5",
         ],
 
         // colorsA: [

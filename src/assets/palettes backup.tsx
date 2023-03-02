@@ -5,10 +5,8 @@ const Palettes: PaletteType[] = [
     //     background: "#DDDDCC",
     //     accent: "#922f54",
     // accentDark: "#4858A9",
-
     //     stripLinesColor: "#fbfbfb",
     //     name: "Dahlia",
-
     //     colorsA: [
     //         { color: "#d0c66d", opacity: 1 },
     //         { color: "#d24b64", opacity: 1 },
@@ -34,12 +32,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#8C81A4", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#E4E4DD",
     //     accent: "#255A8B",
     // accentDark: "#4858A9",
-
     //     name: "Cerulean",
     //     stripLinesColor: "#fcfcfd",
     //     colorsA: [
@@ -48,7 +44,6 @@ const Palettes: PaletteType[] = [
     //         { color: "#A1D1B4", opacity: 1 },
     //         { color: "#E6837C", opacity: 1 },
     //     ],
-
     //     colorsB: [
     //         { color: "#46A2C0", opacity: 1 },
     //         { color: "#72CFCF", opacity: 1 },
@@ -61,7 +56,6 @@ const Palettes: PaletteType[] = [
     //         { color: "#2C968F", opacity: 1 },
     //         { color: "#9F1B3A", opacity: 1 },
     //     ],
-
     //     colorsD: [
     //         { color: "#EEAF66", opacity: 1 },
     //         { color: "#C67344", opacity: 1 },
@@ -69,15 +63,12 @@ const Palettes: PaletteType[] = [
     //         { color: "#DB6262", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#E1C233",
     //     accent: "#BC722D",
     // accentDark: "#4858A9",
-
     //     name: "Retro",
     //     stripLinesColor: "#fefdfc",
-
     //     colorsA: [
     //         { color: "#FF8C4B", opacity: 1 },
     //         { color: "#DF404A", opacity: 1 },
@@ -103,47 +94,42 @@ const Palettes: PaletteType[] = [
     //         { color: "#5C9599", opacity: 1 },
     //     ],
     // },
-
-    {
-        background: "#dee1ed",
-        accent: "#4858A9",
-        accentDark: "#9ca3c4",
-        pencilColor: "#59639b",
-
-        name: "Coral",
-        stripLinesColor: "#f9f9fb",
-        trianglesColor: "#c6cce1",
-
-        colorsA: [
-            { color: "#FF698C", opacity: 1 },
-            { color: "#BD7CF1", opacity: 1 },
-            { color: "#555BEA", opacity: 1 },
-            { color: "#B8D2E4", opacity: 1 },
-        ],
-        colorsB: [
-            { color: "#E94F6A", opacity: 1 },
-            { color: "#F195B2", opacity: 1 },
-            { color: "#E8E8E8", opacity: 1 },
-            { color: "#B3A2DD", opacity: 1 },
-            { color: "#50C5DE", opacity: 1 },
-        ],
-        colorsC: [
-            { color: "#B3A2DD", opacity: 1 },
-            { color: "#643ED0", opacity: 1 },
-            { color: "#84589F", opacity: 1 },
-            { color: "#5478AD", opacity: 1 },
-        ],
-        colorsD: [
-            { color: "#a6b1c4", opacity: 1 },
-            { color: "#B8D2E4", opacity: 1 },
-        ],
-    },
-
+    // {
+    //     background: "#dee1ed",
+    //     accent: "#4858A9",
+    //     accentDark: "#9ca3c4",
+    //     pencilColor: "#59639b",
+    //     name: "Coral",
+    //     stripLinesColor: "#f9f9fb",
+    //     trianglesColor: "#c6cce1",
+    //     colorsA: [
+    //         { color: "#FF698C", opacity: 1 },
+    //         { color: "#BD7CF1", opacity: 1 },
+    //         { color: "#555BEA", opacity: 1 },
+    //         { color: "#B8D2E4", opacity: 1 },
+    //     ],
+    //     colorsB: [
+    //         { color: "#E94F6A", opacity: 1 },
+    //         { color: "#F195B2", opacity: 1 },
+    //         { color: "#E8E8E8", opacity: 1 },
+    //         { color: "#B3A2DD", opacity: 1 },
+    //         { color: "#50C5DE", opacity: 1 },
+    //     ],
+    //     colorsC: [
+    //         { color: "#B3A2DD", opacity: 1 },
+    //         { color: "#643ED0", opacity: 1 },
+    //         { color: "#84589F", opacity: 1 },
+    //         { color: "#5478AD", opacity: 1 },
+    //     ],
+    //     colorsD: [
+    //         { color: "#a6b1c4", opacity: 1 },
+    //         { color: "#B8D2E4", opacity: 1 },
+    //     ],
+    // },
     // {
     //     background: "#011627",
     //     accent: "#4C657A",
     //     name: "Hanabi",
-
     //     colorsA: [
     //         { color: "#D62828", opacity: 1 },
     //         { color: "#F77F00", opacity: 1 },
@@ -157,11 +143,9 @@ const Palettes: PaletteType[] = [
     //         { color: "#947369", opacity: 1 },
     //     ],
     // },
-
     // // {
     // //     background: "#C5283D",
     // //     accent: "#FAE0E0",
-
     // //     colorsA: [
     // //         { color: "#E28413", opacity: 1 },
     // //         { color: "#E4C94C", opacity: 1 },
@@ -180,7 +164,6 @@ const Palettes: PaletteType[] = [
     // // {
     // //     background: "#107f69",
     // //     accent: "#102928",
-
     // //     colorsA: [
     // //         { color: "#E94F6A", opacity: 1 },
     // //         { color: "#F195B2", opacity: 1 },
@@ -200,7 +183,6 @@ const Palettes: PaletteType[] = [
     //     background: "#262122",
     //     accent: "#5F5149",
     //     name: "Saffron",
-
     //     colorsA: [
     //         { color: "#8C0837", opacity: 1 },
     //         { color: "#D62828", opacity: 1 },
@@ -216,12 +198,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#D45A14", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#53917E",
     //     accent: "#D2C8A4",
     //     name: "Academia",
-
     //     colorsA: [
     //         { color: "#DC4762", opacity: 1 },
     //         { color: "#FF8E4F", opacity: 1 },
@@ -235,12 +215,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#6D5C4C", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#2C2A4A",
     //     accent: "#84589F",
     //     name: "Nightlife",
-
     //     colorsA: [
     //         { color: "#7FDEFF", opacity: 1 },
     //         { color: "#E4FDE1", opacity: 1 },
@@ -256,12 +234,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#68509B", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#EAE3D1",
     //     accent: "#AC8F8F",
     //     name: "Linen",
-
     //     colorsA: [
     //         { color: "#97B381", opacity: 1 },
     //         { color: "#E1E897", opacity: 1 },
@@ -275,12 +251,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#5C0E26", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#E4DED5",
     //     accent: "#B64830",
     //     name: "Dawnbreak",
-
     //     colorsA: [
     //         { color: "#E28413", opacity: 1 },
     //         { color: "#F4D04F", opacity: 1 },
@@ -294,12 +268,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#14426C", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#7D463A",
     //     accent: "#DF8856",
     //     name: "Cinnamon",
-
     //     colorsA: [
     //         { color: "#76C88F", opacity: 1 },
     //         { color: "#FCF6B1", opacity: 1 },
@@ -315,12 +287,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#41284D", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#DDD4D0",
     //     accent: "#A04A73",
     //     name: "Sundown",
-
     //     colorsA: [
     //         { color: "#F9C22E", opacity: 1 },
     //         { color: "#F15946", opacity: 1 },
@@ -334,12 +304,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#081535", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#EBEBEB",
     //     accent: "#6CA2B4",
     //     name: "Verdant",
-
     //     colorsA: [
     //         { color: "#5C687F", opacity: 1 },
     //         { color: "#10AFB9", opacity: 1 },
@@ -353,12 +321,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#B7951C", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#22201E",
     //     accent: "#A49A3F",
     //     name: "Topsoil",
-
     //     colorsA: [
     //         { color: "#9F5B34", opacity: 1 },
     //         { color: "#EEE84D", opacity: 1 },
@@ -372,12 +338,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#24322B", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#EEF5DB",
     //     accent: "#B9B29F",
     //     name: "Mediterranean",
-
     //     colorsA: [
     //         { color: "#6CCFF6", opacity: 1 },
     //         { color: "#FFC857", opacity: 1 },
@@ -391,12 +355,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#7E3B3B", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#EFF6EE",
     //     accent: "#FF7575",
     //     name: "Springtime",
-
     //     colorsA: [
     //         { color: "#ED5E5E", opacity: 1 },
     //         { color: "#F4D04F", opacity: 1 },
@@ -412,12 +374,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#1D2656", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#6d7755",
     //     accent: "#4D4743",
     //     name: "September",
-
     //     colorsA: [
     //         { color: "#8F9FA9", opacity: 1 },
     //         { color: "#4D4244", opacity: 1 },
@@ -435,12 +395,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#A85F1C", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#EBECEF",
     //     accent: "#575D97",
     //     name: "Synthetic",
-
     //     colorsA: [
     //         { color: "#00BBF9", opacity: 1 },
     //         { color: "#00F5D4", opacity: 1 },
@@ -456,12 +414,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#2D318A", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#DDD195",
     //     accent: "#AE4933",
     //     name: "Earthly",
-
     //     colorsA: [
     //         { color: "#EB552D", opacity: 1 },
     //         { color: "#E4AB59", opacity: 1 },
@@ -477,12 +433,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#272952", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#DEE0E7",
     //     accent: "#3087C7",
     //     name: "Lavender",
-
     //     colorsA: [
     //         { color: "#9C88EC", opacity: 1 },
     //         { color: "#BD93D8", opacity: 1 },
@@ -496,12 +450,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#10689A", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#DDD4D0",
     //     accent: "#66687E",
     //     name: "Prismatic",
-
     //     colorsA: [
     //         { color: "#F9DF74", opacity: 1 },
     //         { color: "#F9C22E", opacity: 1 },
@@ -521,12 +473,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#114968", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#25252D",
     //     accent: "#66687E",
     //     name: "Preem",
-
     //     colorsA: [
     //         { color: "#ED6A5E", opacity: 1 },
     //         { color: "#FFAC47", opacity: 1 },
@@ -546,12 +496,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#402E52", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#DDD4D0",
     //     accent: "#8C717E",
     //     name: "Embers",
-
     //     colorsA: [
     //         { color: "#FFCE4F", opacity: 1 },
     //         { color: "#DD2244", opacity: 1 },
@@ -564,12 +512,10 @@ const Palettes: PaletteType[] = [
     //         { color: "#49F4FF", opacity: 1 },
     //     ],
     // },
-
     // {
     //     background: "#171519",
     //     accent: "#D56340",
     //     name: "Jazz",
-
     //     colorsA: [
     //         // { color: "#F18805", opacity: 1 },
     //         { color: "#FF6542", opacity: 1 },
