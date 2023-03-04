@@ -37,6 +37,7 @@ import PillarsRight from "./pillars/right.png";
 import Face1Left from "./face1/left.png";
 import Face1Middle from "./face1/middle.png";
 import Face1Middle2 from "./face1/middle2.png";
+import Face1Middle3 from "./face1/middle3.png";
 import Face1Right from "./face1/right.png";
 
 import Human1Left from "./human1/left.png";
@@ -47,6 +48,23 @@ import Human2Left from "./human2/left.png";
 import Human2Middle from "./human2/middle.png";
 import Human2Middle2 from "./human2/middle2.png";
 import Human2Right from "./human2/right.png";
+
+import ThornsLeft from "./thorns/left.png";
+import ThornsMiddle from "./thorns/middle.png";
+import ThornsRight from "./thorns/right.png";
+
+import WindowLeft from "./window/left.png";
+import WindowMiddle from "./window/middle.png";
+import WindowRight from "./window/right.png";
+
+import TeethLeft from "./teeth/left.png";
+import TeethMiddle from "./teeth/middle.png";
+import TeethRight from "./teeth/right.png";
+
+import Eyes3Left from "./eyes3/left.png";
+import Eyes3Middle from "./eyes3/middle.png";
+import Eyes3Middle2 from "./eyes3/middle2.png";
+import Eyes3Right from "./eyes3/right.png";
 
 export const tilesets: TileSet[] = [
     // {
@@ -340,9 +358,121 @@ export const tilesets: TileSet[] = [
                 ySize: 2,
                 type: "middle",
             },
+            {
+                imageSrc: Face1Middle3,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
         ],
         rightEdge: {
             imageSrc: Face1Right,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "window",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: WindowLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: WindowMiddle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: WindowRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "thorns",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: ThornsLeft,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: ThornsMiddle,
+                xSize: 1,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: ThornsRight,
+            xSize: 1,
+            ySize: 1,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "teeth",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: TeethLeft,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: TeethMiddle,
+                xSize: 1,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: TeethRight,
+            xSize: 1,
+            ySize: 1,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "eyes3",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: Eyes3Left,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: Eyes3Middle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: Eyes3Middle2,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: Eyes3Right,
             xSize: 1,
             ySize: 2,
             type: "right-edge",

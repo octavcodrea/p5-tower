@@ -12,6 +12,8 @@ import {
     hsvToRgb,
     rgbToHsv,
     roundDecimals,
+    roundToDivisible,
+    roundToEven,
     rtd,
     sr,
     sre,
@@ -1473,15 +1475,29 @@ export function randomFromArray<T>(array: T[]) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-export const drawImageWithBrushes = (
-    p5: P5,
-    x: number,
-    y: number,
-    image: P5.Image,
-    brushMode: "rectangle",
-    brushSize: number,
-    colorPalette: P5.Color[]
-) => {
+export const drawImageWithBrushes = (params: {
+    p5: P5;
+    x: number;
+    y: number;
+    image: P5.Image;
+    brushMode: "rectangle";
+    brushSize: number;
+    colorPalettes: Array<P5.Color[]>;
+    secondaryPalettesDensity: number;
+    glitchDensity?: number;
+}) => {
+    const {
+        p5,
+        x,
+        y,
+        image,
+        brushMode,
+        brushSize,
+        colorPalettes,
+        secondaryPalettesDensity,
+        glitchDensity,
+    } = params;
+
     const imageWidth = image.width;
     const imageHeight = image.height;
 
@@ -1516,9 +1532,17 @@ export const drawImageWithBrushes = (
             const xPos = x + j * brushSize;
             const yPos = y + i * brushSize;
 
+            const paletteToUse =
+                p5.noise(roundToDivisible(xPos, 6), roundToDivisible(yPos, 6)) >
+                secondaryPalettesDensity
+                    ? colorPalettes[0]
+                    : p5.random() > 0.5
+                    ? colorPalettes[1]
+                    : colorPalettes[1];
+
             const brushColor =
-                colorPalette[
-                    fcInt(Math.floor(r / 32), 0, colorPalette.length - 1)
+                paletteToUse[
+                    fcInt(Math.floor(r / 32), 0, paletteToUse.length - 1)
                 ];
 
             if (brushMode === "rectangle") {
@@ -1530,3 +1554,37 @@ export const drawImageWithBrushes = (
         }
     }
 };
+
+export function gridFromImage(params: { p5: P5; image: P5.Image }) {
+    const { p5, image } = params;
+
+    const imageWidth = image.width;
+    const imageHeight = image.height;
+
+    image.loadPixels();
+    const pixels = image.pixels;
+
+    const grid: { r: number; g: number; b: number; a: number }[][] = [];
+
+    for (let i = 0; i < imageHeight; i++) {
+        grid[i] = [];
+        for (let j = 0; j < imageWidth; j++) {
+            const index = (i * imageWidth + j) * 4;
+
+            const a = pixels[index + 3];
+
+            const r = pixels[index];
+            const g = pixels[index + 1];
+            const b = pixels[index + 2];
+
+            grid[i][j] = {
+                r: r,
+                g: g,
+                b: b,
+                a: a,
+            };
+        }
+    }
+
+    return grid;
+}

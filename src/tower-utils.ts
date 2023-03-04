@@ -51,6 +51,18 @@ export const createGridLayer = (
                     tile = tileset.middle[1];
                 }
             }
+
+            if (tileset.middle.length === 3) {
+                if (i % 4 === 0) {
+                    tile = tileset.middle[0];
+                } else if (i % 4 === 1) {
+                    tile = tileset.middle[1];
+                } else if (i % 4 === 2) {
+                    tile = tileset.middle[0];
+                } else if (i % 4 === 3) {
+                    tile = tileset.middle[2];
+                }
+            }
         }
 
         gridLayer.tiles.push({

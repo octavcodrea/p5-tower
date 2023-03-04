@@ -15,6 +15,9 @@ import { tilesets } from "./assets/tilesets/tilesets";
 import { Grid, TileSet } from "./types";
 import { addGridLayer, createGridLayer, getTileColors } from "./tower-utils";
 
+// @ts-ignore
+import font1Source from "url:./assets/fonts/font1.ttf";
+
 let { canvasWidth, canvasHeight } = store.getState();
 
 const unit = canvasWidth / 1000;
@@ -55,6 +58,7 @@ const sketch = (p5: P5) => {
     let seedH = charH.toString();
 
     let selectedPalette = Math.floor(Palettes.length * (charD / 100));
+    let font1: any = undefined;
 
     function setupFromSeed() {
         const seed = store.getState().seed;
@@ -151,6 +155,8 @@ const sketch = (p5: P5) => {
 
         test1 = p5.loadImage(test1png);
 
+        font1 = p5.loadFont(font1Source);
+
         loadedTilesets = tilesets.map((tileset) => {
             const { leftEdge, rightEdge, middle, ...rest } = tileset;
             const loadedLeftEdge = {
@@ -187,6 +193,10 @@ const sketch = (p5: P5) => {
         p5.angleMode(p5.RADIANS);
 
         function doSetup() {
+            seed = store.getState().seed;
+            grid = [];
+
+            p5.frameCount = 0;
             p5.loop();
 
             p5.blendMode(p5.BLEND);
@@ -282,6 +292,12 @@ const sketch = (p5: P5) => {
             frameCountUI.innerHTML = p5.frameCount.toString();
         }
 
+        p5.fill("#fff");
+        p5.textFont(font1);
+        p5.textSize(tileSize / 4);
+
+        p5.text("p5*js", 10, 50);
+
         if (!tilesDrawn) {
             for (let i = 0; i < grid.length; i++) {
                 for (let j = 0; j < grid[i].tiles.length; j++) {
@@ -289,23 +305,44 @@ const sketch = (p5: P5) => {
 
                     console.log("thisTile", thisTile);
 
+                    const mainPalette = Palettes[selectedPalette].hexColors.map(
+                        (c) => p5.color(c)
+                    );
+
+                    const otherPalettes = Palettes.filter(
+                        (p, i) => i !== selectedPalette
+                    );
+
+                    const secondaryPalette1 = otherPalettes[
+                        Math.floor(otherPalettes.length * (charB / 100))
+                    ].hexColors.map((c) => p5.color(c));
+
+                    const secondaryPalette2 = otherPalettes[
+                        Math.floor(otherPalettes.length * (charC / 100))
+                    ].hexColors.map((c) => p5.color(c));
+
+                    const palettesToUse = [
+                        mainPalette,
+                        secondaryPalette1,
+                        secondaryPalette2,
+                    ];
+
                     if (thisTile.image) {
-                        drawImageWithBrushes(
-                            p5,
-                            thisTile.x,
-                            thisTile.y,
-                            thisTile.image,
-                            "rectangle",
-                            Math.ceil(tileSize / 16),
-                            // 4,
-                            getTileColors(
-                                grid[i].tiles.length,
-                                j,
-                                Palettes[selectedPalette].hexColors.map((c) =>
-                                    p5.color(c)
-                                )
-                            )
-                        );
+                        drawImageWithBrushes({
+                            p5: p5,
+                            x: thisTile.x,
+                            y: thisTile.y,
+                            image: thisTile.image,
+                            brushMode: "rectangle",
+                            brushSize: Math.ceil(tileSize / 16),
+                            colorPalettes: palettesToUse.map((p) =>
+                                getTileColors(grid[i].tiles.length, j, p)
+                            ),
+                            secondaryPalettesDensity:
+                                Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
+                                grid[i].tiles.length /
+                                2,
+                        });
                     }
                 }
             }

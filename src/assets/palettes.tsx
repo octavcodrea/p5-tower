@@ -411,7 +411,7 @@ const Palettes: PaletteType[] = [
         name: "Crake",
 
         hexColors: [
-            "#080e26",
+            "#030716",
             "#080e26",
             "#0c1a30",
             "#163146",
@@ -419,7 +419,9 @@ const Palettes: PaletteType[] = [
             "#296377",
             "#388087",
             "#6da68a",
+            "#d2d85f",
             "#f5e9a5",
+            "#f9f2c7",
         ],
 
         // colorsA: [
@@ -447,6 +449,62 @@ const Palettes: PaletteType[] = [
         //     { color: "#2E5077", opacity: 1 },
         //     { color: "#FFA630", opacity: 1 },
         // ],
+    },
+
+    {
+        background: "#000",
+        name: "Oryx",
+
+        hexColors: [
+            // "#020312",
+            "#080a26",
+            "#23133f",
+            "#3c0d3b",
+            "#66164c",
+            "#901f3d",
+            "#bb3030",
+            "#dc473c",
+            "#ec6a45",
+            "#fb9b41",
+            "#f0c04c",
+            "#fffb76",
+        ],
+    },
+
+    {
+        background: "#000",
+        name: "Haruki",
+
+        hexColors: [
+            "#040c06",
+            "#091a0e",
+            "#112318",
+            "#1e3a29",
+            "#305d42",
+            "#4d8061",
+            "#89a257",
+            "#bedc7f",
+            "#eeffcc",
+        ],
+    },
+
+    {
+        background: "#000",
+        name: "Kuro",
+
+        hexColors: [
+            "#190e25",
+            "#261933",
+            "#272249",
+            "#343380",
+            "#3d3c93",
+            "#5c55b7",
+            "#978ed2",
+            "#b1afe4",
+            "#c9d8f2",
+            "#c0edef",
+            "#d7eeef",
+        ],
     },
 
     // {
