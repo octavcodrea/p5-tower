@@ -66,6 +66,20 @@ import Eyes3Middle from "./eyes3/middle.png";
 import Eyes3Middle2 from "./eyes3/middle2.png";
 import Eyes3Right from "./eyes3/right.png";
 
+import Head1Left from "./head1/left.png";
+import Head1Middle from "./head1/middle.png";
+import Head1Middle2 from "./head1/middle2.png";
+import Head1Right from "./head1/right.png";
+
+import TempleLeft from "./temple/left.png";
+import TempleMiddle from "./temple/middle.png";
+import TempleMiddle2 from "./temple/middle2.png";
+import TempleRight from "./temple/right.png";
+
+import CablesLeft from "./cables/left.png";
+import CablesMiddle from "./cables/middle.png";
+import CablesRight from "./cables/right.png";
+
 export const tilesets: TileSet[] = [
     // {
     //     name: "tileset-test",
@@ -474,6 +488,93 @@ export const tilesets: TileSet[] = [
         rightEdge: {
             imageSrc: Eyes3Right,
             xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "head1",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: Head1Left,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: Head1Middle,
+                xSize: 1,
+                ySize: 1,
+                type: "middle",
+            },
+            {
+                imageSrc: Head1Middle2,
+                xSize: 2,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: Head1Right,
+            xSize: 1,
+            ySize: 1,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "temple",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: TempleLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: TempleMiddle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: TempleMiddle2,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: TempleRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+    },
+
+    {
+        name: "cables",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: CablesLeft,
+            xSize: 2,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: CablesMiddle,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: CablesRight,
+            xSize: 2,
             ySize: 2,
             type: "right-edge",
         },

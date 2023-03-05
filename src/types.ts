@@ -70,6 +70,9 @@ export type TileSet = {
     leftEdge: Tile;
     middle: Tile[];
     rightEdge: Tile;
+
+    matchPreviousWidth?: boolean;
+    matchNextWidth?: boolean;
 };
 
 export type Grid = GridLayer[];

@@ -1501,33 +1501,98 @@ export const drawImageWithBrushes = (params: {
     const imageWidth = image.width;
     const imageHeight = image.height;
 
-    image.loadPixels();
-    const pixels = image.pixels;
+    let imageGrid = gridFromImage(image);
+    let glitchedCorners = {
+        topLeft: "",
+        topRight: "",
+        bottomLeft: "",
+        bottomRight: "",
+    };
 
-    console.log(
-        "will draw at",
-        x,
-        y,
-        "with size",
-        imageWidth * brushSize,
-        imageHeight * brushSize
-    );
+    if (glitchDensity && p5.random() < glitchDensity) {
+        const glitched = glitchImageGrid(imageGrid, [], "random");
+        imageGrid = glitched.grid;
+        glitchedCorners = glitched.glitchedCorners;
+
+        const rows = Math.round(imageHeight / 16);
+        const columns = Math.round(imageWidth / 16);
+
+        const letterSize = brushSize * 8;
+
+        const averageColor = averageColorFromImage(image, true);
+
+        const textColor =
+            colorPalettes[0][
+                fcInt(
+                    Math.floor(averageColor.r / 32) + 1,
+                    0,
+                    colorPalettes[0].length - 1
+                )
+            ];
+
+        p5.fill(textColor);
+        p5.textSize(letterSize);
+        p5.textLeading(0);
+        if (glitchedCorners.topLeft === "letter") {
+            for (let i = 1; i <= rows; i++) {
+                for (let j = 1; j <= columns; j++) {
+                    p5.text(
+                        randomSymbol(),
+                        x + letterSize * (j - 1),
+                        y + letterSize * i
+                    );
+                }
+            }
+        } else if (glitchedCorners.topRight === "letter") {
+            for (let i = 1; i <= rows; i++) {
+                for (let j = 1; j <= columns; j++) {
+                    p5.text(
+                        randomSymbol(),
+                        x + (imageWidth / 2) * brushSize + letterSize * (j - 1),
+                        y + letterSize * i
+                    );
+                }
+            }
+        } else if (glitchedCorners.bottomLeft === "letter") {
+            for (let i = 1; i <= rows; i++) {
+                for (let j = 1; j <= columns; j++) {
+                    p5.text(
+                        randomSymbol(),
+                        x + letterSize * (j - 1),
+                        y + (imageHeight / 2) * brushSize + letterSize * i
+                    );
+                }
+            }
+        } else if (glitchedCorners.bottomRight === "letter") {
+            for (let i = 1; i <= rows; i++) {
+                for (let j = 1; j <= columns; j++) {
+                    p5.text(
+                        randomSymbol(),
+                        x + (imageWidth / 2) * brushSize + letterSize * (j - 1),
+                        y + (imageHeight / 2) * brushSize + letterSize * i
+                    );
+                }
+            }
+        }
+    }
+
+    // console.log(
+    //     "will draw at",
+    //     x,
+    //     y,
+    //     "with size",
+    //     imageWidth * brushSize,
+    //     imageHeight * brushSize
+    // );
 
     for (let i = 0; i < imageHeight; i++) {
         for (let j = 0; j < imageWidth; j++) {
-            const index = (i * imageWidth + j) * 4;
-
-            const a = pixels[index + 3];
+            const a = imageGrid[i][j].a;
             if (a === 0) continue;
 
-            const r = pixels[index];
-            const g = pixels[index + 1];
-            const b = pixels[index + 2];
-
-            // console.log("r", r, "g", g, "b", b);
+            const r = imageGrid[i][j].r;
 
             p5.colorMode(p5.RGB);
-            const color = p5.color(r, g, b);
 
             const xPos = x + j * brushSize;
             const yPos = y + i * brushSize;
@@ -1555,9 +1620,7 @@ export const drawImageWithBrushes = (params: {
     }
 };
 
-export function gridFromImage(params: { p5: P5; image: P5.Image }) {
-    const { p5, image } = params;
-
+export function gridFromImage(image: P5.Image) {
     const imageWidth = image.width;
     const imageHeight = image.height;
 
@@ -1587,4 +1650,256 @@ export function gridFromImage(params: { p5: P5; image: P5.Image }) {
     }
 
     return grid;
+}
+
+type ImageCorner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
+type Pixel = { r: number; g: number; b: number; a: number };
+
+function glitchImageGrid(
+    grid: Pixel[][],
+    cornersToGlitch: ImageCorner[],
+    glitchMode: "letter" | "color" | "random"
+) {
+    const imageWidth = grid[0].length;
+    const imageHeight = grid.length;
+
+    let newGrid = grid;
+    let newColor = averageColorFromGrid(grid, true);
+    newColor = {
+        r: newColor.r + 32,
+        g: newColor.g + 32,
+        b: newColor.b + 32,
+    };
+    let corners = cornersToGlitch.length
+        ? cornersToGlitch
+        : randomElementFromArray([
+              "topLeft",
+              "topRight",
+              "bottomLeft",
+              "bottomRight",
+          ]);
+
+    let glitchedCorners = {
+        topLeft: "",
+        topRight: "",
+        bottomLeft: "",
+        bottomRight: "",
+    };
+
+    if (corners.includes("topLeft")) {
+        const modeToUse =
+            glitchMode === "random"
+                ? randomElementFromArray(["letter", "color"])
+                : glitchMode;
+
+        glitchedCorners.topLeft = modeToUse;
+
+        for (let i = 0; i < imageHeight; i++) {
+            for (let j = 0; j < imageWidth; j++) {
+                if (i < imageHeight / 2 && j < imageWidth / 2) {
+                    if (modeToUse === "letter") {
+                        newGrid[i][j].a = 0;
+                    } else if (modeToUse === "color") {
+                        newGrid[i][j].r = newColor.r;
+                        newGrid[i][j].g = newColor.g;
+                        newGrid[i][j].b = newColor.b;
+                    }
+                }
+            }
+        }
+    }
+    if (corners.includes("topRight")) {
+        const modeToUse =
+            glitchMode === "random"
+                ? randomElementFromArray(["letter", "color"])
+                : glitchMode;
+
+        glitchedCorners.topRight = modeToUse;
+
+        for (let i = 0; i < imageHeight; i++) {
+            for (let j = 0; j < imageWidth; j++) {
+                if (i < imageHeight / 2 && j > imageWidth / 2) {
+                    if (modeToUse === "letter") {
+                        newGrid[i][j].a = 0;
+                    } else if (glitchMode === "color") {
+                        newGrid[i][j].r = newColor.r;
+                        newGrid[i][j].g = newColor.g;
+                        newGrid[i][j].b = newColor.b;
+                    }
+                }
+            }
+        }
+    }
+    if (corners.includes("bottomLeft")) {
+        const modeToUse =
+            glitchMode === "random"
+                ? randomElementFromArray(["letter", "color"])
+                : glitchMode;
+
+        glitchedCorners.bottomLeft = modeToUse;
+
+        for (let i = 0; i < imageHeight; i++) {
+            for (let j = 0; j < imageWidth; j++) {
+                if (i > imageHeight / 2 && j < imageWidth / 2) {
+                    if (modeToUse === "letter") {
+                        newGrid[i][j].a = 0;
+                    } else if (glitchMode === "color") {
+                        newGrid[i][j].r = newColor.r;
+                        newGrid[i][j].g = newColor.g;
+                        newGrid[i][j].b = newColor.b;
+                    }
+                }
+            }
+        }
+    }
+    if (corners.includes("bottomRight")) {
+        const modeToUse =
+            glitchMode === "random"
+                ? randomElementFromArray(["letter", "color"])
+                : glitchMode;
+
+        glitchedCorners.bottomRight = modeToUse;
+
+        for (let i = 0; i < imageHeight; i++) {
+            for (let j = 0; j < imageWidth; j++) {
+                if (i > imageHeight / 2 && j > imageWidth / 2) {
+                    if (modeToUse === "letter") {
+                        newGrid[i][j].a = 0;
+                    } else if (glitchMode === "color") {
+                        newGrid[i][j].r = newColor.r;
+                        newGrid[i][j].g = newColor.g;
+                        newGrid[i][j].b = newColor.b;
+                    }
+                }
+            }
+        }
+    }
+
+    // console.log("new grid: ", newGrid);
+
+    return {
+        grid: newGrid,
+        glitchedCorners: glitchedCorners,
+    };
+}
+
+export function randomElementFromArray(array: any[]) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+export function randomSymbol() {
+    const symbols = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "0",
+    ];
+
+    return randomElementFromArray(symbols);
+}
+
+export function averageColorFromImage(
+    image: P5.Image,
+    ignoreTransparent?: boolean
+) {
+    const pixels = image.pixels;
+
+    let r = 0;
+    let g = 0;
+    let b = 0;
+
+    let totalPixels = 0;
+
+    for (let i = 0; i < pixels.length; i += 4) {
+        const a = pixels[i + 3];
+
+        if (ignoreTransparent && a === 0) {
+            continue;
+        }
+
+        r += pixels[i];
+        g += pixels[i + 1];
+        b += pixels[i + 2];
+
+        totalPixels++;
+    }
+
+    r = r / totalPixels;
+    g = g / totalPixels;
+    b = b / totalPixels;
+
+    return {
+        r: r,
+        g: g,
+        b: b,
+    };
+}
+
+export function averageColorFromGrid(
+    grid: Pixel[][],
+    ignoreTransparent?: boolean
+) {
+    let r = 0;
+    let g = 0;
+    let b = 0;
+
+    let totalPixels = 0;
+
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            const pixel = grid[i][j];
+
+            if (ignoreTransparent && pixel.a === 0) {
+                continue;
+            }
+
+            r += pixel.r;
+            g += pixel.g;
+            b += pixel.b;
+
+            totalPixels++;
+        }
+    }
+
+    r = r / totalPixels;
+    g = g / totalPixels;
+    b = b / totalPixels;
+
+    return {
+        r: r,
+        g: g,
+        b: b,
+    };
 }

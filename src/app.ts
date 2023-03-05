@@ -292,11 +292,12 @@ const sketch = (p5: P5) => {
             frameCountUI.innerHTML = p5.frameCount.toString();
         }
 
-        p5.fill("#fff");
+        p5.fill("#444");
         p5.textFont(font1);
-        p5.textSize(tileSize / 4);
+        p5.textSize(tileSize / 2);
+        p5.textLeading(tileSize / 1.6);
 
-        p5.text("p5*js", 10, 50);
+        p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
 
         if (!tilesDrawn) {
             for (let i = 0; i < grid.length; i++) {
@@ -342,6 +343,10 @@ const sketch = (p5: P5) => {
                                 Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                 grid[i].tiles.length /
                                 2,
+                            glitchDensity:
+                                (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
+                                    grid[i].tiles.length) *
+                                4,
                         });
                     }
                 }
