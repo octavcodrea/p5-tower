@@ -2,21 +2,56 @@ import p5 from "p5";
 import { Grid, GridLayer, TileSet } from "./types";
 import { sr, sre } from "./utils/common";
 
-export const createGridLayer = (
-    p5: p5,
-    seed: string,
-    tileset: TileSet,
-    colors: p5.Color[]
-): GridLayer => {
+export const createGridLayer = (params: {
+    tileSize: number;
+    p5: p5;
+    seed: string;
+    tileset: TileSet;
+    colors: p5.Color[];
+    previousLayerWidth?: number;
+    shouldMatchPreviousWidth?: boolean;
+}): GridLayer => {
+    const {
+        p5,
+        tileSize,
+        seed,
+        tileset,
+        colors,
+        previousLayerWidth,
+        shouldMatchPreviousWidth,
+    } = params;
+
     const gridLayer: GridLayer = {
         ySize: 1,
         tiles: [],
+        totalTilesWidth: 0,
+        shouldMatchPreviousWidth: false,
+        shouldMatchNextWidth: false,
     };
 
     let numberOfTiles = Math.floor(sr(seed) * 10 + 6);
+    const anticipatedWidth = calculateTotalTilesWidth(numberOfTiles, tileset);
+
+    if (anticipatedWidth > p5.width / tileSize) {
+        const difference = anticipatedWidth - p5.width / tileSize;
+        numberOfTiles -= Math.ceil(difference / 2);
+    }
+
+    if (previousLayerWidth !== undefined && shouldMatchPreviousWidth) {
+        const matchingNumberOfTiles = getMatchingNumberOfTiles(
+            previousLayerWidth,
+            tileset
+        );
+
+        if (matchingNumberOfTiles <= p5.width / tileSize) {
+            numberOfTiles = matchingNumberOfTiles;
+        }
+    }
+
     if (numberOfTiles % 2 === 0) {
         numberOfTiles++;
     }
+    let totalWidth = 0;
 
     const middleTiles = numberOfTiles - 2;
     gridLayer.ySize = tileset.ySize;
@@ -31,6 +66,8 @@ export const createGridLayer = (
         image: tileset.leftEdge.image,
         colors: colors,
     });
+
+    totalWidth += tileset.leftEdge.xSize;
 
     for (let i = 0; i < middleTiles; i++) {
         let tile = tileset.middle[0];
@@ -75,6 +112,8 @@ export const createGridLayer = (
             image: tile.image,
             colors: colors,
         });
+
+        totalWidth += tile.xSize;
     }
 
     gridLayer.tiles.push({
@@ -87,6 +126,13 @@ export const createGridLayer = (
         image: tileset.rightEdge.image,
         colors: colors,
     });
+
+    totalWidth += tileset.rightEdge.xSize;
+
+    gridLayer.totalTilesWidth = totalWidth;
+    gridLayer.shouldMatchNextWidth = tileset.matchNextWidth;
+    gridLayer.shouldMatchPreviousWidth = tileset.matchPreviousWidth;
+    gridLayer.shouldMatchPreviousWidth = tileset.matchPreviousWidth;
 
     return gridLayer;
 };
@@ -164,3 +210,97 @@ export const getTileColors = (
         }
     } else return p;
 };
+
+export function getMatchingNumberOfTiles(
+    desiredWidth: number,
+    tileset: TileSet
+) {
+    switch (tileset.middle.length) {
+        case 1:
+            return Math.floor(desiredWidth / tileset.middle[0].xSize);
+        case 2: {
+            if (tileset.middle[0].xSize === tileset.middle[1].xSize) {
+                return Math.floor(desiredWidth / tileset.middle[0].xSize);
+            } else {
+                let numberOfTiles = 0;
+                let currentWidth = 0;
+
+                while (currentWidth < desiredWidth) {
+                    if (numberOfTiles % 2 === 0) {
+                        currentWidth += tileset.middle[0].xSize;
+                    } else {
+                        currentWidth += tileset.middle[1].xSize;
+                    }
+                    numberOfTiles++;
+                }
+
+                return numberOfTiles;
+            }
+        }
+        case 3: {
+            if (
+                tileset.middle[0].xSize === tileset.middle[1].xSize &&
+                tileset.middle[1].xSize === tileset.middle[2].xSize
+            ) {
+                return Math.floor(desiredWidth / tileset.middle[0].xSize);
+            } else {
+                let numberOfTiles = 0;
+                let currentWidth = 0;
+
+                while (currentWidth < desiredWidth) {
+                    if (numberOfTiles % 4 === 0 || numberOfTiles % 4 === 2) {
+                        currentWidth += tileset.middle[0].xSize;
+                    } else if (numberOfTiles % 4 === 1) {
+                        currentWidth += tileset.middle[1].xSize;
+                    } else if (numberOfTiles % 4 === 3) {
+                        currentWidth += tileset.middle[2].xSize;
+                    }
+                    numberOfTiles++;
+                }
+
+                return numberOfTiles;
+            }
+        }
+        default:
+            return Math.floor(desiredWidth / tileset.middle[0].xSize);
+    }
+}
+
+export function calculateTotalTilesWidth(
+    numberOfTiles: number,
+    tileset: TileSet
+) {
+    let totalWidth = 0;
+
+    totalWidth += tileset.leftEdge.xSize;
+
+    for (let i = 0; i < numberOfTiles; i++) {
+        let tile = tileset.middle[0];
+
+        if (tileset.middle.length === 2) {
+            if (i % 2 === 0) {
+                tile = tileset.middle[0];
+            } else {
+                tile = tileset.middle[1];
+            }
+        }
+
+        if (tileset.middle.length === 3) {
+            if (i % 4 === 0) {
+                tile = tileset.middle[0];
+            } else if (i % 4 === 1) {
+                tile = tileset.middle[1];
+            } else if (i % 4 === 2) {
+                tile = tileset.middle[0];
+            } else if (i % 4 === 3) {
+                tile = tileset.middle[2];
+            }
+        }
+
+        totalWidth += tile.xSize;
+    }
+
+    totalWidth += tileset.rightEdge.xSize;
+
+    return totalWidth;
+}

@@ -17,6 +17,7 @@ import { addGridLayer, createGridLayer, getTileColors } from "./tower-utils";
 
 // @ts-ignore
 import font1Source from "url:./assets/fonts/font1.ttf";
+import { sre } from "./utils/common";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
@@ -214,18 +215,34 @@ const sketch = (p5: P5) => {
             // }
 
             tilesDrawn = false;
+            let previousLayerWidth = 0;
+            let shouldMatchPreviousWidth = false;
+            let shouldMatchNextWidth = false;
 
             for (let i = 0; i < 26; i++) {
-                const thisTileset = loadedTilesets[i % loadedTilesets.length];
+                // const thisTileset = loadedTilesets[i % loadedTilesets.length];
+                const thisTileset =
+                    loadedTilesets[
+                        Math.floor(loadedTilesets.length * sre(i, seed + i))
+                    ];
 
-                const thisLayer = createGridLayer(
-                    p5,
-                    seed + i,
-                    thisTileset,
-                    []
-                );
+                shouldMatchPreviousWidth =
+                    thisTileset.matchPreviousWidth || shouldMatchNextWidth;
+
+                const thisLayer = createGridLayer({
+                    p5: p5,
+                    seed: seed + i,
+                    tileset: thisTileset,
+                    colors: [],
+                    previousLayerWidth: previousLayerWidth,
+                    shouldMatchPreviousWidth: shouldMatchPreviousWidth,
+                    tileSize: tileSize,
+                });
 
                 addGridLayer(grid, thisLayer, tileSize, p5.width, p5.height);
+
+                shouldMatchNextWidth = thisTileset.matchNextWidth;
+                previousLayerWidth = thisLayer.totalTilesWidth;
             }
 
             // // noise setup

@@ -80,6 +80,29 @@ import CablesLeft from "./cables/left.png";
 import CablesMiddle from "./cables/middle.png";
 import CablesRight from "./cables/right.png";
 
+import SnakeLeft from "./snake/left.png";
+import SnakeMiddle from "./snake/middle.png";
+import SnakeRight from "./snake/right.png";
+
+import MothLeft from "./moth/left.png";
+import MothMiddle from "./moth/middle.png";
+import MothMiddle2 from "./moth/middle2.png";
+import MothRight from "./moth/right.png";
+
+import AngelLeft from "./angel/left.png";
+import AngelMiddle from "./angel/middle.png";
+import AngelMiddle2 from "./angel/middle2.png";
+import AngelRight from "./angel/right.png";
+
+import ColumnsLeft from "./columns/left.png";
+import ColumnsMiddle from "./columns/middle.png";
+import ColumnsRight from "./columns/right.png";
+
+import GargoyleLeft from "./gargoyle/left.png";
+import GargoyleMiddle from "./gargoyle/middle.png";
+import GargoyleMiddle2 from "./gargoyle/middle2.png";
+import GargoyleRight from "./gargoyle/right.png";
+
 export const tilesets: TileSet[] = [
     // {
     //     name: "tileset-test",
@@ -135,6 +158,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -160,6 +185,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -185,6 +212,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -210,6 +239,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -235,6 +266,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -267,6 +300,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -292,6 +327,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -317,6 +354,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -348,6 +387,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -385,6 +426,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -410,6 +453,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -435,6 +480,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -460,6 +507,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -480,7 +529,7 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: Eyes3Middle2,
-                xSize: 1,
+                xSize: 2,
                 ySize: 2,
                 type: "middle",
             },
@@ -491,6 +540,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -522,6 +573,8 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -553,6 +606,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 
     {
@@ -578,5 +633,161 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
+
+        matchNextWidth: true,
+        matchPreviousWidth: true,
+    },
+
+    {
+        name: "snake",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: SnakeLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: SnakeMiddle,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: SnakeRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "angel",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: AngelLeft,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: AngelMiddle,
+                xSize: 3,
+                ySize: 1,
+                type: "middle",
+            },
+            {
+                imageSrc: AngelMiddle2,
+                xSize: 1,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: AngelRight,
+            xSize: 1,
+            ySize: 1,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "moth",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: MothLeft,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: MothMiddle,
+                xSize: 2,
+                ySize: 1,
+                type: "middle",
+            },
+            {
+                imageSrc: MothMiddle2,
+                xSize: 2,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: MothRight,
+            xSize: 1,
+            ySize: 1,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "gargoyle",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: GargoyleLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: GargoyleMiddle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: GargoyleMiddle2,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: GargoyleRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "columns",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: ColumnsLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: ColumnsMiddle,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: ColumnsRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
     },
 ];

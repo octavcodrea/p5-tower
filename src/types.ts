@@ -53,6 +53,10 @@ export type GridLayer = {
 
     yIndex?: number;
     y?: number;
+
+    totalTilesWidth: number;
+    shouldMatchPreviousWidth: boolean;
+    shouldMatchNextWidth: boolean;
 };
 
 export type Tile = {
@@ -71,8 +75,8 @@ export type TileSet = {
     middle: Tile[];
     rightEdge: Tile;
 
-    matchPreviousWidth?: boolean;
-    matchNextWidth?: boolean;
+    matchPreviousWidth: boolean;
+    matchNextWidth: boolean;
 };
 
 export type Grid = GridLayer[];
