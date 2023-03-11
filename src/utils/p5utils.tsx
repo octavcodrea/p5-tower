@@ -1482,7 +1482,8 @@ export const drawImageWithBrushes = (params: {
     image: P5.Image;
     brushMode: "rectangle";
     brushSize: number;
-    colorPalettes: Array<P5.Color[]>;
+    mainColorPalettes: Array<P5.Color[]>;
+    secondaryColorPalette: P5.Color[];
     secondaryPalettesDensity: number;
     glitchDensity?: number;
 }) => {
@@ -1493,7 +1494,8 @@ export const drawImageWithBrushes = (params: {
         image,
         brushMode,
         brushSize,
-        colorPalettes,
+        mainColorPalettes,
+        secondaryColorPalette,
         secondaryPalettesDensity,
         glitchDensity,
     } = params;
@@ -1522,11 +1524,11 @@ export const drawImageWithBrushes = (params: {
         const averageColor = averageColorFromImage(image, true);
 
         const textColor =
-            colorPalettes[0][
+            mainColorPalettes[0][
                 fcInt(
                     Math.floor(averageColor.r / 32) + 1,
                     0,
-                    colorPalettes[0].length - 1
+                    mainColorPalettes[0].length - 1
                 )
             ];
 
@@ -1600,10 +1602,10 @@ export const drawImageWithBrushes = (params: {
             const paletteToUse =
                 p5.noise(roundToDivisible(xPos, 6), roundToDivisible(yPos, 6)) >
                 secondaryPalettesDensity
-                    ? colorPalettes[0]
+                    ? mainColorPalettes[0]
                     : p5.random() > 0.5
-                    ? colorPalettes[1]
-                    : colorPalettes[1];
+                    ? secondaryColorPalette
+                    : secondaryColorPalette;
 
             const brushColor =
                 paletteToUse[

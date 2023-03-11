@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { Grid, GridLayer, TileSet } from "./types";
+import { GraphicGrid2D, Grid, GridLayer, TileSet } from "./types";
 import { sr, sre } from "./utils/common";
 
 export const createGridLayer = (params: {
@@ -304,3 +304,226 @@ export function calculateTotalTilesWidth(
 
     return totalWidth;
 }
+
+export const addMazeLine = (params: {
+    grid: GraphicGrid2D;
+    x: number;
+    y: number;
+    seed: string | number;
+    horizontalTendency?: number;
+    verticalTendency?: number;
+}) => {
+    const { grid, x, y, seed, horizontalTendency, verticalTendency } = params;
+    let newGrid = grid;
+
+    let currentX = x;
+    let currentY = y;
+
+    let canContinue = true;
+
+    while (
+        canContinue &&
+        currentX < newGrid.length - 2 &&
+        currentY < newGrid[0].length - 2 &&
+        currentX > 2 &&
+        currentY > 2
+    ) {
+        // console.log("currentX", currentX);
+        // console.log("currentY", currentY);
+        const directionsAvailable = [];
+
+        if (
+            newGrid[currentX - 1][currentY - 2] &&
+            newGrid[currentX][currentY - 2] &&
+            newGrid[currentX + 1][currentY - 2] &&
+            newGrid[currentX - 1][currentY - 1] &&
+            newGrid[currentX + 1][currentY - 1]
+        ) {
+            let canGoUp = true;
+
+            const a = newGrid[currentX - 1][currentY - 2].isUsed;
+            const b = newGrid[currentX][currentY - 2].isUsed;
+            const c = newGrid[currentX + 1][currentY - 2].isUsed;
+            const d = newGrid[currentX - 1][currentY - 1].isUsed;
+            const e = newGrid[currentX + 1][currentY - 1].isUsed;
+
+            if (b) {
+                canGoUp = false;
+            }
+
+            if ((a && !b) || (!b && c)) {
+                canGoUp = false;
+            }
+
+            if ((a && b && d) || (b && c && e)) {
+                canGoUp = false;
+            }
+
+            if (canGoUp) {
+                if (!verticalTendency) {
+                    directionsAvailable.push("up");
+                } else {
+                    for (let i = 0; i < verticalTendency; i++) {
+                        directionsAvailable.push("up");
+                    }
+                }
+            }
+        }
+
+        if (
+            newGrid[currentX - 1][currentY + 2] &&
+            newGrid[currentX][currentY + 2] &&
+            newGrid[currentX + 1][currentY + 2] &&
+            newGrid[currentX - 1][currentY + 1] &&
+            newGrid[currentX + 1][currentY + 1]
+        ) {
+            let canGoDown = true;
+
+            const a = newGrid[currentX - 1][currentY + 2].isUsed;
+            const b = newGrid[currentX][currentY + 2].isUsed;
+            const c = newGrid[currentX + 1][currentY + 2].isUsed;
+            const d = newGrid[currentX - 1][currentY + 1].isUsed;
+            const e = newGrid[currentX + 1][currentY + 1].isUsed;
+
+            if (b) {
+                canGoDown = false;
+            }
+
+            if ((a && !b) || (!b && c)) {
+                canGoDown = false;
+            }
+
+            if ((a && b && d) || (b && c && e)) {
+                canGoDown = false;
+            }
+
+            if (canGoDown) {
+                if (!verticalTendency) {
+                    directionsAvailable.push("down");
+                } else {
+                    for (let i = 0; i < verticalTendency; i++) {
+                        directionsAvailable.push("down");
+                    }
+                }
+            }
+        }
+
+        if (
+            newGrid[currentX - 2][currentY - 1] &&
+            newGrid[currentX - 2][currentY] &&
+            newGrid[currentX - 2][currentY + 1] &&
+            newGrid[currentX - 1][currentY - 1] &&
+            newGrid[currentX - 1][currentY + 1]
+        ) {
+            let canGoLeft = true;
+
+            const a = newGrid[currentX - 2][currentY - 1].isUsed;
+            const b = newGrid[currentX - 2][currentY].isUsed;
+            const c = newGrid[currentX - 2][currentY + 1].isUsed;
+            const d = newGrid[currentX - 1][currentY - 1].isUsed;
+            const e = newGrid[currentX - 1][currentY + 1].isUsed;
+
+            if (b) {
+                canGoLeft = false;
+            }
+
+            if ((a && !b) || (!b && c)) {
+                canGoLeft = false;
+            }
+
+            if ((a && b && d) || (b && c && e)) {
+                canGoLeft = false;
+            }
+
+            if (canGoLeft) {
+                if (!horizontalTendency) {
+                    directionsAvailable.push("left");
+                } else {
+                    for (let i = 0; i < horizontalTendency; i++) {
+                        directionsAvailable.push("left");
+                    }
+                }
+            }
+        }
+
+        if (
+            newGrid[currentX + 2][currentY - 1] &&
+            newGrid[currentX + 2][currentY] &&
+            newGrid[currentX + 2][currentY + 1] &&
+            newGrid[currentX + 1][currentY - 1] &&
+            newGrid[currentX + 1][currentY + 1]
+        ) {
+            let canGoRight = true;
+
+            const a = newGrid[currentX + 2][currentY - 1].isUsed;
+            const b = newGrid[currentX + 2][currentY].isUsed;
+            const c = newGrid[currentX + 2][currentY + 1].isUsed;
+            const d = newGrid[currentX + 1][currentY - 1].isUsed;
+            const e = newGrid[currentX + 1][currentY + 1].isUsed;
+
+            if (b) {
+                canGoRight = false;
+            }
+
+            if ((a && !b) || (!b && c)) {
+                canGoRight = false;
+            }
+
+            if ((a && b && d) || (b && c && e)) {
+                canGoRight = false;
+            }
+
+            if (canGoRight) {
+                if (!horizontalTendency) {
+                    directionsAvailable.push("right");
+                } else {
+                    for (let i = 0; i < horizontalTendency; i++) {
+                        directionsAvailable.push("right");
+                    }
+                }
+            }
+        }
+
+        // console.log("directionsAvailable", directionsAvailable);
+
+        if (directionsAvailable.length === 0) {
+            canContinue = false;
+        }
+
+        if (canContinue) {
+            const direction =
+                directionsAvailable[
+                    Math.floor(
+                        sr(seed.toString() + currentX + currentY) *
+                            directionsAvailable.length
+                    )
+                ];
+
+            if (direction === "up") {
+                newGrid[currentX][currentY - 1].isUsed = true;
+                newGrid[currentX][currentY - 2].isUsed = true;
+                currentY -= 2;
+            }
+
+            if (direction === "down") {
+                newGrid[currentX][currentY + 1].isUsed = true;
+                newGrid[currentX][currentY + 2].isUsed = true;
+                currentY += 2;
+            }
+
+            if (direction === "left") {
+                newGrid[currentX - 1][currentY].isUsed = true;
+                newGrid[currentX - 2][currentY].isUsed = true;
+                currentX -= 2;
+            }
+
+            if (direction === "right") {
+                newGrid[currentX + 1][currentY].isUsed = true;
+                newGrid[currentX + 2][currentY].isUsed = true;
+                currentX += 2;
+            }
+        }
+    }
+
+    return newGrid;
+};

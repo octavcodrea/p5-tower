@@ -12,12 +12,17 @@ import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
 import { drawImageWithBrushes } from "./utils/p5utils";
 import { tilesets } from "./assets/tilesets/tilesets";
-import { Grid, TileSet } from "./types";
-import { addGridLayer, createGridLayer, getTileColors } from "./tower-utils";
+import { GraphicGrid2D, Grid, TileSet } from "./types";
+import {
+    addGridLayer,
+    addMazeLine,
+    createGridLayer,
+    getTileColors,
+} from "./tower-utils";
 
 // @ts-ignore
 import font1Source from "url:./assets/fonts/font1.ttf";
-import { sre } from "./utils/common";
+import { fcInt, sr, sre, srn } from "./utils/common";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
@@ -35,6 +40,7 @@ export function u(x: number) {
 
 let grid: Grid = [];
 let tilesDrawn = false;
+let graphicGridDrawn = false;
 
 const sketch = (p5: P5) => {
     let seed = Math.floor(Math.random() * 1000000000000000).toString();
@@ -60,6 +66,8 @@ const sketch = (p5: P5) => {
 
     let selectedPalette = Math.floor(Palettes.length * (charD / 100));
     let font1: any = undefined;
+
+    let graphicGrid: GraphicGrid2D = [];
 
     function setupFromSeed() {
         const seed = store.getState().seed;
@@ -215,6 +223,7 @@ const sketch = (p5: P5) => {
             // }
 
             tilesDrawn = false;
+            graphicGridDrawn = false;
             let previousLayerWidth = 0;
             let shouldMatchPreviousWidth = false;
             let shouldMatchNextWidth = false;
@@ -258,6 +267,99 @@ const sketch = (p5: P5) => {
             //         p5.image(noiseImgMono, i, j);
             //     }
             // }
+
+            const gridSizeX = Math.ceil(p5.width / (tileSize / 16));
+            const gridSizeY = Math.ceil(p5.height / (tileSize / 16));
+
+            for (let i = 0; i < gridSizeX; i++) {
+                let colorIndex = 3;
+                graphicGrid[i] = [];
+                for (let j = 0; j < gridSizeY; j++) {
+                    graphicGrid[i][j] = {
+                        xIndex: i,
+                        yIndex: j,
+                        zIndex: 0,
+                        xPos: (i * tileSize) / 16,
+                        yPos: (j * tileSize) / 16,
+                        layer: 0,
+                        isUsed: false,
+                        color: p5.color(
+                            Palettes[selectedPalette].hexColors[colorIndex]
+                        ),
+                    };
+
+                    colorIndex += Math.round(
+                        srn(
+                            i.toString() + charA + j.toString() + charB + seed
+                        ) * 2
+                    );
+                    if (colorIndex >= 3) {
+                        colorIndex = 3;
+                    }
+                    if (colorIndex < 0) {
+                        colorIndex = 0;
+                    }
+                }
+            }
+
+            for (let l = 1; l < gridSizeY; l++) {
+                let canStart = false;
+                let targetX = 0;
+                let targetY = 0;
+                let seedIndex = 0;
+                let checkedTiles = 0;
+
+                while (!canStart) {
+                    const x = fcInt(
+                        sr(l.toString() + charG + seedIndex) * (gridSizeX / 2) +
+                            gridSizeX / 5,
+                        gridSizeX / 5,
+                        gridSizeX / 2
+                    );
+                    // const x = gridSizeX / 3;
+
+                    const y = fcInt(
+                        sr(l.toString() + charH + seedIndex) * (gridSizeY - 4) +
+                            2,
+                        2,
+                        gridSizeY - 3
+                    );
+                    // const y = l;
+
+                    if (graphicGrid[x][y] && !graphicGrid[x][y].isUsed) {
+                        canStart = true;
+                        targetX = x;
+                        targetY = y;
+                    }
+
+                    seedIndex++;
+                    checkedTiles++;
+                    if (checkedTiles > gridSizeY) {
+                        canStart = true;
+                    }
+                }
+
+                graphicGrid = addMazeLine({
+                    grid: graphicGrid,
+                    x: targetX,
+                    y: targetY,
+                    seed: `lalalax + ${charA} + ${charB} + ${l}`,
+                    horizontalTendency: 3,
+                });
+            }
+
+            //mirror grid horizontally
+            for (let i = 0; i < gridSizeX; i++) {
+                for (let j = 0; j < gridSizeY; j++) {
+                    const thisTile = graphicGrid[i][j];
+                    const mirroredTile = graphicGrid[gridSizeX - i - 1][j];
+
+                    mirroredTile.color = thisTile.color;
+                    mirroredTile.isUsed = thisTile.isUsed;
+                    mirroredTile.layer = thisTile.layer;
+                    mirroredTile.zIndex = thisTile.zIndex;
+                }
+            }
 
             console.log("added noise setup");
 
@@ -309,10 +411,32 @@ const sketch = (p5: P5) => {
             frameCountUI.innerHTML = p5.frameCount.toString();
         }
 
+        if (!graphicGridDrawn) {
+            for (let i = 0; i < graphicGrid.length; i++) {
+                for (let j = 0; j < graphicGrid[i].length; j++) {
+                    const thisTile = graphicGrid[i][j];
+
+                    if (thisTile.isUsed) {
+                        p5.fill(thisTile.color);
+
+                        p5.rect(
+                            thisTile.xPos,
+                            thisTile.yPos,
+                            tileSize / 16,
+                            tileSize / 16
+                        );
+                    }
+                }
+            }
+            graphicGridDrawn = true;
+        }
+
         p5.fill("#444");
         p5.textFont(font1);
         p5.textSize(tileSize / 2);
         p5.textLeading(tileSize / 1.6);
+
+        p5.blendMode(p5.BLEND);
 
         p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
 
@@ -339,11 +463,7 @@ const sketch = (p5: P5) => {
                         Math.floor(otherPalettes.length * (charC / 100))
                     ].hexColors.map((c) => p5.color(c));
 
-                    const palettesToUse = [
-                        mainPalette,
-                        secondaryPalette1,
-                        secondaryPalette2,
-                    ];
+                    const palettesToUse = [mainPalette];
 
                     if (thisTile.image) {
                         drawImageWithBrushes({
@@ -353,17 +473,18 @@ const sketch = (p5: P5) => {
                             image: thisTile.image,
                             brushMode: "rectangle",
                             brushSize: Math.ceil(tileSize / 16),
-                            colorPalettes: palettesToUse.map((p) =>
+                            mainColorPalettes: palettesToUse.map((p) =>
                                 getTileColors(grid[i].tiles.length, j, p)
                             ),
                             secondaryPalettesDensity:
                                 Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                 grid[i].tiles.length /
                                 2,
+                            secondaryColorPalette: secondaryPalette1,
                             glitchDensity:
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                     grid[i].tiles.length) *
-                                4,
+                                2,
                         });
                     }
                 }

@@ -80,3 +80,36 @@ export type TileSet = {
 };
 
 export type Grid = GridLayer[];
+
+export type GraphicTile = {
+    xIndex: number;
+    yIndex: number;
+    zIndex: number;
+
+    xPos: number;
+    yPos: number;
+
+    isUsed: boolean;
+    layer: number;
+
+    isHidden?: boolean;
+
+    imageOriginX?: number;
+    imageOriginY?: number;
+
+    image?: HTMLImageElement;
+    size?: number;
+
+    color: p5.Color;
+    color2?: string;
+    connectionCoords?: {
+        x: number;
+        y: number;
+    };
+    distanceFromMainCenter?: number;
+    angleFromMainCenter?: number;
+};
+
+export type GraphicGridRow = Array<GraphicTile>;
+
+export type GraphicGrid2D = Array<GraphicGridRow>;

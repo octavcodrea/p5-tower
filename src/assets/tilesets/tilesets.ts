@@ -540,8 +540,8 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
-        matchNextWidth: false,
-        matchPreviousWidth: false,
+        matchNextWidth: true,
+        matchPreviousWidth: true,
     },
 
     {
