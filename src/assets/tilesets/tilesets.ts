@@ -19,6 +19,7 @@ import Eyes2Right from "./eyes2/right.png";
 
 import SkullLeft from "./skull/left.png";
 import SkullMiddle from "./skull/middle.png";
+import SkullMiddle2 from "./skull/middle2.png";
 import SkullRight from "./skull/right.png";
 
 import ChainLeft from "./chain/left.png";
@@ -102,6 +103,22 @@ import GargoyleLeft from "./gargoyle/left.png";
 import GargoyleMiddle from "./gargoyle/middle.png";
 import GargoyleMiddle2 from "./gargoyle/middle2.png";
 import GargoyleRight from "./gargoyle/right.png";
+
+import BonesLeft from "./bones/left.png";
+import BonesMiddle from "./bones/middle.png";
+import BonesMiddle2 from "./bones/middle2.png";
+import BonesRight from "./bones/right.png";
+
+import GearsLeft from "./gears/left.png";
+import GearsMiddle from "./gears/middle.png";
+import GearsMiddle2 from "./gears/middle2.png";
+import GearsRight from "./gears/right.png";
+
+import Hand1Left from "./hand1/left.png";
+import Hand1Middle from "./hand1/middle.png";
+import Hand1Middle2 from "./hand1/middle2.png";
+import Hand1Middle3 from "./hand1/middle3.png";
+import Hand1Right from "./hand1/right.png";
 
 export const tilesets: TileSet[] = [
     // {
@@ -316,6 +333,12 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: SkullMiddle,
+                xSize: 1,
+                ySize: 1,
+                type: "middle",
+            },
+            {
+                imageSrc: SkullMiddle2,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -663,6 +686,7 @@ export const tilesets: TileSet[] = [
         },
         matchNextWidth: false,
         matchPreviousWidth: false,
+        dontGlitch: true,
     },
 
     {
@@ -790,4 +814,109 @@ export const tilesets: TileSet[] = [
         matchNextWidth: false,
         matchPreviousWidth: false,
     },
+
+    {
+        name: "bones",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: BonesLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: BonesMiddle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: BonesMiddle2,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: BonesRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    // {
+    //     name: "hand1",
+    //     ySize: 2,
+    //     leftEdge: {
+    //         imageSrc: Hand1Left,
+    //         xSize: 1,
+    //         ySize: 2,
+    //         type: "left-edge",
+    //     },
+    //     middle: [
+    //         {
+    //             imageSrc: Hand1Middle3,
+    //             xSize: 1,
+    //             ySize: 2,
+    //             type: "middle",
+    //         },
+    //         {
+    //             imageSrc: Hand1Middle,
+    //             xSize: 2,
+    //             ySize: 2,
+    //             type: "middle",
+    //         },
+    //         {
+    //             imageSrc: Hand1Middle2,
+    //             xSize: 2,
+    //             ySize: 2,
+    //             type: "middle",
+    //         },
+    //     ],
+    //     rightEdge: {
+    //         imageSrc: Hand1Right,
+    //         xSize: 1,
+    //         ySize: 2,
+    //         type: "right-edge",
+    //     },
+    //     matchNextWidth: false,
+    //     matchPreviousWidth: false,
+    // },
+
+    // {
+    //     name: "gears",
+    //     ySize: 2,
+    //     leftEdge: {
+    //         imageSrc: GearsLeft,
+    //         xSize: 1,
+    //         ySize: 2,
+    //         type: "left-edge",
+    //     },
+    //     middle: [
+    //         {
+    //             imageSrc: GearsMiddle,
+    //             xSize: 1,
+    //             ySize: 2,
+    //             type: "middle",
+    //         },
+    //         {
+    //             imageSrc: GearsMiddle2,
+    //             xSize: 2,
+    //             ySize: 2,
+    //             type: "middle",
+    //         },
+    //     ],
+    //     rightEdge: {
+    //         imageSrc: GearsRight,
+    //         xSize: 1,
+    //         ySize: 2,
+    //         type: "right-edge",
+    //     },
+    //     matchNextWidth: false,
+    //     matchPreviousWidth: false,
+    // },
 ];

@@ -228,7 +228,7 @@ const sketch = (p5: P5) => {
             let shouldMatchPreviousWidth = false;
             let shouldMatchNextWidth = false;
 
-            for (let i = 0; i < 26; i++) {
+            for (let i = 0; i < 22; i++) {
                 // const thisTileset = loadedTilesets[i % loadedTilesets.length];
                 const thisTileset =
                     loadedTilesets[
@@ -254,25 +254,41 @@ const sketch = (p5: P5) => {
                 previousLayerWidth = thisLayer.totalTilesWidth;
             }
 
-            // // noise setup
-            // //blend mode
-            // p5.blendMode(p5.OVERLAY);
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].tiles.length; j++) {
+                    let thisTile = grid[i].tiles[j];
 
-            // //image opacity
-            // p5.tint(255, 0.2);
+                    const mainPalette = Palettes[selectedPalette].hexColors.map(
+                        (c) => p5.color(c)
+                    );
 
-            // //image
-            // for (let i = 0; i < p5.width; i += noiseImgMono.width) {
-            //     for (let j = 0; j < p5.height; j += noiseImgMono.height) {
-            //         p5.image(noiseImgMono, i, j);
-            //     }
-            // }
+                    thisTile.colors = getTileColors(
+                        grid[i].tiles.length,
+                        j,
+                        mainPalette
+                    );
 
+                    thisTile.prevColors = getTileColors(
+                        grid[i].tiles.length,
+                        j - 1,
+                        mainPalette
+                    );
+                    thisTile.nextColors = getTileColors(
+                        grid[i].tiles.length,
+                        j + 1,
+                        mainPalette
+                    );
+
+                    grid[i].tiles[j] = thisTile;
+                }
+            }
+
+            // graphic grid
             const gridSizeX = Math.ceil(p5.width / (tileSize / 16));
             const gridSizeY = Math.ceil(p5.height / (tileSize / 16));
 
             for (let i = 0; i < gridSizeX; i++) {
-                let colorIndex = 3;
+                let colorIndex = 2;
                 graphicGrid[i] = [];
                 for (let j = 0; j < gridSizeY; j++) {
                     graphicGrid[i][j] = {
@@ -289,12 +305,10 @@ const sketch = (p5: P5) => {
                     };
 
                     colorIndex += Math.round(
-                        srn(
-                            i.toString() + charA + j.toString() + charB + seed
-                        ) * 2
+                        srn(i.toString() + charA + j.toString() + charB + seed)
                     );
-                    if (colorIndex >= 3) {
-                        colorIndex = 3;
+                    if (colorIndex >= 2) {
+                        colorIndex = 2;
                     }
                     if (colorIndex < 0) {
                         colorIndex = 0;
@@ -348,7 +362,7 @@ const sketch = (p5: P5) => {
                 });
             }
 
-            //mirror grid horizontally
+            //mirror graphic grid horizontally
             for (let i = 0; i < gridSizeX; i++) {
                 for (let j = 0; j < gridSizeY; j++) {
                     const thisTile = graphicGrid[i][j];
@@ -441,7 +455,9 @@ const sketch = (p5: P5) => {
         p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
 
         if (!tilesDrawn) {
-            for (let i = 0; i < grid.length; i++) {
+            // for (let i = 0; i < grid.length && i < p5.frameCount; i++) {
+            let i = p5.frameCount - 1;
+            if (i < grid.length) {
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     const thisTile = grid[i].tiles[j];
 
@@ -473,9 +489,9 @@ const sketch = (p5: P5) => {
                             image: thisTile.image,
                             brushMode: "rectangle",
                             brushSize: Math.ceil(tileSize / 16),
-                            mainColorPalettes: palettesToUse.map((p) =>
-                                getTileColors(grid[i].tiles.length, j, p)
-                            ),
+                            mainColorPalette: thisTile.colors,
+                            prevColorPalette: thisTile.prevColors,
+                            nextColorPalette: thisTile.nextColors,
                             secondaryPalettesDensity:
                                 Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                 grid[i].tiles.length /
@@ -485,11 +501,16 @@ const sketch = (p5: P5) => {
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                     grid[i].tiles.length) *
                                 2,
+                            dontGlitch: thisTile.dontGlitch,
                         });
+                        // }
                     }
                 }
             }
-            tilesDrawn = true;
+
+            if (p5.frameCount > grid.length) {
+                tilesDrawn = true;
+            }
         }
 
         //end of draw

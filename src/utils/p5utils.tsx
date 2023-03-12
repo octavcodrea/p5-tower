@@ -1482,10 +1482,15 @@ export const drawImageWithBrushes = (params: {
     image: P5.Image;
     brushMode: "rectangle";
     brushSize: number;
-    mainColorPalettes: Array<P5.Color[]>;
+    mainColorPalette: P5.Color[];
+
     secondaryColorPalette: P5.Color[];
     secondaryPalettesDensity: number;
     glitchDensity?: number;
+    dontGlitch?: boolean;
+
+    prevColorPalette?: P5.Color[];
+    nextColorPalette?: P5.Color[];
 }) => {
     const {
         p5,
@@ -1494,10 +1499,12 @@ export const drawImageWithBrushes = (params: {
         image,
         brushMode,
         brushSize,
-        mainColorPalettes,
+        mainColorPalette,
         secondaryColorPalette,
         secondaryPalettesDensity,
         glitchDensity,
+        prevColorPalette,
+        nextColorPalette,
     } = params;
 
     const imageWidth = image.width;
@@ -1511,7 +1518,7 @@ export const drawImageWithBrushes = (params: {
         bottomRight: "",
     };
 
-    if (glitchDensity && p5.random() < glitchDensity) {
+    if (glitchDensity && p5.random() < glitchDensity && !params.dontGlitch) {
         const glitched = glitchImageGrid(imageGrid, [], "random");
         imageGrid = glitched.grid;
         glitchedCorners = glitched.glitchedCorners;
@@ -1524,11 +1531,11 @@ export const drawImageWithBrushes = (params: {
         const averageColor = averageColorFromImage(image, true);
 
         const textColor =
-            mainColorPalettes[0][
+            mainColorPalette[
                 fcInt(
                     Math.floor(averageColor.r / 32) + 1,
                     0,
-                    mainColorPalettes[0].length - 1
+                    mainColorPalette.length - 1
                 )
             ];
 
@@ -1599,13 +1606,26 @@ export const drawImageWithBrushes = (params: {
             const xPos = x + j * brushSize;
             const yPos = y + i * brushSize;
 
-            const paletteToUse =
-                p5.noise(roundToDivisible(xPos, 6), roundToDivisible(yPos, 6)) >
+            let paletteToUse = mainColorPalette;
+
+            if (
+                p5.noise(roundToDivisible(xPos, 6), roundToDivisible(yPos, 6)) <
                 secondaryPalettesDensity
-                    ? mainColorPalettes[0]
-                    : p5.random() > 0.5
-                    ? secondaryColorPalette
-                    : secondaryColorPalette;
+            ) {
+                if (p5.random() > 0.5) {
+                    paletteToUse = secondaryColorPalette;
+                }
+            } else {
+                if (j < imageWidth / 4 && prevColorPalette) {
+                    if (p5.random() > 0.5) {
+                        paletteToUse = prevColorPalette;
+                    }
+                } else if (j > (imageWidth * 3) / 4 && nextColorPalette) {
+                    if (p5.random() > 0.5) {
+                        paletteToUse = nextColorPalette;
+                    }
+                }
+            }
 
             const brushColor =
                 paletteToUse[

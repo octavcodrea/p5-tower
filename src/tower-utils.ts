@@ -51,6 +51,10 @@ export const createGridLayer = (params: {
     if (numberOfTiles % 2 === 0) {
         numberOfTiles++;
     }
+
+    if (numberOfTiles < 3) {
+        numberOfTiles = 3;
+    }
     let totalWidth = 0;
 
     const middleTiles = numberOfTiles - 2;
@@ -65,6 +69,7 @@ export const createGridLayer = (params: {
         ySize: tileset.ySize,
         image: tileset.leftEdge.image,
         colors: colors,
+        dontGlitch: tileset.dontGlitch,
     });
 
     totalWidth += tileset.leftEdge.xSize;
@@ -111,6 +116,7 @@ export const createGridLayer = (params: {
             ySize: tile.ySize,
             image: tile.image,
             colors: colors,
+            dontGlitch: tileset.dontGlitch,
         });
 
         totalWidth += tile.xSize;
@@ -125,6 +131,7 @@ export const createGridLayer = (params: {
         ySize: tileset.ySize,
         image: tileset.rightEdge.image,
         colors: colors,
+        dontGlitch: tileset.dontGlitch,
     });
 
     totalWidth += tileset.rightEdge.xSize;
@@ -199,11 +206,10 @@ export const getTileColors = (
     palette: p5.Color[]
 ) => {
     const p = palette;
-    if (Math.abs(numberOfTiles / 2 - tileIndex - 0.5) <= numberOfTiles / 3) {
-        if (
-            Math.abs(numberOfTiles / 2 - tileIndex - 0.5) <=
-            numberOfTiles / 6
-        ) {
+    const n = numberOfTiles >= 0 ? numberOfTiles : 0;
+
+    if (Math.abs(n / 2 - tileIndex - 0.5) <= n / 3) {
+        if (Math.abs(n / 2 - tileIndex - 0.5) <= n / 6) {
             return p.slice(2);
         } else {
             return p.slice(1);

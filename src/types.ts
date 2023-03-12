@@ -45,6 +45,9 @@ export type GridTile = {
 
     image?: p5.Image;
     colors: p5.Color[];
+    prevColors?: p5.Color[];
+    nextColors?: p5.Color[];
+    dontGlitch?: boolean;
 };
 
 export type GridLayer = {
@@ -77,6 +80,7 @@ export type TileSet = {
 
     matchPreviousWidth: boolean;
     matchNextWidth: boolean;
+    dontGlitch?: boolean;
 };
 
 export type Grid = GridLayer[];
