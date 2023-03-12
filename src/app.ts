@@ -12,7 +12,7 @@ import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
 import { drawImageWithBrushes } from "./utils/p5utils";
 import { tilesets } from "./assets/tilesets/tilesets";
-import { GraphicGrid2D, Grid, TileSet } from "./types";
+import { GraphicGrid2D, Grid, PaletteType, TileSet } from "./types";
 import {
     addGridLayer,
     addMazeLine,
@@ -22,7 +22,7 @@ import {
 
 // @ts-ignore
 import font1Source from "url:./assets/fonts/font1.ttf";
-import { fcInt, sr, sre, srn } from "./utils/common";
+import { calculate3DDistance, fcInt, sr, sre, srn } from "./utils/common";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
@@ -258,9 +258,11 @@ const sketch = (p5: P5) => {
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     let thisTile = grid[i].tiles[j];
 
-                    const mainPalette = Palettes[selectedPalette].hexColors.map(
-                        (c) => p5.color(c)
-                    );
+                    const mainPalette = (
+                        Palettes.find(
+                            (p, index) => p.name === "green"
+                        ) as PaletteType
+                    ).hexColors.map((c) => p5.color(c));
 
                     thisTile.colors = getTileColors(
                         grid[i].tiles.length,
@@ -268,18 +270,104 @@ const sketch = (p5: P5) => {
                         mainPalette
                     );
 
-                    thisTile.prevColors = getTileColors(
-                        grid[i].tiles.length,
-                        j - 1,
-                        mainPalette
-                    );
-                    thisTile.nextColors = getTileColors(
-                        grid[i].tiles.length,
-                        j + 1,
-                        mainPalette
-                    );
+                    // thisTile.prevColors = getTileColors(
+                    //     grid[i].tiles.length,
+                    //     j - 1,
+                    //     mainPalette
+                    // );
+                    // thisTile.nextColors = getTileColors(
+                    //     grid[i].tiles.length,
+                    //     j + 1,
+                    //     mainPalette
+                    // );
 
                     grid[i].tiles[j] = thisTile;
+                }
+            }
+
+            //paint drop
+            // const dropPalette1 = Palettes.filter(
+            //     (p, index) => index !== selectedPalette
+            // )[Math.floor(sre(0, seed) * (Palettes.length - 1))];
+
+            // const dropPalette2 = Palettes.filter(
+            //     (p, index) => index !== selectedPalette
+            // )[Math.floor(sre(1, seed) * (Palettes.length - 1))];
+
+            const dropPalette1 = Palettes.find(
+                (p) => p.name === "blue"
+            ) as PaletteType;
+
+            const dropPalette2 = Palettes.find(
+                (p, index) => p.name === "purple"
+            ) as PaletteType;
+
+            const dropX = 0.65;
+            const dropY = 0.6;
+            let maxRadius1 = p5.width * 0.95;
+            let maxRadius2 = p5.width * 0.4;
+            let startRadius = 1;
+            let steps = 10;
+
+            const dropCenterY =
+                grid[Math.floor(grid.length * dropY)].yIndex ?? 0;
+            const dropCenterX =
+                grid[dropCenterY].tiles[
+                    Math.floor(grid[dropCenterY].tiles.length * dropX)
+                ].xIndex;
+
+            const centerTile = grid[dropCenterY].tiles[dropCenterX];
+
+            grid[dropCenterY].tiles[dropCenterX].colors =
+                dropPalette1.hexColors.map((c) => p5.color(c));
+
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].tiles.length; j++) {
+                    let thisTile = grid[i].tiles[j];
+
+                    const dist = calculate3DDistance(
+                        centerTile.x,
+                        centerTile.y,
+                        0,
+                        thisTile.x,
+                        thisTile.y,
+                        0
+                    );
+
+                    if (dist < maxRadius1) {
+                        const density = 1 - dist / maxRadius1;
+
+                        if (density > 0.5) {
+                            thisTile.colors2 = thisTile.colors;
+                            thisTile.colors = getTileColors(
+                                grid[i].tiles.length,
+                                j,
+                                dropPalette1.hexColors.map((c) => p5.color(c))
+                            );
+
+                            thisTile.colors2Density = 1 - density;
+                        } else {
+                            thisTile.colors2 = getTileColors(
+                                grid[i].tiles.length,
+                                j,
+                                dropPalette1.hexColors.map((c) => p5.color(c))
+                            );
+                            thisTile.colors2Density = density;
+                        }
+
+                        grid[i].tiles[j] = thisTile;
+                    }
+
+                    if (dist < maxRadius2) {
+                        thisTile.colors2 = getTileColors(
+                            grid[i].tiles.length,
+                            j,
+                            dropPalette2.hexColors.map((c) => p5.color(c))
+                        );
+                        thisTile.colors2Density = 1 - dist / maxRadius2;
+
+                        grid[i].tiles[j] = thisTile;
+                    }
                 }
             }
 
@@ -490,6 +578,8 @@ const sketch = (p5: P5) => {
                             brushMode: "rectangle",
                             brushSize: Math.ceil(tileSize / 16),
                             mainColorPalette: thisTile.colors,
+                            mainColor2Palette: thisTile.colors2,
+                            color2Density: thisTile.colors2Density,
                             prevColorPalette: thisTile.prevColors,
                             nextColorPalette: thisTile.nextColors,
                             secondaryPalettesDensity:

@@ -408,7 +408,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Crake",
+        name: "blue",
 
         hexColors: [
             "#030716",
@@ -453,7 +453,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Oryx",
+        name: "red",
 
         hexColors: [
             // "#020312",
@@ -473,7 +473,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Haruki",
+        name: "green",
 
         hexColors: [
             "#040c06",
@@ -491,7 +491,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Kuro",
+        name: "purple",
 
         hexColors: [
             "#190e25",

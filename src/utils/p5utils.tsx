@@ -1484,6 +1484,9 @@ export const drawImageWithBrushes = (params: {
     brushSize: number;
     mainColorPalette: P5.Color[];
 
+    mainColor2Palette?: P5.Color[];
+    color2Density?: number;
+
     secondaryColorPalette: P5.Color[];
     secondaryPalettesDensity: number;
     glitchDensity?: number;
@@ -1500,6 +1503,8 @@ export const drawImageWithBrushes = (params: {
         brushMode,
         brushSize,
         mainColorPalette,
+        mainColor2Palette,
+        color2Density,
         secondaryColorPalette,
         secondaryPalettesDensity,
         glitchDensity,
@@ -1607,6 +1612,16 @@ export const drawImageWithBrushes = (params: {
             const yPos = y + i * brushSize;
 
             let paletteToUse = mainColorPalette;
+            if (
+                mainColor2Palette &&
+                color2Density &&
+                p5.noise(
+                    roundToDivisible(xPos, brushSize * 16),
+                    roundToDivisible(yPos, brushSize * 16)
+                ) < color2Density
+            ) {
+                paletteToUse = mainColor2Palette;
+            }
 
             if (
                 p5.noise(roundToDivisible(xPos, 6), roundToDivisible(yPos, 6)) <

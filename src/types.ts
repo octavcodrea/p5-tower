@@ -45,6 +45,10 @@ export type GridTile = {
 
     image?: p5.Image;
     colors: p5.Color[];
+    colors2?: p5.Color[];
+
+    colors2Density?: number;
+
     prevColors?: p5.Color[];
     nextColors?: p5.Color[];
     dontGlitch?: boolean;
