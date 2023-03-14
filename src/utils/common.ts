@@ -1092,3 +1092,9 @@ export const seedShuffle = (arrayToShuffle: any[], seed: number | string) => {
 export const roundToDivisible = (number: number, divisor: number) => {
     return Math.round(number / divisor) * divisor;
 };
+
+export const seedrandomInt = (seed: number | string, max: number) => {
+    return Math.floor(sr(seed) * max);
+};
+
+export const srInt = seedrandomInt;

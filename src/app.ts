@@ -22,7 +22,7 @@ import {
 
 // @ts-ignore
 import font1Source from "url:./assets/fonts/font1.ttf";
-import { fcInt, sr, sre, srn } from "./utils/common";
+import { fcInt, roundDecimals, sr, sre, srInt, srn } from "./utils/common";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
@@ -228,6 +228,20 @@ const sketch = (p5: P5) => {
             let shouldMatchPreviousWidth = false;
             let shouldMatchNextWidth = false;
 
+            const mainPalette = Palettes[selectedPalette].hexColors.map((c) =>
+                p5.color(c)
+            );
+
+            const secondaryPaletteIndex = srInt(seed, Palettes.length - 1);
+            const secondaryPalette = Palettes.filter(
+                (p, i) => i !== selectedPalette
+            )[secondaryPaletteIndex].hexColors.map((c) => p5.color(c));
+
+            const tertiaryPaletteIndex = srInt(seed + 1, Palettes.length - 2);
+            const tertiaryPalette = Palettes.filter(
+                (p, i) => i !== selectedPalette && i !== secondaryPaletteIndex
+            )[tertiaryPaletteIndex].hexColors.map((c) => p5.color(c));
+
             for (let i = 0; i < 22; i++) {
                 // const thisTileset = loadedTilesets[i % loadedTilesets.length];
                 const thisTileset =
@@ -255,32 +269,74 @@ const sketch = (p5: P5) => {
             }
 
             for (let i = 0; i < grid.length; i++) {
+                // const center = p5.noise(i) * 0.4 + 0.3;
+                const center = 0.5;
+                const secThreshold = p5.random(0.45, 1);
+                const terThreshold = p5.random(0.1, 0.6);
+
+                const rowLength = grid[i].tiles.length;
+
+                function checkThreshholds(n: number, threshhold: number) {
+                    return (
+                        n + 0.5 >
+                            rowLength * center - (threshhold * rowLength) / 2 &&
+                        n + 0.5 <
+                            rowLength * center + (threshhold * rowLength) / 2
+                    );
+                }
+
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     let thisTile = grid[i].tiles[j];
+                    let paletteToUse = mainPalette;
 
-                    const mainPalette = Palettes[selectedPalette].hexColors.map(
-                        (c) => p5.color(c)
-                    );
+                    if (checkThreshholds(j, secThreshold)) {
+                        paletteToUse = secondaryPalette;
+                    }
+
+                    if (checkThreshholds(j, terThreshold)) {
+                        paletteToUse = tertiaryPalette;
+                    }
 
                     thisTile.colors = getTileColors(
                         grid[i].tiles.length,
                         j,
-                        mainPalette
+                        paletteToUse
                     );
 
                     thisTile.prevColors = getTileColors(
                         grid[i].tiles.length,
                         j - 1,
-                        mainPalette
+                        checkThreshholds(j - 1, terThreshold)
+                            ? tertiaryPalette
+                            : checkThreshholds(j - 1, secThreshold)
+                            ? secondaryPalette
+                            : mainPalette
                     );
+
                     thisTile.nextColors = getTileColors(
                         grid[i].tiles.length,
                         j + 1,
-                        mainPalette
+                        checkThreshholds(j + 1, terThreshold)
+                            ? tertiaryPalette
+                            : checkThreshholds(j + 1, secThreshold)
+                            ? secondaryPalette
+                            : mainPalette
                     );
 
                     grid[i].tiles[j] = thisTile;
                 }
+
+                // grid[i].tiles[1].colors = getTileColors(
+                //     grid[i].tiles.length,
+                //     1,
+                //     secondaryPalette
+                // );
+
+                // grid[i].tiles[grid[i].tiles.length - 2].colors = getTileColors(
+                //     grid[i].tiles.length,
+                //     grid[i].tiles.length - 2,
+                //     secondaryPalette
+                // );
             }
 
             // graphic grid
@@ -307,8 +363,8 @@ const sketch = (p5: P5) => {
                     colorIndex += Math.round(
                         srn(i.toString() + charA + j.toString() + charB + seed)
                     );
-                    if (colorIndex >= 2) {
-                        colorIndex = 2;
+                    if (colorIndex >= 4) {
+                        colorIndex = 4;
                     }
                     if (colorIndex < 0) {
                         colorIndex = 0;
@@ -461,7 +517,7 @@ const sketch = (p5: P5) => {
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     const thisTile = grid[i].tiles[j];
 
-                    console.log("thisTile", thisTile);
+                    // console.log("thisTile", thisTile);
 
                     const mainPalette = Palettes[selectedPalette].hexColors.map(
                         (c) => p5.color(c)
@@ -471,9 +527,13 @@ const sketch = (p5: P5) => {
                         (p, i) => i !== selectedPalette
                     );
 
-                    const secondaryPalette1 = otherPalettes[
-                        Math.floor(otherPalettes.length * (charB / 100))
-                    ].hexColors.map((c) => p5.color(c));
+                    const secondaryPalette1 = getTileColors(
+                        grid[i].tiles.length,
+                        j,
+                        otherPalettes[
+                            Math.floor(otherPalettes.length * (charB / 100))
+                        ].hexColors.map((c) => p5.color(c))
+                    );
 
                     const secondaryPalette2 = otherPalettes[
                         Math.floor(otherPalettes.length * (charC / 100))

@@ -408,7 +408,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Crake",
+        name: "blue",
 
         hexColors: [
             "#030716",
@@ -453,7 +453,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Oryx",
+        name: "red",
 
         hexColors: [
             // "#020312",
@@ -473,7 +473,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Haruki",
+        name: "green",
 
         hexColors: [
             "#040c06",
@@ -491,7 +491,7 @@ const Palettes: PaletteType[] = [
 
     {
         background: "#000",
-        name: "Kuro",
+        name: "purple",
 
         hexColors: [
             "#190e25",
@@ -509,6 +509,68 @@ const Palettes: PaletteType[] = [
             "#f8fcfb",
         ],
     },
+
+    {
+        background: "#000",
+        name: "purple",
+
+        hexColors: [
+            "#130d25",
+            "#271a47",
+            "#43255c",
+            "#593880",
+            "#655ac6",
+            "#6b6de3",
+            "#7b98e8",
+            "#91c4e4",
+            "#a8dbe8",
+            "#ccf2f6",
+            "#d9f9fa",
+        ],
+    },
+
+    // {
+    //     background: "#000",
+    //     name: "orange",
+
+    //     hexColors: [
+    //         "#191615",
+    //         "#22191d",
+    //         "#3c2326",
+    //         "#5a221c",
+    //         "#772f22",
+    //         "#974229",
+    //         "#ba5229",
+    //         // "#da6629",
+    //         "#eb7428",
+    //         "#fc8d28",
+    //         "#ffa741",
+    //         "#ffc66e",
+    //         "#ffd98d",
+    //         "#ffe8a6",
+    //         "#ffedae",
+    //     ],
+    // },
+
+    // {
+    //     background: "#000",
+    //     name: "orange",
+
+    //     hexColors: [
+    //         "#100e0e",
+    //         "#1d1816",
+    //         "#392018",
+    //         "#52221a",
+    //         "#7f3c22",
+    //         "#a3582a",
+    //         "#c67633",
+    //         "#db9342",
+    //         "#e19d47",
+    //         "#ecb354",
+    //         "#f4c760",
+    //         "#fedd6d",
+    //     ],
+    // },
 
     // {
     //     background: "#DADCE8",

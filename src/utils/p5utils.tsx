@@ -1616,12 +1616,32 @@ export const drawImageWithBrushes = (params: {
                     paletteToUse = secondaryColorPalette;
                 }
             } else {
-                if (j < imageWidth / 4 && prevColorPalette) {
-                    if (p5.random() > 0.5) {
+                // if (j < imageWidth / 4 && prevColorPalette) {
+                //     if (p5.random() > 0.5) {
+                //         paletteToUse = prevColorPalette;
+                //     }
+                // } else if (j > (imageWidth * 3) / 4 && nextColorPalette) {
+                //     if (p5.random() > 0.5) {
+                //         paletteToUse = nextColorPalette;
+                //     }
+                // }
+
+                if (j < imageWidth / 2 && prevColorPalette) {
+                    // the closer to the beginning of the image, the more likely it is to use the previous color palette. max 50%;
+                    const probability = p5.map(j, 0, imageWidth / 2, 0.5, 0);
+                    if (p5.random() < probability) {
                         paletteToUse = prevColorPalette;
                     }
-                } else if (j > (imageWidth * 3) / 4 && nextColorPalette) {
-                    if (p5.random() > 0.5) {
+                } else if (j > imageWidth / 2 && nextColorPalette) {
+                    // the closer to the end of the image, the more likely it is to use the next color palette. max 50%;
+                    const probability = p5.map(
+                        j,
+                        imageWidth / 2,
+                        imageWidth,
+                        0,
+                        0.5
+                    );
+                    if (p5.random() < probability) {
                         paletteToUse = nextColorPalette;
                     }
                 }
@@ -1642,7 +1662,7 @@ export const drawImageWithBrushes = (params: {
     }
 };
 
-export function gridFromImage(image: P5.Image) {
+export function gridFromImage(image: P5.Image): Pixel[][] {
     const imageWidth = image.width;
     const imageHeight = image.height;
 
@@ -1675,7 +1695,7 @@ export function gridFromImage(image: P5.Image) {
 }
 
 type ImageCorner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
-type Pixel = { r: number; g: number; b: number; a: number };
+export type Pixel = { r: number; g: number; b: number; a: number };
 
 function glitchImageGrid(
     grid: Pixel[][],

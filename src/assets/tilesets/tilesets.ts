@@ -125,7 +125,7 @@ export const tilesets: TileSet[] = [
     //     name: "tileset-test",
     //     ySize: 1,
     //     leftEdge: {
-    //         imageSrc: TestLeft,
+    //         imageSrc: Te stLeft,
     //         xSize: 1,
     //         ySize: 1,
     //         type: "left-edge",
