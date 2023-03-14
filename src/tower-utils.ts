@@ -157,6 +157,10 @@ export const addGridLayer = (
         yPos += grid[i].ySize * tileSize;
     }
 
+    if (yPos > canvasHeight) {
+        return;
+    }
+
     let totalXTiles = 0;
     for (let i = 0; i < gridLayer.tiles.length; i++) {
         totalXTiles += gridLayer.tiles[i].xSize;
