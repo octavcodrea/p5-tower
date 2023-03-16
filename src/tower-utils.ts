@@ -68,6 +68,7 @@ export const createGridLayer = (params: {
         xSize: tileset.leftEdge.xSize,
         ySize: tileset.ySize,
         image: tileset.leftEdge.image,
+        accentImage: tileset.leftEdge.accentImage,
         colors: colors,
         dontGlitch: tileset.dontGlitch,
     });
@@ -115,6 +116,7 @@ export const createGridLayer = (params: {
             xSize: tile.xSize,
             ySize: tile.ySize,
             image: tile.image,
+            accentImage: tile.accentImage,
             colors: colors,
             dontGlitch: tileset.dontGlitch,
         });
@@ -130,6 +132,7 @@ export const createGridLayer = (params: {
         xSize: tileset.rightEdge.xSize,
         ySize: tileset.ySize,
         image: tileset.rightEdge.image,
+        accentImage: tileset.rightEdge.accentImage,
         colors: colors,
         dontGlitch: tileset.dontGlitch,
     });
@@ -186,7 +189,7 @@ export const addGridLayer = (
                     grid[grid.length - 1].ySize * tileSize;
             }
 
-            console.log("fmm:", tile.xIndex, tile.yIndex, xPos, yPos);
+            // console.log("fmm:", tile.xIndex, tile.yIndex, xPos, yPos);
 
             return {
                 ...tile,
@@ -195,7 +198,7 @@ export const addGridLayer = (
             };
         }),
     };
-    console.log("fmm:", layer.tiles.length);
+    // console.log("fmm:", layer.tiles.length);
 
     grid.push(layer);
 };

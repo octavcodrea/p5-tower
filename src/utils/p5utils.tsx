@@ -1,5 +1,6 @@
 import P5 from "p5";
 import { u } from "../app";
+import { Rgba } from "../types";
 import {
     addHSV,
     addHSVToRGBACode,
@@ -21,6 +22,8 @@ import {
     srn,
     srnExtra,
 } from "./common";
+import { normal } from "color-blend";
+import { RGBA } from "color-blend/dist/types";
 
 export const paintDrop = (params: {
     p5: P5;
@@ -1491,6 +1494,9 @@ export const drawImageWithBrushes = (params: {
 
     prevColorPalette?: P5.Color[];
     nextColorPalette?: P5.Color[];
+
+    accentImage?: P5.Image;
+    accentImageColorPalette?: P5.Color[];
 }) => {
     const {
         p5,
@@ -1505,6 +1511,8 @@ export const drawImageWithBrushes = (params: {
         glitchDensity,
         prevColorPalette,
         nextColorPalette,
+        accentImage,
+        accentImageColorPalette,
     } = params;
 
     const imageWidth = image.width;
@@ -1585,15 +1593,6 @@ export const drawImageWithBrushes = (params: {
         }
     }
 
-    // console.log(
-    //     "will draw at",
-    //     x,
-    //     y,
-    //     "with size",
-    //     imageWidth * brushSize,
-    //     imageHeight * brushSize
-    // );
-
     for (let i = 0; i < imageHeight; i++) {
         for (let j = 0; j < imageWidth; j++) {
             const a = imageGrid[i][j].a;
@@ -1647,10 +1646,36 @@ export const drawImageWithBrushes = (params: {
                 }
             }
 
-            const brushColor =
+            let brushColor =
                 paletteToUse[
                     fcInt(Math.floor(r / 32), 0, paletteToUse.length - 1)
                 ];
+
+            if (accentImage && accentImageColorPalette) {
+                let accentImageGrid = gridFromImage(accentImage);
+
+                if (accentImageGrid[i] && accentImageGrid[i][j]) {
+                    const accentImagePixel = accentImageGrid[i][j];
+
+                    if (accentImagePixel.a > 0) {
+                        const brushColorRgba = p5ColorToRgba(brushColor);
+                        const accentColor = p5ColorToRgba(
+                            accentImageColorPalette[
+                                fcInt(
+                                    Math.floor(r / 32),
+                                    0,
+                                    paletteToUse.length - 1
+                                )
+                            ],
+                            accentImagePixel.a / 255
+                        );
+                        brushColor = RGBAToP5Color(
+                            p5,
+                            normal(brushColorRgba, accentColor)
+                        );
+                    }
+                }
+            }
 
             if (brushMode === "rectangle") {
                 p5.fill(brushColor);
@@ -1662,7 +1687,7 @@ export const drawImageWithBrushes = (params: {
     }
 };
 
-export function gridFromImage(image: P5.Image): Pixel[][] {
+export function gridFromImage(image: P5.Image): Rgba[][] {
     const imageWidth = image.width;
     const imageHeight = image.height;
 
@@ -1695,10 +1720,9 @@ export function gridFromImage(image: P5.Image): Pixel[][] {
 }
 
 type ImageCorner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
-export type Pixel = { r: number; g: number; b: number; a: number };
 
 function glitchImageGrid(
-    grid: Pixel[][],
+    grid: Rgba[][],
     cornersToGlitch: ImageCorner[],
     glitchMode: "letter" | "color" | "random"
 ) {
@@ -1910,7 +1934,7 @@ export function averageColorFromImage(
 }
 
 export function averageColorFromGrid(
-    grid: Pixel[][],
+    grid: Rgba[][],
     ignoreTransparent?: boolean
 ) {
     let r = 0;
@@ -1944,4 +1968,19 @@ export function averageColorFromGrid(
         g: g,
         b: b,
     };
+}
+
+export function p5ColorToRgba(color: P5.Color, alpha?: number) {
+    const colorString = color.toString("#rrggbbaa");
+    return {
+        r: parseInt(colorString.substring(1, 3), 16),
+        g: parseInt(colorString.substring(3, 5), 16),
+        b: parseInt(colorString.substring(5, 7), 16),
+        a: alpha ?? parseInt(colorString.substring(7, 9), 16) / 255,
+    };
+}
+
+export function RGBAToP5Color(p5: P5, rgba: RGBA) {
+    p5.colorMode(p5.RGB);
+    return p5.color(rgba.r, rgba.g, rgba.b, rgba.a * 255);
 }

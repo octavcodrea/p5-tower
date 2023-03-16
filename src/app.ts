@@ -12,7 +12,8 @@ import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
 import { drawImageWithBrushes } from "./utils/p5utils";
 import { tilesets } from "./assets/tilesets/tilesets";
-import { GraphicGrid2D, Grid, TileSet } from "./types";
+import { corbelTiles } from "./assets/corbels/corbels";
+import { GraphicGrid2D, Grid, GridTile, Tile, TileSet } from "./types";
 import {
     addGridLayer,
     addMazeLine,
@@ -39,7 +40,11 @@ export function u(x: number) {
 }
 
 let grid: Grid = [];
-let tilesDrawn = false;
+let corbels: GridTile[] = [];
+
+let dotsDrawn = false;
+let gridDrawn = false;
+let corbelsDrawn = false;
 let graphicGridDrawn = false;
 
 const sketch = (p5: P5) => {
@@ -149,6 +154,7 @@ const sketch = (p5: P5) => {
     let test1: P5.Image;
 
     let loadedTilesets: TileSet[] = [];
+    let loadedCorbelTiles: Tile[] = [];
     const tileSize = 64;
     console.log("tileSize: ", tileSize);
 
@@ -171,16 +177,25 @@ const sketch = (p5: P5) => {
             const loadedLeftEdge = {
                 ...leftEdge,
                 image: p5.loadImage(leftEdge.imageSrc),
+                accentImage: leftEdge.accentImageSrc
+                    ? p5.loadImage(leftEdge.accentImageSrc)
+                    : undefined,
             };
             const loadedMiddle = middle.map((m) => {
                 return {
                     ...m,
                     image: p5.loadImage(m.imageSrc),
+                    accentImage: m.accentImageSrc
+                        ? p5.loadImage(m.accentImageSrc)
+                        : undefined,
                 };
             });
             const loadedRightEdge = {
                 ...rightEdge,
                 image: p5.loadImage(rightEdge.imageSrc),
+                accentImage: rightEdge.accentImageSrc
+                    ? p5.loadImage(rightEdge.accentImageSrc)
+                    : undefined,
             };
 
             return {
@@ -189,6 +204,10 @@ const sketch = (p5: P5) => {
                 middle: loadedMiddle,
                 rightEdge: loadedRightEdge,
             };
+        });
+
+        loadedCorbelTiles = corbelTiles.map((tile) => {
+            return { ...tile, image: p5.loadImage(tile.imageSrc) };
         });
 
         store.setState({ selectedPalette: selectedPalette });
@@ -204,6 +223,13 @@ const sketch = (p5: P5) => {
         function doSetup() {
             seed = store.getState().seed;
             grid = [];
+            graphicGrid = [];
+            corbels = [];
+
+            dotsDrawn = false;
+            gridDrawn = false;
+            corbelsDrawn = false;
+            graphicGridDrawn = false;
 
             p5.frameCount = 0;
             p5.loop();
@@ -222,8 +248,6 @@ const sketch = (p5: P5) => {
             //     p5.line(0, y, canvasWidth, y);
             // }
 
-            tilesDrawn = false;
-            graphicGridDrawn = false;
             let previousLayerWidth = 0;
             let shouldMatchPreviousWidth = false;
             let shouldMatchNextWidth = false;
@@ -242,7 +266,7 @@ const sketch = (p5: P5) => {
                 (p, i) => i !== selectedPalette && i !== secondaryPaletteIndex
             )[tertiaryPaletteIndex].hexColors.map((c) => p5.color(c));
 
-            for (let i = 0; i < 22; i++) {
+            for (let i = 0; i < 30; i++) {
                 // const thisTileset = loadedTilesets[i % loadedTilesets.length];
                 const thisTileset =
                     loadedTilesets[
@@ -289,13 +313,13 @@ const sketch = (p5: P5) => {
                     let thisTile = grid[i].tiles[j];
                     let paletteToUse = mainPalette;
 
-                    if (checkThreshholds(j, secThreshold)) {
-                        paletteToUse = secondaryPalette;
-                    }
+                    // if (checkThreshholds(j, secThreshold)) {
+                    //     paletteToUse = secondaryPalette;
+                    // }
 
-                    if (checkThreshholds(j, terThreshold)) {
-                        paletteToUse = tertiaryPalette;
-                    }
+                    // if (checkThreshholds(j, terThreshold)) {
+                    //     paletteToUse = tertiaryPalette;
+                    // }
 
                     thisTile.colors = getTileColors(
                         grid[i].tiles.length,
@@ -306,21 +330,23 @@ const sketch = (p5: P5) => {
                     thisTile.prevColors = getTileColors(
                         grid[i].tiles.length,
                         j - 1,
-                        checkThreshholds(j - 1, terThreshold)
-                            ? tertiaryPalette
-                            : checkThreshholds(j - 1, secThreshold)
-                            ? secondaryPalette
-                            : mainPalette
+                        // checkThreshholds(j - 1, terThreshold)
+                        //     ? tertiaryPalette
+                        //     : checkThreshholds(j - 1, secThreshold)
+                        //     ? secondaryPalette
+                        // :
+                        mainPalette
                     );
 
                     thisTile.nextColors = getTileColors(
                         grid[i].tiles.length,
                         j + 1,
-                        checkThreshholds(j + 1, terThreshold)
-                            ? tertiaryPalette
-                            : checkThreshholds(j + 1, secThreshold)
-                            ? secondaryPalette
-                            : mainPalette
+                        // checkThreshholds(j + 1, terThreshold)
+                        //     ? tertiaryPalette
+                        //     : checkThreshholds(j + 1, secThreshold)
+                        //     ? secondaryPalette
+                        //     :
+                        mainPalette
                     );
 
                     grid[i].tiles[j] = thisTile;
@@ -337,6 +363,85 @@ const sketch = (p5: P5) => {
                 //     grid[i].tiles.length - 2,
                 //     secondaryPalette
                 // );
+            }
+
+            // corbels
+            for (let i = 0; i < grid.length - 3; i++) {
+                if (grid[i].tiles && grid[i + 1].tiles && grid[i + 2].tiles) {
+                    const thisLevel = grid[i].totalTilesWidth;
+                    const nextLevel = grid[i + 1].totalTilesWidth;
+                    // const nextNextLevel = grid[i + 2].totalTilesWidth;
+
+                    if (
+                        thisLevel >
+                        nextLevel + 2
+                        // &&
+                        // thisLevel > nextNextLevel + 2
+                    ) {
+                        const difference = thisLevel - nextLevel;
+
+                        for (let j = 0; j < grid[i].tiles.length; j++) {
+                            const corbel =
+                                loadedCorbelTiles[
+                                    Math.floor(
+                                        loadedCorbelTiles.length *
+                                            sre(j, seed + i)
+                                    )
+                                ];
+
+                            if (grid[i].tiles[j].xSize === 2) {
+                                if (
+                                    j < difference / 2 ||
+                                    j > grid[i].tiles.length - difference / 2
+                                ) {
+                                    corbels.push({
+                                        xIndex: 0,
+                                        yIndex: 0,
+                                        x:
+                                            grid[i].tiles[j].x +
+                                            ((grid[i].tiles[j].xSize - 1) / 2) *
+                                                tileSize,
+                                        y:
+                                            grid[i].tiles[j].y +
+                                            grid[i].tiles[j].ySize * tileSize,
+                                        colors: grid[i].tiles[j].colors,
+                                        image: corbel.image,
+                                        xSize: corbel.xSize,
+                                        ySize: corbel.ySize,
+                                    });
+                                }
+                            }
+                        }
+
+                        // corbels.push({
+                        //     xIndex: 0,
+                        //     yIndex: 0,
+                        //     x: grid[i].tiles[1].x,
+                        //     y:
+                        //         grid[i].tiles[1].y +
+                        //         grid[i].tiles[1].ySize * tileSize,
+                        //     colors: grid[i].tiles[1].colors,
+                        //     image: corbel.image,
+                        //     xSize: corbel.xSize,
+                        //     ySize: corbel.ySize,
+                        // });
+
+                        // corbels.push({
+                        //     xIndex: 0,
+                        //     yIndex: 0,
+                        //     x: grid[i].tiles[grid[i].tiles.length - 2].x,
+                        //     y:
+                        //         grid[i].tiles[grid[i].tiles.length - 2].y +
+                        //         grid[i].tiles[grid[i].tiles.length - 2].ySize *
+                        //             tileSize,
+                        //     colors: grid[i].tiles[grid[i].tiles.length - 2]
+                        //         .colors,
+                        //     image: corbel.image,
+                        //     xSize: corbel.xSize,
+                        //     ySize: corbel.ySize,
+                        // });
+                    }
+                }
             }
 
             // graphic grid
@@ -363,8 +468,8 @@ const sketch = (p5: P5) => {
                     colorIndex += Math.round(
                         srn(i.toString() + charA + j.toString() + charB + seed)
                     );
-                    if (colorIndex >= 4) {
-                        colorIndex = 4;
+                    if (colorIndex >= 3) {
+                        colorIndex = 3;
                     }
                     if (colorIndex < 0) {
                         colorIndex = 0;
@@ -481,6 +586,21 @@ const sketch = (p5: P5) => {
             frameCountUI.innerHTML = p5.frameCount.toString();
         }
 
+        if (!dotsDrawn) {
+            p5.blendMode(p5.BLEND);
+            for (let i = 0; i < 200; i++) {
+                p5.noStroke();
+                p5.fill(Palettes[selectedPalette].hexColors[4]);
+                p5.rect(
+                    p5.random(p5.width),
+                    p5.random(p5.height),
+                    tileSize / 16,
+                    tileSize / 16
+                );
+            }
+            dotsDrawn = true;
+        }
+
         if (!graphicGridDrawn) {
             for (let i = 0; i < graphicGrid.length; i++) {
                 for (let j = 0; j < graphicGrid[i].length; j++) {
@@ -510,7 +630,42 @@ const sketch = (p5: P5) => {
 
         p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
 
-        if (!tilesDrawn) {
+        if (!corbelsDrawn) {
+            p5.blendMode(p5.BLEND);
+            for (let i = 0; i < corbels.length; i++) {
+                // p5.fill("#f44");
+                // p5.rect(
+                //     corbels[i].x,
+                //     corbels[i].y,
+                //     tileSize / 16,
+                //     tileSize / 16
+                // );
+                const thisCorbel = corbels[i];
+                console.log(thisCorbel);
+
+                if (thisCorbel.image) {
+                    console.log("drawing corbel");
+                    drawImageWithBrushes({
+                        p5: p5,
+                        x: thisCorbel.x,
+                        y: thisCorbel.y,
+                        image: thisCorbel.image,
+                        brushMode: "rectangle",
+                        brushSize: Math.ceil(tileSize / 16),
+                        mainColorPalette: thisCorbel.colors,
+                        prevColorPalette: thisCorbel.prevColors,
+                        nextColorPalette: thisCorbel.nextColors,
+                        secondaryPalettesDensity: 0,
+                        secondaryColorPalette: thisCorbel.colors,
+                        glitchDensity: 0,
+                        dontGlitch: true,
+                    });
+                }
+            }
+            corbelsDrawn = true;
+        }
+
+        if (!gridDrawn) {
             // for (let i = 0; i < grid.length && i < p5.frameCount; i++) {
             let i = p5.frameCount - 1;
             if (i < grid.length) {
@@ -562,14 +717,17 @@ const sketch = (p5: P5) => {
                                     grid[i].tiles.length) *
                                 2,
                             dontGlitch: thisTile.dontGlitch,
+
+                            accentImage: thisTile.accentImage,
+                            accentImageColorPalette: secondaryPalette1,
                         });
                         // }
                     }
                 }
             }
 
-            if (p5.frameCount > grid.length) {
-                tilesDrawn = true;
+            if (p5.frameCount > grid.length + 1) {
+                gridDrawn = true;
             }
         }
 

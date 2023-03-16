@@ -1,5 +1,7 @@
 import p5 from "p5";
 
+export type Rgba = { r: number; g: number; b: number; a: number };
+
 export type ColorObject = {
     color: string;
     opacity: number;
@@ -44,6 +46,8 @@ export type GridTile = {
     ySize: number;
 
     image?: p5.Image;
+    accentImage?: p5.Image;
+
     colors: p5.Color[];
     prevColors?: p5.Color[];
     nextColors?: p5.Color[];
@@ -65,9 +69,13 @@ export type GridLayer = {
 export type Tile = {
     imageSrc: string;
     image?: p5.Image;
+
+    accentImageSrc?: string;
+    accentImage?: p5.Image;
+
     xSize: number;
     ySize: number;
-    type: "left-edge" | "middle" | "right-edge";
+    type: "left-edge" | "middle" | "right-edge" | "corbel";
 };
 
 export type TileSet = {
@@ -102,6 +110,8 @@ export type GraphicTile = {
     imageOriginY?: number;
 
     image?: HTMLImageElement;
+    accentImage?: HTMLImageElement;
+
     size?: number;
 
     color: p5.Color;

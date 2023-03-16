@@ -41,6 +41,9 @@ import Face1Middle2 from "./face1/middle2.png";
 import Face1Middle3 from "./face1/middle3.png";
 import Face1Right from "./face1/right.png";
 
+import Face1Middle2Acc from "./face1/middle2 - Copy.png";
+import Face1Middle3Acc from "./face1/middle3 - Copy.png";
+
 import Human1Left from "./human1/left.png";
 import Human1Middle from "./human1/middle.png";
 import Human1Right from "./human1/right.png";
@@ -67,10 +70,20 @@ import Eyes3Middle from "./eyes3/middle.png";
 import Eyes3Middle2 from "./eyes3/middle2.png";
 import Eyes3Right from "./eyes3/right.png";
 
+import Eyes3LeftAcc from "./eyes3/left - Copy.png";
+import Eyes3MiddleAcc from "./eyes3/middle - Copy.png";
+import Eyes3Middle2Acc from "./eyes3/middle2 - Copy.png";
+import Eyes3RightAcc from "./eyes3/right - Copy.png";
+
 import Head1Left from "./head1/left.png";
 import Head1Middle from "./head1/middle.png";
 import Head1Middle2 from "./head1/middle2.png";
 import Head1Right from "./head1/right.png";
+
+import Head1LeftAcc from "./head1/left - Copy.png";
+import Head1MiddleAcc from "./head1/middle - Copy.png";
+import Head1Middle2Acc from "./head1/middle2 - Copy.png";
+import Head1RightAcc from "./head1/right - Copy.png";
 
 import TempleLeft from "./temple/left.png";
 import TempleMiddle from "./temple/middle.png";
@@ -432,12 +445,14 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: Face1Middle2,
+                accentImageSrc: Face1Middle2Acc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
             },
             {
                 imageSrc: Face1Middle3,
+                accentImageSrc: Face1Middle3Acc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -539,26 +554,30 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: Eyes3Left,
+            accentImageSrc: Eyes3LeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
         },
         middle: [
             {
-                imageSrc: Eyes3Middle,
-                xSize: 1,
+                imageSrc: Eyes3Middle2,
+                accentImageSrc: Eyes3Middle2Acc,
+                xSize: 2,
                 ySize: 2,
                 type: "middle",
             },
             {
-                imageSrc: Eyes3Middle2,
-                xSize: 2,
+                imageSrc: Eyes3Middle,
+                accentImageSrc: Eyes3MiddleAcc,
+                xSize: 1,
                 ySize: 2,
                 type: "middle",
             },
         ],
         rightEdge: {
             imageSrc: Eyes3Right,
+            accentImageSrc: Eyes3RightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -572,6 +591,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: Head1Left,
+            accentImageSrc: Head1LeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -579,12 +599,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: Head1Middle,
+                accentImageSrc: Head1MiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
             },
             {
                 imageSrc: Head1Middle2,
+                accentImageSrc: Head1Middle2Acc,
                 xSize: 2,
                 ySize: 1,
                 type: "middle",
@@ -592,6 +614,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: Head1Right,
+            accentImageSrc: Head1RightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
