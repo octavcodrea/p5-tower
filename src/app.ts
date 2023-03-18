@@ -7,12 +7,16 @@ import noiseMonoSmall from "./assets/images/noise-mono-small.png";
 import test1png from "./assets/images/test1.png";
 
 import Palettes from "./assets/palettes";
+import PaletteGroups from "./assets/palette-groups";
+
 import { store } from "./store";
 import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
 import { drawImageWithBrushes } from "./utils/p5utils";
 import { tilesets } from "./assets/tilesets/tilesets";
 import { corbelTiles } from "./assets/corbels/corbels";
+import { groundItemTiles } from "./assets/ground-items/ground-items";
+import { humans } from "./assets/humans/humans";
 import { GraphicGrid2D, Grid, GridTile, Tile, TileSet } from "./types";
 import {
     addGridLayer,
@@ -23,7 +27,15 @@ import {
 
 // @ts-ignore
 import font1Source from "url:./assets/fonts/font1.ttf";
-import { fcInt, roundDecimals, sr, sre, srInt, srn } from "./utils/common";
+import {
+    fcInt,
+    getPaletteByName,
+    roundDecimals,
+    sr,
+    sre,
+    srInt,
+    srn,
+} from "./utils/common";
 
 let { canvasWidth, canvasHeight } = store.getState();
 
@@ -41,11 +53,22 @@ export function u(x: number) {
 
 let grid: Grid = [];
 let corbels: GridTile[] = [];
+let groundItems: GridTile[] = [];
+let human: GridTile | undefined = undefined;
 
 let dotsDrawn = false;
 let gridDrawn = false;
 let corbelsDrawn = false;
+let groundItemsDrawn = false;
 let graphicGridDrawn = false;
+let humanDrawn = false;
+
+let mainPalette = getPaletteByName(PaletteGroups[0].palettes[0]);
+
+let secondaryPalette =
+    PaletteGroups[0].palettes[0] !== undefined
+        ? getPaletteByName(PaletteGroups[0].palettes[1])
+        : mainPalette;
 
 const sketch = (p5: P5) => {
     let seed = Math.floor(Math.random() * 1000000000000000).toString();
@@ -69,7 +92,7 @@ const sketch = (p5: P5) => {
     let seedG = charG.toString();
     let seedH = charH.toString();
 
-    let selectedPalette = Math.floor(Palettes.length * (charD / 100));
+    let selectedPaletteGroup = Math.floor(Palettes.length * (charD / 100));
     let font1: any = undefined;
 
     let graphicGrid: GraphicGrid2D = [];
@@ -98,9 +121,9 @@ const sketch = (p5: P5) => {
 
         p5.noiseSeed(parseInt(seed));
 
-        selectedPalette = Math.floor(Palettes.length * (charD / 100));
+        selectedPaletteGroup = Math.floor(PaletteGroups.length * (charD / 100));
 
-        store.setState({ selectedPalette: selectedPalette });
+        store.setState({ selectedPalette: selectedPaletteGroup });
 
         canvasWidth = store.getState().canvasWidth;
         canvasHeight = store.getState().canvasHeight;
@@ -155,6 +178,9 @@ const sketch = (p5: P5) => {
 
     let loadedTilesets: TileSet[] = [];
     let loadedCorbelTiles: Tile[] = [];
+    let loadedGroundItemTiles: Tile[] = [];
+    let loadedHumanTiles: Tile[] = [];
+
     const tileSize = 64;
     console.log("tileSize: ", tileSize);
 
@@ -210,7 +236,21 @@ const sketch = (p5: P5) => {
             return { ...tile, image: p5.loadImage(tile.imageSrc) };
         });
 
-        store.setState({ selectedPalette: selectedPalette });
+        loadedGroundItemTiles = groundItemTiles.map((tile) => {
+            return { ...tile, image: p5.loadImage(tile.imageSrc) };
+        });
+
+        loadedHumanTiles = humans.map((human) => {
+            return {
+                ...human,
+                image: p5.loadImage(human.imageSrc),
+                accentImage: human.accentImageSrc
+                    ? p5.loadImage(human.accentImageSrc)
+                    : undefined,
+            };
+        });
+
+        store.setState({ selectedPalette: selectedPaletteGroup });
     };
 
     p5.setup = () => {
@@ -225,14 +265,18 @@ const sketch = (p5: P5) => {
             grid = [];
             graphicGrid = [];
             corbels = [];
+            groundItems = [];
+            human = undefined;
+
+            p5.frameCount = 0;
+            p5.loop();
 
             dotsDrawn = false;
             gridDrawn = false;
             corbelsDrawn = false;
+            groundItemsDrawn = false;
             graphicGridDrawn = false;
-
-            p5.frameCount = 0;
-            p5.loop();
+            humanDrawn = false;
 
             p5.blendMode(p5.BLEND);
 
@@ -252,19 +296,16 @@ const sketch = (p5: P5) => {
             let shouldMatchPreviousWidth = false;
             let shouldMatchNextWidth = false;
 
-            const mainPalette = Palettes[selectedPalette].hexColors.map((c) =>
-                p5.color(c)
+            mainPalette = getPaletteByName(
+                PaletteGroups[selectedPaletteGroup].palettes[0]
             );
 
-            const secondaryPaletteIndex = srInt(seed, Palettes.length - 1);
-            const secondaryPalette = Palettes.filter(
-                (p, i) => i !== selectedPalette
-            )[secondaryPaletteIndex].hexColors.map((c) => p5.color(c));
-
-            const tertiaryPaletteIndex = srInt(seed + 1, Palettes.length - 2);
-            const tertiaryPalette = Palettes.filter(
-                (p, i) => i !== selectedPalette && i !== secondaryPaletteIndex
-            )[tertiaryPaletteIndex].hexColors.map((c) => p5.color(c));
+            secondaryPalette =
+                PaletteGroups[selectedPaletteGroup].palettes[1] !== undefined
+                    ? getPaletteByName(
+                          PaletteGroups[selectedPaletteGroup].palettes[1]
+                      )
+                    : mainPalette;
 
             for (let i = 0; i < 30; i++) {
                 // const thisTileset = loadedTilesets[i % loadedTilesets.length];
@@ -311,42 +352,41 @@ const sketch = (p5: P5) => {
 
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     let thisTile = grid[i].tiles[j];
-                    let paletteToUse = mainPalette;
 
-                    // if (checkThreshholds(j, secThreshold)) {
-                    //     paletteToUse = secondaryPalette;
-                    // }
+                    let mainPaletteToUse = mainPalette.hexColors.map((c) => {
+                        return p5.color(c);
+                    });
 
-                    // if (checkThreshholds(j, terThreshold)) {
-                    //     paletteToUse = tertiaryPalette;
-                    // }
+                    let secPaletteToUse = secondaryPalette.hexColors.map(
+                        (c) => {
+                            return p5.color(c);
+                        }
+                    );
 
                     thisTile.colors = getTileColors(
                         grid[i].tiles.length,
                         j,
-                        paletteToUse
+                        mainPaletteToUse
+                    );
+
+                    thisTile.colors2 = getTileColors(
+                        grid[i].tiles.length,
+                        j,
+                        secPaletteToUse
                     );
 
                     thisTile.prevColors = getTileColors(
                         grid[i].tiles.length,
                         j - 1,
-                        // checkThreshholds(j - 1, terThreshold)
-                        //     ? tertiaryPalette
-                        //     : checkThreshholds(j - 1, secThreshold)
-                        //     ? secondaryPalette
-                        // :
-                        mainPalette
+
+                        mainPaletteToUse
                     );
 
                     thisTile.nextColors = getTileColors(
                         grid[i].tiles.length,
                         j + 1,
-                        // checkThreshholds(j + 1, terThreshold)
-                        //     ? tertiaryPalette
-                        //     : checkThreshholds(j + 1, secThreshold)
-                        //     ? secondaryPalette
-                        //     :
-                        mainPalette
+
+                        mainPaletteToUse
                     );
 
                     grid[i].tiles[j] = thisTile;
@@ -385,7 +425,7 @@ const sketch = (p5: P5) => {
                                 loadedCorbelTiles[
                                     Math.floor(
                                         loadedCorbelTiles.length *
-                                            sre(j, seed + i)
+                                            sre(j, j + seed + i)
                                     )
                                 ];
 
@@ -405,6 +445,7 @@ const sketch = (p5: P5) => {
                                             grid[i].tiles[j].y +
                                             grid[i].tiles[j].ySize * tileSize,
                                         colors: grid[i].tiles[j].colors,
+                                        colors2: grid[i].tiles[j].colors2,
                                         image: corbel.image,
                                         xSize: corbel.xSize,
                                         ySize: corbel.ySize,
@@ -444,6 +485,119 @@ const sketch = (p5: P5) => {
                 }
             }
 
+            // ground item tiles
+            for (let i = 2; i < grid.length; i++) {
+                if (grid[i].tiles && grid[i - 1].tiles) {
+                    const thisLevel = grid[i].totalTilesWidth;
+                    const prevLevel = grid[i - 1].totalTilesWidth;
+                    const prevPrevLevel = grid[i - 2].totalTilesWidth;
+
+                    const prevLevelDifference = thisLevel - prevLevel;
+                    const prevPrevLevelDifference = thisLevel - prevPrevLevel;
+
+                    if (thisLevel > prevLevel) {
+                        const difference = thisLevel - prevLevel + 2;
+
+                        for (let j = 1; j < grid[i].tiles.length - 1; j++) {
+                            const thisTile = grid[i].tiles[j];
+
+                            for (let k = 0; k < thisTile.xSize; k++) {
+                                if (sre(j, j + seed + i) > 0.5) {
+                                    const groundItemTile =
+                                        loadedGroundItemTiles[
+                                            Math.floor(
+                                                loadedGroundItemTiles.length *
+                                                    sre(
+                                                        j + i + k,
+                                                        j + seed + i + k
+                                                    )
+                                            )
+                                        ];
+
+                                    if (
+                                        j < difference / 2 ||
+                                        j >
+                                            grid[i].tiles.length -
+                                                difference / 2
+                                    ) {
+                                        groundItems.push({
+                                            xIndex: 0,
+                                            yIndex: 0,
+                                            x:
+                                                grid[i].tiles[j].x +
+                                                // ((grid[i].tiles[j].xSize - 1) / 2) *
+                                                //     tileSize,
+                                                k *
+                                                    groundItemTile.xSize *
+                                                    tileSize,
+                                            y:
+                                                grid[i].tiles[j].y -
+                                                tileSize * groundItemTile.ySize,
+                                            colors: grid[i].tiles[j].colors,
+                                            colors2: grid[i].tiles[j].colors2,
+                                            image: groundItemTile.image,
+                                            xSize: groundItemTile.xSize,
+                                            ySize: groundItemTile.ySize,
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (
+                        thisLevel > prevLevel &&
+                        prevLevelDifference > 4 &&
+                        thisLevel > prevPrevLevel &&
+                        prevPrevLevelDifference > 4
+                    ) {
+                        const difference = thisLevel - prevLevel + 2;
+
+                        const thisLevelY = grid[i].tiles[0].y;
+                        console.log(
+                            p5.height * 0.3,
+                            p5.height * 0.6,
+                            "thisLevelY",
+                            thisLevelY,
+                            tileSize * 6,
+                            p5.height * 0.3 - thisLevelY,
+                            p5.height * 0.6 - thisLevelY
+                        );
+
+                        if (
+                            Math.abs(p5.height * 0.3 - thisLevelY) <
+                                tileSize * 6 ||
+                            Math.abs(p5.height * 0.6 - thisLevelY) <
+                                tileSize * 6
+                        ) {
+                            const humanTile =
+                                loadedHumanTiles[
+                                    Math.floor(
+                                        loadedHumanTiles.length *
+                                            sre(i, i + seed + i)
+                                    )
+                                ];
+
+                            human = {
+                                xIndex: 0,
+                                yIndex: 0,
+                                x: grid[i].tiles[2].x,
+                                y:
+                                    grid[i].tiles[2].y -
+                                    tileSize * humanTile.ySize,
+                                colors: grid[i].tiles[2].colors,
+                                colors2: grid[i].tiles[2].colors2,
+                                image: humanTile.image,
+                                xSize: humanTile.xSize,
+                                ySize: humanTile.ySize,
+                            };
+
+                            console.log("human", human);
+                        }
+                    }
+                }
+            }
+
             // graphic grid
             const gridSizeX = Math.ceil(p5.width / (tileSize / 16));
             const gridSizeY = Math.ceil(p5.height / (tileSize / 16));
@@ -460,9 +614,7 @@ const sketch = (p5: P5) => {
                         yPos: (j * tileSize) / 16,
                         layer: 0,
                         isUsed: false,
-                        color: p5.color(
-                            Palettes[selectedPalette].hexColors[colorIndex]
-                        ),
+                        color: p5.color(mainPalette.hexColors[colorIndex]),
                     };
 
                     colorIndex += Math.round(
@@ -548,7 +700,7 @@ const sketch = (p5: P5) => {
                 charG: charG,
                 charH: charH,
 
-                selectedPalette: selectedPalette,
+                selectedPalette: selectedPaletteGroup,
             });
 
             p5.blendMode(p5.BLEND);
@@ -568,7 +720,7 @@ const sketch = (p5: P5) => {
             charG: charG,
             charH: charH,
 
-            selectedPalette: selectedPalette,
+            selectedPalette: selectedPaletteGroup,
             doSetup: doSetup,
             newSeed: newSeed,
 
@@ -590,7 +742,7 @@ const sketch = (p5: P5) => {
             p5.blendMode(p5.BLEND);
             for (let i = 0; i < 200; i++) {
                 p5.noStroke();
-                p5.fill(Palettes[selectedPalette].hexColors[4]);
+                p5.fill(mainPalette.hexColors[4]);
                 p5.rect(
                     p5.random(p5.width),
                     p5.random(p5.height),
@@ -665,6 +817,34 @@ const sketch = (p5: P5) => {
             corbelsDrawn = true;
         }
 
+        if (!groundItemsDrawn) {
+            p5.blendMode(p5.BLEND);
+            for (let i = 0; i < groundItems.length; i++) {
+                const thisItem = groundItems[i];
+                // console.log(thisItem);
+
+                if (thisItem.image) {
+                    // console.log("drawing item");
+                    drawImageWithBrushes({
+                        p5: p5,
+                        x: thisItem.x,
+                        y: thisItem.y,
+                        image: thisItem.image,
+                        brushMode: "rectangle",
+                        brushSize: Math.ceil(tileSize / 16),
+                        mainColorPalette: thisItem.colors,
+                        prevColorPalette: thisItem.prevColors,
+                        nextColorPalette: thisItem.nextColors,
+                        secondaryPalettesDensity: 0,
+                        secondaryColorPalette: thisItem.colors2,
+                        glitchDensity: 0,
+                        dontGlitch: true,
+                    });
+                }
+            }
+            groundItemsDrawn = true;
+        }
+
         if (!gridDrawn) {
             // for (let i = 0; i < grid.length && i < p5.frameCount; i++) {
             let i = p5.frameCount - 1;
@@ -673,28 +853,6 @@ const sketch = (p5: P5) => {
                     const thisTile = grid[i].tiles[j];
 
                     // console.log("thisTile", thisTile);
-
-                    const mainPalette = Palettes[selectedPalette].hexColors.map(
-                        (c) => p5.color(c)
-                    );
-
-                    const otherPalettes = Palettes.filter(
-                        (p, i) => i !== selectedPalette
-                    );
-
-                    const secondaryPalette1 = getTileColors(
-                        grid[i].tiles.length,
-                        j,
-                        otherPalettes[
-                            Math.floor(otherPalettes.length * (charB / 100))
-                        ].hexColors.map((c) => p5.color(c))
-                    );
-
-                    const secondaryPalette2 = otherPalettes[
-                        Math.floor(otherPalettes.length * (charC / 100))
-                    ].hexColors.map((c) => p5.color(c));
-
-                    const palettesToUse = [mainPalette];
 
                     if (thisTile.image) {
                         drawImageWithBrushes({
@@ -711,7 +869,7 @@ const sketch = (p5: P5) => {
                                 Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                 grid[i].tiles.length /
                                 2,
-                            secondaryColorPalette: secondaryPalette1,
+                            secondaryColorPalette: thisTile.colors2,
                             glitchDensity:
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                     grid[i].tiles.length) *
@@ -719,7 +877,7 @@ const sketch = (p5: P5) => {
                             dontGlitch: thisTile.dontGlitch,
 
                             accentImage: thisTile.accentImage,
-                            accentImageColorPalette: secondaryPalette1,
+                            accentImageColorPalette: thisTile.colors2,
                         });
                         // }
                     }
@@ -728,6 +886,30 @@ const sketch = (p5: P5) => {
 
             if (p5.frameCount > grid.length + 1) {
                 gridDrawn = true;
+            }
+        }
+
+        if (!humanDrawn) {
+            p5.blendMode(p5.BLEND);
+
+            if (human && human.image) {
+                drawImageWithBrushes({
+                    p5: p5,
+                    x: human.x,
+                    y: human.y,
+                    image: human.image,
+                    brushMode: "rectangle",
+                    brushSize: Math.ceil(tileSize / 16),
+                    mainColorPalette: human.colors,
+                    prevColorPalette: human.prevColors,
+                    nextColorPalette: human.nextColors,
+                    secondaryPalettesDensity: 0,
+                    secondaryColorPalette: human.colors2,
+                    glitchDensity: 0,
+                    dontGlitch: true,
+                });
+
+                humanDrawn = true;
             }
         }
 

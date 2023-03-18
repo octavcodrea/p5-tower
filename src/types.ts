@@ -28,11 +28,16 @@ export type ColorSet = Array<ColorObject[]>;
 //     isDark?: boolean;
 // };
 
-export type PaletteType = {
+export type Palette = {
     background: string;
     name?: string;
 
     hexColors: string[];
+};
+
+export type PaletteGroup = {
+    name: string;
+    palettes: string[];
 };
 
 export type GridTile = {
@@ -51,6 +56,10 @@ export type GridTile = {
     colors: p5.Color[];
     prevColors?: p5.Color[];
     nextColors?: p5.Color[];
+
+    colors2: p5.Color[];
+    colors3?: p5.Color[];
+
     dontGlitch?: boolean;
 };
 
@@ -75,7 +84,13 @@ export type Tile = {
 
     xSize: number;
     ySize: number;
-    type: "left-edge" | "middle" | "right-edge" | "corbel";
+    type:
+        | "left-edge"
+        | "middle"
+        | "right-edge"
+        | "corbel"
+        | "ground-item"
+        | "human";
 };
 
 export type TileSet = {

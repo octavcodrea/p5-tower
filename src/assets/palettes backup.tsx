@@ -1,6 +1,6 @@
-import { PaletteType } from "../types";
+import { Palette } from "../types";
 
-const Palettes: PaletteType[] = [
+const Palettes: Palette[] = [
     // {
     //     background: "#DDDDCC",
     //     accent: "#922f54",

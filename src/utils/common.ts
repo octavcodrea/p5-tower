@@ -1,4 +1,5 @@
 import seedrandom from "seedrandom";
+import Palettes from "../assets/palettes";
 
 /**
  * Returns a value between two numbers.
@@ -1098,3 +1099,7 @@ export const seedrandomInt = (seed: number | string, max: number) => {
 };
 
 export const srInt = seedrandomInt;
+
+export const getPaletteByName = (name: string) => {
+    return Palettes.find((p) => p.name === name) || Palettes[0];
+};

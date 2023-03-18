@@ -13,6 +13,10 @@ import EyesLeft from "./eyes/left.png";
 import EyesMiddle from "./eyes/middle.png";
 import EyesRight from "./eyes/right.png";
 
+import HoleLeft from "./hole/left.png";
+import HoleMiddle from "./hole/middle.png";
+import HoleRight from "./hole/right.png";
+
 import Eyes2Left from "./eyes2/left.png";
 import Eyes2Middle from "./eyes2/middle.png";
 import Eyes2Right from "./eyes2/right.png";
@@ -26,10 +30,16 @@ import ChainLeft from "./chain/left.png";
 import ChainMiddle from "./chain/middle.png";
 import ChainRight from "./chain/right.png";
 
+import ChainLeftAcc from "./chain/left - Copy.png";
+import ChainMiddleAcc from "./chain/middle - Copy.png";
+import ChainRightAcc from "./chain/right - Copy.png";
+
 import DoorknobLeft from "./doorknob/left.png";
 import DoorknobMiddle from "./doorknob/middle.png";
 import DoorknobMiddle2 from "./doorknob/middle2.png";
 import DoorknobRight from "./doorknob/right.png";
+
+import DoorknobMiddle2Acc from "./doorknob/middle2 - Copy.png";
 
 import PillarsLeft from "./pillars/left.png";
 import PillarsMiddle from "./pillars/middle.png";
@@ -40,6 +50,12 @@ import Face1Middle from "./face1/middle.png";
 import Face1Middle2 from "./face1/middle2.png";
 import Face1Middle3 from "./face1/middle3.png";
 import Face1Right from "./face1/right.png";
+
+import Plants1Left from "./plants/left.png";
+import Plants1Middle from "./plants/middle.png";
+import Plants1Middle2 from "./plants/middle2.png";
+import Plants1Middle3 from "./plants/middle3.png";
+import Plants1Right from "./plants/right.png";
 
 import Face1Middle2Acc from "./face1/middle2 - Copy.png";
 import Face1Middle3Acc from "./face1/middle3 - Copy.png";
@@ -57,6 +73,10 @@ import ThornsLeft from "./thorns/left.png";
 import ThornsMiddle from "./thorns/middle.png";
 import ThornsRight from "./thorns/right.png";
 
+import ThornsLeftAcc from "./thorns/left - Copy.png";
+import ThornsMiddleAcc from "./thorns/middle - Copy.png";
+import ThornsRightAcc from "./thorns/right - Copy.png";
+
 import WindowLeft from "./window/left.png";
 import WindowMiddle from "./window/middle.png";
 import WindowRight from "./window/right.png";
@@ -64,6 +84,10 @@ import WindowRight from "./window/right.png";
 import TeethLeft from "./teeth/left.png";
 import TeethMiddle from "./teeth/middle.png";
 import TeethRight from "./teeth/right.png";
+
+import TeethLeftAcc from "./teeth/left - Copy.png";
+import TeethMiddleAcc from "./teeth/middle - Copy.png";
+import TeethRightAcc from "./teeth/right - Copy.png";
 
 import Eyes3Left from "./eyes3/left.png";
 import Eyes3Middle from "./eyes3/middle.png";
@@ -98,10 +122,19 @@ import SnakeLeft from "./snake/left.png";
 import SnakeMiddle from "./snake/middle.png";
 import SnakeRight from "./snake/right.png";
 
+import SnakeLeftAcc from "./snake/left - Copy.png";
+import SnakeMiddleAcc from "./snake/middle - Copy.png";
+import SnakeRightAcc from "./snake/right - Copy.png";
+
 import MothLeft from "./moth/left.png";
 import MothMiddle from "./moth/middle.png";
 import MothMiddle2 from "./moth/middle2.png";
 import MothRight from "./moth/right.png";
+
+import MothLeftAcc from "./moth/left - Copy.png";
+import MothMiddleAcc from "./moth/middle - Copy.png";
+import MothMiddle2Acc from "./moth/middle2 - Copy.png";
+import MothRightAcc from "./moth/right - Copy.png";
 
 import AngelLeft from "./angel/left.png";
 import AngelMiddle from "./angel/middle.png";
@@ -122,16 +155,30 @@ import BonesMiddle from "./bones/middle.png";
 import BonesMiddle2 from "./bones/middle2.png";
 import BonesRight from "./bones/right.png";
 
-import GearsLeft from "./gears/left.png";
-import GearsMiddle from "./gears/middle.png";
-import GearsMiddle2 from "./gears/middle2.png";
-import GearsRight from "./gears/right.png";
+import SpiralLeft from "./spiral/left.png";
+import SpiralMiddle from "./spiral/middle.png";
+import SpiralMiddle2 from "./spiral/middle2.png";
+import SpiralRight from "./spiral/right.png";
 
-import Hand1Left from "./hand1/left.png";
-import Hand1Middle from "./hand1/middle.png";
-import Hand1Middle2 from "./hand1/middle2.png";
-import Hand1Middle3 from "./hand1/middle3.png";
-import Hand1Right from "./hand1/right.png";
+import BranchesLeft from "./branches/left.png";
+import BranchesMiddle from "./branches/middle.png";
+import BranchesRight from "./branches/right.png";
+
+import BonesLeftAcc from "./bones/left - Copy.png";
+import BonesMiddleAcc from "./bones/middle - Copy.png";
+import BonesMiddle2Acc from "./bones/middle2 - Copy.png";
+import BonesRightAcc from "./bones/right - Copy.png";
+
+// import GearsLeft from "./gears/left.png";
+// import GearsMiddle from "./gears/middle.png";
+// import GearsMiddle2 from "./gears/middle2.png";
+// import GearsRight from "./gears/right.png";
+
+// import Hand1Left from "./hand1/left.png";
+// import Hand1Middle from "./hand1/middle.png";
+// import Hand1Middle2 from "./hand1/middle2.png";
+// import Hand1Middle3 from "./hand1/middle3.png";
+// import Hand1Right from "./hand1/right.png";
 
 export const tilesets: TileSet[] = [
     // {
@@ -278,6 +325,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: ChainLeft,
+            accentImageSrc: ChainLeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -285,6 +333,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: ChainMiddle,
+                accentImageSrc: ChainMiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -292,6 +341,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: ChainRight,
+            accentImageSrc: ChainRightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
@@ -318,6 +368,7 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: DoorknobMiddle2,
+                accentImageSrc: DoorknobMiddle2Acc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -500,6 +551,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: ThornsLeft,
+            accentImageSrc: ThornsLeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -507,6 +559,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: ThornsMiddle,
+                accentImageSrc: ThornsMiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -514,6 +567,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: ThornsRight,
+            accentImageSrc: ThornsRightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
@@ -527,6 +581,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: TeethLeft,
+            accentImageSrc: TeethLeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -534,6 +589,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: TeethMiddle,
+                accentImageSrc: TeethMiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -541,6 +597,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: TeethRight,
+            accentImageSrc: TeethRightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
@@ -689,6 +746,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: SnakeLeft,
+            // accentImageSrc: SnakeLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -696,6 +754,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: SnakeMiddle,
+                // accentImageSrc: SnakeMiddleAcc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -703,6 +762,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: SnakeRight,
+            // accentImageSrc: SnakeRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -750,6 +810,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: MothLeft,
+            accentImageSrc: MothLeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -757,12 +818,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: MothMiddle,
+                accentImageSrc: MothMiddleAcc,
                 xSize: 2,
                 ySize: 1,
                 type: "middle",
             },
             {
                 imageSrc: MothMiddle2,
+                accentImageSrc: MothMiddle2Acc,
                 xSize: 2,
                 ySize: 1,
                 type: "middle",
@@ -770,6 +833,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: MothRight,
+            accentImageSrc: MothRightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
@@ -843,6 +907,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: BonesLeft,
+            // accentImageSrc: BonesLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -850,12 +915,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: BonesMiddle,
+                // accentImageSrc: BonesMiddleAcc,
                 xSize: 1,
                 ySize: 2,
                 type: "middle",
             },
             {
                 imageSrc: BonesMiddle2,
+                // accentImageSrc: BonesMiddle2Acc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -863,6 +930,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: BonesRight,
+            // accentImageSrc: BonesRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -871,44 +939,131 @@ export const tilesets: TileSet[] = [
         matchPreviousWidth: false,
     },
 
-    // {
-    //     name: "hand1",
-    //     ySize: 2,
-    //     leftEdge: {
-    //         imageSrc: Hand1Left,
-    //         xSize: 1,
-    //         ySize: 2,
-    //         type: "left-edge",
-    //     },
-    //     middle: [
-    //         {
-    //             imageSrc: Hand1Middle3,
-    //             xSize: 1,
-    //             ySize: 2,
-    //             type: "middle",
-    //         },
-    //         {
-    //             imageSrc: Hand1Middle,
-    //             xSize: 2,
-    //             ySize: 2,
-    //             type: "middle",
-    //         },
-    //         {
-    //             imageSrc: Hand1Middle2,
-    //             xSize: 2,
-    //             ySize: 2,
-    //             type: "middle",
-    //         },
-    //     ],
-    //     rightEdge: {
-    //         imageSrc: Hand1Right,
-    //         xSize: 1,
-    //         ySize: 2,
-    //         type: "right-edge",
-    //     },
-    //     matchNextWidth: false,
-    //     matchPreviousWidth: false,
-    // },
+    {
+        name: "spiral",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: SpiralLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: SpiralMiddle2,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: SpiralMiddle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: SpiralRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "branches",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: BranchesLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: BranchesMiddle,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: BranchesRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "hole",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: HoleLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: HoleMiddle,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: HoleRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "plants1",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: Plants1Left,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: Plants1Middle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: Plants1Middle2,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: Plants1Middle3,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: Plants1Right,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
 
     // {
     //     name: "gears",

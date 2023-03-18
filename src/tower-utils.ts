@@ -70,6 +70,7 @@ export const createGridLayer = (params: {
         image: tileset.leftEdge.image,
         accentImage: tileset.leftEdge.accentImage,
         colors: colors,
+        colors2: colors,
         dontGlitch: tileset.dontGlitch,
     });
 
@@ -118,6 +119,7 @@ export const createGridLayer = (params: {
             image: tile.image,
             accentImage: tile.accentImage,
             colors: colors,
+            colors2: colors,
             dontGlitch: tileset.dontGlitch,
         });
 
@@ -134,6 +136,7 @@ export const createGridLayer = (params: {
         image: tileset.rightEdge.image,
         accentImage: tileset.rightEdge.accentImage,
         colors: colors,
+        colors2: colors,
         dontGlitch: tileset.dontGlitch,
     });
 
