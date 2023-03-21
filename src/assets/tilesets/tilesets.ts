@@ -57,6 +57,9 @@ import Plants1Middle2 from "./plants/middle2.png";
 import Plants1Middle3 from "./plants/middle3.png";
 import Plants1Right from "./plants/right.png";
 
+import Plants1Middle2Acc from "./plants/middle2 - Copy.png";
+import Plants1Middle3Acc from "./plants/middle3 - Copy.png";
+
 import Face1Middle2Acc from "./face1/middle2 - Copy.png";
 import Face1Middle3Acc from "./face1/middle3 - Copy.png";
 
@@ -140,6 +143,13 @@ import AngelLeft from "./angel/left.png";
 import AngelMiddle from "./angel/middle.png";
 import AngelMiddle2 from "./angel/middle2.png";
 import AngelRight from "./angel/right.png";
+
+import LionLeft from "./lion/left.png";
+import LionMiddle from "./lion/middle.png";
+import LionMiddle2 from "./lion/middle2.png";
+import LionRight from "./lion/right.png";
+
+import AngelMiddleAcc from "./angel/middle - Copy.png";
 
 import ColumnsLeft from "./columns/left.png";
 import ColumnsMiddle from "./columns/middle.png";
@@ -784,6 +794,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: AngelMiddle,
+                // accentImageSrc: AngelMiddleAcc,
                 xSize: 3,
                 ySize: 1,
                 type: "middle",
@@ -1044,12 +1055,14 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: Plants1Middle2,
+                accentImageSrc: Plants1Middle2Acc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
             },
             {
                 imageSrc: Plants1Middle3,
+                accentImageSrc: Plants1Middle3Acc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -1062,6 +1075,39 @@ export const tilesets: TileSet[] = [
             type: "right-edge",
         },
         matchNextWidth: false,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "lion",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: LionLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: LionMiddle,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: LionMiddle2,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: LionRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
         matchPreviousWidth: false,
     },
 

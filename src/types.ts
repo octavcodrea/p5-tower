@@ -61,6 +61,7 @@ export type GridTile = {
     colors3?: p5.Color[];
 
     dontGlitch?: boolean;
+    mirrored?: boolean;
 };
 
 export type GridLayer = {

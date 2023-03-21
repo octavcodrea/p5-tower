@@ -62,6 +62,7 @@ let corbelsDrawn = false;
 let groundItemsDrawn = false;
 let graphicGridDrawn = false;
 let humanDrawn = false;
+let allowedTilesets = tilesets;
 
 let mainPalette = getPaletteByName(PaletteGroups[0].palettes[0]);
 
@@ -278,6 +279,19 @@ const sketch = (p5: P5) => {
             graphicGridDrawn = false;
             humanDrawn = false;
 
+            allowedTilesets = [];
+
+            while (allowedTilesets.length < 10) {
+                const randomTileset =
+                    loadedTilesets[
+                        Math.floor(p5.random(loadedTilesets.length))
+                    ];
+
+                if (!allowedTilesets.includes(randomTileset)) {
+                    allowedTilesets.push(randomTileset);
+                }
+            }
+
             p5.blendMode(p5.BLEND);
 
             p5.background(p5.color("#000").toString());
@@ -307,49 +321,53 @@ const sketch = (p5: P5) => {
                       )
                     : mainPalette;
 
+            let prevTl: TileSet | undefined = undefined;
+
             for (let i = 0; i < 30; i++) {
-                // const thisTileset = loadedTilesets[i % loadedTilesets.length];
-                const thisTileset =
-                    loadedTilesets[
-                        Math.floor(loadedTilesets.length * sre(i, seed + i))
-                    ];
+                const prevTileset: TileSet | undefined = prevTl;
 
-                shouldMatchPreviousWidth =
-                    thisTileset.matchPreviousWidth || shouldMatchNextWidth;
-
-                const thisLayer = createGridLayer({
-                    p5: p5,
-                    seed: seed + i,
-                    tileset: thisTileset,
-                    colors: [],
-                    previousLayerWidth: previousLayerWidth,
-                    shouldMatchPreviousWidth: shouldMatchPreviousWidth,
-                    tileSize: tileSize,
+                let theseTilesets: TileSet[] = allowedTilesets.filter((t) => {
+                    return (
+                        (prevTileset && t.name !== prevTileset?.name) ||
+                        !prevTileset
+                    );
                 });
 
-                addGridLayer(grid, thisLayer, tileSize, p5.width, p5.height);
+                let thisTileset =
+                    theseTilesets[
+                        Math.floor(theseTilesets.length * sre(i, seed + i))
+                    ];
 
-                shouldMatchNextWidth = thisTileset.matchNextWidth;
-                previousLayerWidth = thisLayer.totalTilesWidth;
+                prevTl = thisTileset;
+
+                if (thisTileset) {
+                    shouldMatchPreviousWidth =
+                        thisTileset.matchPreviousWidth || shouldMatchNextWidth;
+
+                    const thisLayer = createGridLayer({
+                        p5: p5,
+                        seed: seed + i,
+                        tileset: thisTileset,
+                        colors: [],
+                        previousLayerWidth: previousLayerWidth,
+                        shouldMatchPreviousWidth: shouldMatchPreviousWidth,
+                        tileSize: tileSize,
+                    });
+
+                    addGridLayer(
+                        grid,
+                        thisLayer,
+                        tileSize,
+                        p5.width,
+                        p5.height
+                    );
+
+                    shouldMatchNextWidth = thisTileset.matchNextWidth;
+                    previousLayerWidth = thisLayer.totalTilesWidth;
+                }
             }
 
             for (let i = 0; i < grid.length; i++) {
-                // const center = p5.noise(i) * 0.4 + 0.3;
-                const center = 0.5;
-                const secThreshold = p5.random(0.45, 1);
-                const terThreshold = p5.random(0.1, 0.6);
-
-                const rowLength = grid[i].tiles.length;
-
-                function checkThreshholds(n: number, threshhold: number) {
-                    return (
-                        n + 0.5 >
-                            rowLength * center - (threshhold * rowLength) / 2 &&
-                        n + 0.5 <
-                            rowLength * center + (threshhold * rowLength) / 2
-                    );
-                }
-
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     let thisTile = grid[i].tiles[j];
 
@@ -391,18 +409,6 @@ const sketch = (p5: P5) => {
 
                     grid[i].tiles[j] = thisTile;
                 }
-
-                // grid[i].tiles[1].colors = getTileColors(
-                //     grid[i].tiles.length,
-                //     1,
-                //     secondaryPalette
-                // );
-
-                // grid[i].tiles[grid[i].tiles.length - 2].colors = getTileColors(
-                //     grid[i].tiles.length,
-                //     grid[i].tiles.length - 2,
-                //     secondaryPalette
-                // );
             }
 
             // corbels
@@ -420,67 +426,89 @@ const sketch = (p5: P5) => {
                     ) {
                         const difference = thisLevel - nextLevel;
 
-                        for (let j = 0; j < grid[i].tiles.length; j++) {
-                            const corbel =
-                                loadedCorbelTiles[
-                                    Math.floor(
-                                        loadedCorbelTiles.length *
-                                            sre(j, j + seed + i)
-                                    )
-                                ];
+                        for (let j = 1; j < grid[i].tiles.length - 1; j++) {
+                            if (
+                                j < difference / 2 ||
+                                j > grid[i].tiles.length - difference / 2
+                            ) {
+                                switch (grid[i].tiles[j].xSize) {
+                                    case 1:
+                                    default: {
+                                        if (sre(j, j + seed + i) < 0.2) {
+                                            break;
+                                        }
+                                        const corbel =
+                                            loadedCorbelTiles[
+                                                Math.floor(
+                                                    loadedCorbelTiles.length *
+                                                        sre(j, j + seed + i)
+                                                )
+                                            ];
 
-                            if (grid[i].tiles[j].xSize === 2) {
-                                if (
-                                    j < difference / 2 ||
-                                    j > grid[i].tiles.length - difference / 2
-                                ) {
-                                    corbels.push({
-                                        xIndex: 0,
-                                        yIndex: 0,
-                                        x:
-                                            grid[i].tiles[j].x +
-                                            ((grid[i].tiles[j].xSize - 1) / 2) *
-                                                tileSize,
-                                        y:
-                                            grid[i].tiles[j].y +
-                                            grid[i].tiles[j].ySize * tileSize,
-                                        colors: grid[i].tiles[j].colors,
-                                        colors2: grid[i].tiles[j].colors2,
-                                        image: corbel.image,
-                                        xSize: corbel.xSize,
-                                        ySize: corbel.ySize,
-                                    });
+                                        corbels.push({
+                                            xIndex: 0,
+                                            yIndex: 0,
+                                            x: grid[i].tiles[j].x,
+                                            y:
+                                                grid[i].tiles[j].y +
+                                                grid[i].tiles[j].ySize *
+                                                    tileSize,
+                                            colors: grid[i].tiles[j].colors,
+                                            colors2: grid[i].tiles[j].colors2,
+                                            image: corbel.image,
+                                            xSize: corbel.xSize,
+                                            ySize: corbel.ySize,
+                                        });
+                                        break;
+                                    }
+
+                                    case 2:
+                                    case 3: {
+                                        for (
+                                            let k = 0;
+                                            k < grid[i].tiles[j].xSize;
+                                            k++
+                                        ) {
+                                            if (
+                                                sre(j, j + seed + i + k) < 0.3
+                                            ) {
+                                                continue;
+                                            }
+
+                                            const corbel =
+                                                loadedCorbelTiles[
+                                                    Math.floor(
+                                                        loadedCorbelTiles.length *
+                                                            sre(
+                                                                j,
+                                                                j + seed + i + k
+                                                            )
+                                                    )
+                                                ];
+
+                                            corbels.push({
+                                                xIndex: 0,
+                                                yIndex: 0,
+                                                x:
+                                                    grid[i].tiles[j].x +
+                                                    k * tileSize,
+                                                y:
+                                                    grid[i].tiles[j].y +
+                                                    grid[i].tiles[j].ySize *
+                                                        tileSize,
+                                                colors: grid[i].tiles[j].colors,
+                                                colors2:
+                                                    grid[i].tiles[j].colors2,
+                                                image: corbel.image,
+                                                xSize: corbel.xSize,
+                                                ySize: corbel.ySize,
+                                            });
+                                        }
+                                        break;
+                                    }
                                 }
                             }
                         }
-
-                        // corbels.push({
-                        //     xIndex: 0,
-                        //     yIndex: 0,
-                        //     x: grid[i].tiles[1].x,
-                        //     y:
-                        //         grid[i].tiles[1].y +
-                        //         grid[i].tiles[1].ySize * tileSize,
-                        //     colors: grid[i].tiles[1].colors,
-                        //     image: corbel.image,
-                        //     xSize: corbel.xSize,
-                        //     ySize: corbel.ySize,
-                        // });
-
-                        // corbels.push({
-                        //     xIndex: 0,
-                        //     yIndex: 0,
-                        //     x: grid[i].tiles[grid[i].tiles.length - 2].x,
-                        //     y:
-                        //         grid[i].tiles[grid[i].tiles.length - 2].y +
-                        //         grid[i].tiles[grid[i].tiles.length - 2].ySize *
-                        //             tileSize,
-                        //     colors: grid[i].tiles[grid[i].tiles.length - 2]
-                        //         .colors,
-                        //     image: corbel.image,
-                        //     xSize: corbel.xSize,
-                        //     ySize: corbel.ySize,
-                        // });
                     }
                 }
             }
@@ -545,13 +573,18 @@ const sketch = (p5: P5) => {
                         }
                     }
 
+                    // human
+
                     if (
                         thisLevel > prevLevel &&
                         prevLevelDifference > 4 &&
                         thisLevel > prevPrevLevel &&
                         prevPrevLevelDifference > 4
                     ) {
-                        const difference = thisLevel - prevLevel + 2;
+                        const difference = Math.min(
+                            thisLevel - prevLevel,
+                            thisLevel - prevPrevLevel
+                        );
 
                         const thisLevelY = grid[i].tiles[0].y;
                         console.log(
@@ -565,9 +598,9 @@ const sketch = (p5: P5) => {
                         );
 
                         if (
-                            Math.abs(p5.height * 0.3 - thisLevelY) <
+                            Math.abs(p5.height * 0.33 - thisLevelY) <
                                 tileSize * 6 ||
-                            Math.abs(p5.height * 0.6 - thisLevelY) <
+                            Math.abs(p5.height * 0.66 - thisLevelY) <
                                 tileSize * 6
                         ) {
                             const humanTile =
@@ -578,18 +611,29 @@ const sketch = (p5: P5) => {
                                     )
                                 ];
 
+                            const xOffset = (difference / 4) * tileSize;
+
+                            const leftOrRight = sre(i, i + seed + i) < 0.5;
+                            let humanImg = humanTile.image;
+                            let humanAccentImg = humanTile.accentImage;
+
                             human = {
                                 xIndex: 0,
                                 yIndex: 0,
-                                x: grid[i].tiles[2].x,
+                                x: leftOrRight
+                                    ? grid[i].tiles[grid[i].tiles.length - 1]
+                                          .x - xOffset
+                                    : grid[i].tiles[0].x + xOffset,
                                 y:
                                     grid[i].tiles[2].y -
                                     tileSize * humanTile.ySize,
                                 colors: grid[i].tiles[2].colors,
                                 colors2: grid[i].tiles[2].colors2,
-                                image: humanTile.image,
+                                image: humanImg,
+                                accentImage: humanAccentImg,
                                 xSize: humanTile.xSize,
                                 ySize: humanTile.ySize,
+                                mirrored: leftOrRight,
                             };
 
                             console.log("human", human);
@@ -620,8 +664,8 @@ const sketch = (p5: P5) => {
                     colorIndex += Math.round(
                         srn(i.toString() + charA + j.toString() + charB + seed)
                     );
-                    if (colorIndex >= 3) {
-                        colorIndex = 3;
+                    if (colorIndex >= 4) {
+                        colorIndex = 4;
                     }
                     if (colorIndex < 0) {
                         colorIndex = 0;
@@ -793,10 +837,10 @@ const sketch = (p5: P5) => {
                 //     tileSize / 16
                 // );
                 const thisCorbel = corbels[i];
-                console.log(thisCorbel);
+                // console.log(thisCorbel);
 
                 if (thisCorbel.image) {
-                    console.log("drawing corbel");
+                    // console.log("drawing corbel");
                     drawImageWithBrushes({
                         p5: p5,
                         x: thisCorbel.x,
@@ -907,6 +951,10 @@ const sketch = (p5: P5) => {
                     secondaryColorPalette: human.colors2,
                     glitchDensity: 0,
                     dontGlitch: true,
+
+                    accentImage: human.accentImage,
+                    accentImageColorPalette: human.colors2,
+                    mirrored: human.mirrored,
                 });
 
                 humanDrawn = true;

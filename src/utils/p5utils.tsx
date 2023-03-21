@@ -1497,6 +1497,7 @@ export const drawImageWithBrushes = (params: {
 
     accentImage?: P5.Image;
     accentImageColorPalette?: P5.Color[];
+    mirrored?: boolean;
 }) => {
     const {
         p5,
@@ -1513,6 +1514,7 @@ export const drawImageWithBrushes = (params: {
         nextColorPalette,
         accentImage,
         accentImageColorPalette,
+        mirrored,
     } = params;
 
     const imageWidth = image.width;
@@ -1680,7 +1682,17 @@ export const drawImageWithBrushes = (params: {
             if (brushMode === "rectangle") {
                 p5.fill(brushColor);
                 p5.noStroke();
-                p5.rect(xPos, yPos, brushSize, brushSize);
+                if (!mirrored) {
+                    p5.rect(xPos, yPos, brushSize, brushSize);
+                } else {
+                    //p5 rect mirrored horizontally
+                    p5.rect(
+                        x + (imageWidth - j) * brushSize,
+                        yPos,
+                        brushSize,
+                        brushSize
+                    );
+                }
                 // p5.ellipse(xPos, yPos, brushSize, brushSize);
             }
         }
