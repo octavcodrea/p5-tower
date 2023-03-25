@@ -61,7 +61,8 @@ export type GridTile = {
     colors3?: p5.Color[];
 
     dontGlitch?: boolean;
-    mirrored?: boolean;
+    mirroredX?: boolean;
+    mirroredY?: boolean;
 };
 
 export type GridLayer = {
@@ -77,6 +78,7 @@ export type GridLayer = {
 };
 
 export type Tile = {
+    id?: string;
     imageSrc: string;
     image?: p5.Image;
 
@@ -91,7 +93,8 @@ export type Tile = {
         | "right-edge"
         | "corbel"
         | "ground-item"
-        | "human";
+        | "human"
+        | "chain";
 };
 
 export type TileSet = {

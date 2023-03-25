@@ -174,6 +174,10 @@ import BranchesLeft from "./branches/left.png";
 import BranchesMiddle from "./branches/middle.png";
 import BranchesRight from "./branches/right.png";
 
+import DiamondLeft from "./diamond/left.png";
+import DiamondMiddle from "./diamond/middle.png";
+import DiamondRight from "./diamond/right.png";
+
 import BonesLeftAcc from "./bones/left - Copy.png";
 import BonesMiddleAcc from "./bones/middle - Copy.png";
 import BonesMiddle2Acc from "./bones/middle2 - Copy.png";
@@ -1109,6 +1113,33 @@ export const tilesets: TileSet[] = [
         },
         matchNextWidth: true,
         matchPreviousWidth: false,
+    },
+
+    {
+        name: "diamond",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: DiamondLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: DiamondMiddle,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: DiamondRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: true,
     },
 
     // {

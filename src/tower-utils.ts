@@ -1,5 +1,12 @@
 import p5 from "p5";
-import { GraphicGrid2D, Grid, GridLayer, TileSet } from "./types";
+import {
+    GraphicGrid2D,
+    Grid,
+    GridTile,
+    GridLayer,
+    TileSet,
+    Tile,
+} from "./types";
 import { sr, sre } from "./utils/common";
 
 export const createGridLayer = (params: {
@@ -538,4 +545,151 @@ export const addMazeLine = (params: {
     }
 
     return newGrid;
+};
+
+export const startChain = (
+    p5: p5,
+    x: number,
+    y: number,
+    direction: "right-up" | "right-down" | "left-up" | "left-down",
+    tileSize: number,
+    colors: p5.Color[],
+    loadedChainTiles: Tile[],
+    chainsArray: GridTile[]
+) => {
+    const baseParams = {
+        x: x,
+        y: y,
+        xIndex: 0,
+        yIndex: 0,
+        xSize: 1,
+        ySize: 1,
+    };
+
+    switch (direction) {
+        case "right-up": {
+            chainsArray.push({
+                ...baseParams,
+                colors: getTileColors(1, 1, colors),
+                colors2: getTileColors(1, 1, colors),
+                image: loadedChainTiles.find((tile) => tile.id === "right-base")
+                    ?.image,
+            });
+
+            let currentX = x + tileSize;
+            let currentY = y - tileSize;
+
+            while (currentX < p5.width + tileSize && currentY > -tileSize) {
+                chainsArray.push({
+                    ...baseParams,
+                    x: currentX,
+                    y: currentY,
+                    colors: getTileColors(1, 1, colors),
+                    colors2: getTileColors(1, 1, colors),
+                    image: loadedChainTiles.find((tile) => tile.id === "right")
+                        ?.image,
+                });
+
+                currentX += tileSize;
+                currentY -= tileSize;
+            }
+
+            break;
+        }
+
+        case "left-up": {
+            chainsArray.push({
+                ...baseParams,
+                colors: getTileColors(1, 1, colors),
+                colors2: getTileColors(1, 1, colors),
+                image: loadedChainTiles.find((tile) => tile.id === "left-base")
+                    ?.image,
+            });
+
+            let currentX = x - tileSize;
+            let currentY = y - tileSize;
+
+            while (currentX > 2 * -tileSize && currentY > -tileSize) {
+                chainsArray.push({
+                    ...baseParams,
+                    x: currentX,
+                    y: currentY,
+                    colors: getTileColors(1, 1, colors),
+                    colors2: getTileColors(1, 1, colors),
+                    image: loadedChainTiles.find((tile) => tile.id === "left")
+                        ?.image,
+                });
+
+                currentX -= tileSize;
+                currentY -= tileSize;
+            }
+
+            break;
+        }
+
+        case "right-down": {
+            chainsArray.push({
+                ...baseParams,
+
+                colors: getTileColors(1, 1, colors),
+                colors2: getTileColors(1, 1, colors),
+                image: loadedChainTiles.find((tile) => tile.id === "right-base")
+                    ?.image,
+                mirroredY: true,
+            });
+
+            let currentX = x + tileSize;
+            let currentY = y + tileSize;
+
+            while (currentX < p5.width && currentY < p5.height) {
+                chainsArray.push({
+                    ...baseParams,
+                    x: currentX,
+                    y: currentY,
+                    colors: getTileColors(1, 1, colors),
+                    colors2: getTileColors(1, 1, colors),
+                    image: loadedChainTiles.find((tile) => tile.id === "right")
+                        ?.image,
+                    mirroredY: true,
+                });
+
+                currentX += tileSize;
+                currentY += tileSize;
+            }
+
+            break;
+        }
+
+        case "left-down": {
+            chainsArray.push({
+                ...baseParams,
+                colors: getTileColors(1, 1, colors),
+                colors2: getTileColors(1, 1, colors),
+                image: loadedChainTiles.find((tile) => tile.id === "left-base")
+                    ?.image,
+                mirroredY: true,
+            });
+
+            let currentX = x - tileSize;
+            let currentY = y + tileSize;
+
+            while (currentX > -2 * tileSize && currentY < p5.height) {
+                chainsArray.push({
+                    ...baseParams,
+                    colors: getTileColors(1, 1, colors),
+                    colors2: getTileColors(1, 1, colors),
+                    image: loadedChainTiles.find((tile) => tile.id === "left")
+                        ?.image,
+                    mirroredY: true,
+                    x: currentX,
+                    y: currentY,
+                });
+
+                currentX -= tileSize;
+                currentY += tileSize;
+            }
+
+            break;
+        }
+    }
 };

@@ -1497,7 +1497,9 @@ export const drawImageWithBrushes = (params: {
 
     accentImage?: P5.Image;
     accentImageColorPalette?: P5.Color[];
-    mirrored?: boolean;
+
+    mirroredX?: boolean;
+    mirroredY?: boolean;
 }) => {
     const {
         p5,
@@ -1514,7 +1516,8 @@ export const drawImageWithBrushes = (params: {
         nextColorPalette,
         accentImage,
         accentImageColorPalette,
-        mirrored,
+        mirroredX,
+        mirroredY,
     } = params;
 
     const imageWidth = image.width;
@@ -1682,16 +1685,34 @@ export const drawImageWithBrushes = (params: {
             if (brushMode === "rectangle") {
                 p5.fill(brushColor);
                 p5.noStroke();
-                if (!mirrored) {
-                    p5.rect(xPos, yPos, brushSize, brushSize);
+
+                if (!mirroredX) {
+                    if (!mirroredY) {
+                        p5.rect(xPos, yPos, brushSize, brushSize);
+                    } else {
+                        p5.rect(
+                            xPos,
+                            y + (imageHeight - i) * brushSize,
+                            brushSize,
+                            brushSize
+                        );
+                    }
                 } else {
-                    //p5 rect mirrored horizontally
-                    p5.rect(
-                        x + (imageWidth - j) * brushSize,
-                        yPos,
-                        brushSize,
-                        brushSize
-                    );
+                    if (!mirroredY) {
+                        p5.rect(
+                            x + (imageWidth - j) * brushSize,
+                            yPos,
+                            brushSize,
+                            brushSize
+                        );
+                    } else {
+                        p5.rect(
+                            x + (imageWidth - j) * brushSize,
+                            y + (imageHeight - i) * brushSize,
+                            brushSize,
+                            brushSize
+                        );
+                    }
                 }
                 // p5.ellipse(xPos, yPos, brushSize, brushSize);
             }
@@ -1995,4 +2016,10 @@ export function p5ColorToRgba(color: P5.Color, alpha?: number) {
 export function RGBAToP5Color(p5: P5, rgba: RGBA) {
     p5.colorMode(p5.RGB);
     return p5.color(rgba.r, rgba.g, rgba.b, rgba.a * 255);
+}
+
+export function textVertical(p5: P5, text: string, x: number, y: number) {
+    const newText = text.split("").join("\n");
+
+    p5.text(newText, x, y);
 }

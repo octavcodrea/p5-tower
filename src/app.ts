@@ -12,9 +12,10 @@ import PaletteGroups from "./assets/palette-groups";
 import { store } from "./store";
 import { setupHtml, updateHtml } from "./utils";
 import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
-import { drawImageWithBrushes } from "./utils/p5utils";
+import { drawImageWithBrushes, textVertical } from "./utils/p5utils";
 import { tilesets } from "./assets/tilesets/tilesets";
 import { corbelTiles } from "./assets/corbels/corbels";
+import { chainTiles } from "./assets/chains/chains";
 import { groundItemTiles } from "./assets/ground-items/ground-items";
 import { humans } from "./assets/humans/humans";
 import { GraphicGrid2D, Grid, GridTile, Tile, TileSet } from "./types";
@@ -23,10 +24,13 @@ import {
     addMazeLine,
     createGridLayer,
     getTileColors,
+    startChain,
 } from "./tower-utils";
 
 // @ts-ignore
 import font1Source from "url:./assets/fonts/font1.ttf";
+// @ts-ignore
+import font2Source from "url:./assets/fonts/font2.ttf";
 import {
     fcInt,
     getPaletteByName,
@@ -55,6 +59,7 @@ let grid: Grid = [];
 let corbels: GridTile[] = [];
 let groundItems: GridTile[] = [];
 let human: GridTile | undefined = undefined;
+let chains: GridTile[] = [];
 
 let dotsDrawn = false;
 let gridDrawn = false;
@@ -62,6 +67,7 @@ let corbelsDrawn = false;
 let groundItemsDrawn = false;
 let graphicGridDrawn = false;
 let humanDrawn = false;
+let chainsDrawn = false;
 let allowedTilesets = tilesets;
 
 let mainPalette = getPaletteByName(PaletteGroups[0].palettes[0]);
@@ -95,6 +101,7 @@ const sketch = (p5: P5) => {
 
     let selectedPaletteGroup = Math.floor(Palettes.length * (charD / 100));
     let font1: any = undefined;
+    let font2: any = undefined;
 
     let graphicGrid: GraphicGrid2D = [];
 
@@ -181,6 +188,7 @@ const sketch = (p5: P5) => {
     let loadedCorbelTiles: Tile[] = [];
     let loadedGroundItemTiles: Tile[] = [];
     let loadedHumanTiles: Tile[] = [];
+    let loadedChainTiles: Tile[] = [];
 
     const tileSize = 64;
     console.log("tileSize: ", tileSize);
@@ -198,6 +206,7 @@ const sketch = (p5: P5) => {
         test1 = p5.loadImage(test1png);
 
         font1 = p5.loadFont(font1Source);
+        font2 = p5.loadFont(font2Source);
 
         loadedTilesets = tilesets.map((tileset) => {
             const { leftEdge, rightEdge, middle, ...rest } = tileset;
@@ -251,6 +260,16 @@ const sketch = (p5: P5) => {
             };
         });
 
+        loadedChainTiles = chainTiles.map((chain) => {
+            return {
+                ...chain,
+                image: p5.loadImage(chain.imageSrc),
+                accentImage: chain.accentImageSrc
+                    ? p5.loadImage(chain.accentImageSrc)
+                    : undefined,
+            };
+        });
+
         store.setState({ selectedPalette: selectedPaletteGroup });
     };
 
@@ -267,6 +286,7 @@ const sketch = (p5: P5) => {
             graphicGrid = [];
             corbels = [];
             groundItems = [];
+            chains = [];
             human = undefined;
 
             p5.frameCount = 0;
@@ -278,6 +298,7 @@ const sketch = (p5: P5) => {
             groundItemsDrawn = false;
             graphicGridDrawn = false;
             humanDrawn = false;
+            chainsDrawn = false;
 
             allowedTilesets = [];
 
@@ -323,7 +344,7 @@ const sketch = (p5: P5) => {
 
             let prevTl: TileSet | undefined = undefined;
 
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 35; i++) {
                 const prevTileset: TileSet | undefined = prevTl;
 
                 let theseTilesets: TileSet[] = allowedTilesets.filter((t) => {
@@ -523,6 +544,8 @@ const sketch = (p5: P5) => {
                     const prevLevelDifference = thisLevel - prevLevel;
                     const prevPrevLevelDifference = thisLevel - prevPrevLevel;
 
+                    let humanOnThisLevel = false;
+
                     if (thisLevel > prevLevel) {
                         const difference = thisLevel - prevLevel + 2;
 
@@ -574,7 +597,6 @@ const sketch = (p5: P5) => {
                     }
 
                     // human
-
                     if (
                         thisLevel > prevLevel &&
                         prevLevelDifference > 4 &&
@@ -633,10 +655,93 @@ const sketch = (p5: P5) => {
                                 accentImage: humanAccentImg,
                                 xSize: humanTile.xSize,
                                 ySize: humanTile.ySize,
-                                mirrored: leftOrRight,
+                                mirroredX: leftOrRight,
                             };
 
                             console.log("human", human);
+                        }
+                    }
+
+                    if (!humanOnThisLevel) {
+                        humanOnThisLevel = true;
+                    }
+
+                    const baseTileStart = grid[i].tiles[0];
+                    const baseTileEnd = grid[i].tiles[grid[i].tiles.length - 1];
+
+                    //@ts-ignore
+                    if (grid[i].y && grid[i].y < p5.height * 0.5) {
+                        if (
+                            thisLevel > prevLevel &&
+                            prevLevelDifference > 2 &&
+                            thisLevel > prevPrevLevel &&
+                            prevPrevLevelDifference > 2
+                        ) {
+                            startChain(
+                                p5,
+                                baseTileEnd.x - tileSize,
+                                baseTileEnd.y - tileSize - (tileSize / 16) * 4,
+                                "right-up",
+                                tileSize,
+                                mainPalette.hexColors.map((c) => p5.color(c)),
+                                // secondaryPalette.hexColors.map((c) =>
+                                //     p5.color(c)
+                                // ),
+                                loadedChainTiles,
+                                chains
+                            );
+
+                            startChain(
+                                p5,
+                                baseTileStart.x + (tileSize / 16) * 7,
+                                baseTileStart.y -
+                                    tileSize -
+                                    (tileSize / 16) * 4,
+                                "left-up",
+                                tileSize,
+                                mainPalette.hexColors.map((c) => p5.color(c)),
+                                // secondaryPalette.hexColors.map((c) =>
+                                //     p5.color(c)
+                                // ),
+                                loadedChainTiles,
+                                chains
+                            );
+                        }
+                    } else {
+                        if (
+                            thisLevel > prevLevel &&
+                            prevLevelDifference > 2 &&
+                            thisLevel > prevPrevLevel &&
+                            prevPrevLevelDifference > 2
+                        ) {
+                            startChain(
+                                p5,
+                                baseTileEnd.x - tileSize,
+                                baseTileEnd.y + baseTileEnd.ySize * tileSize,
+                                "right-down",
+                                tileSize,
+                                mainPalette.hexColors.map((c) => p5.color(c)),
+                                // secondaryPalette.hexColors.map((c) =>
+                                //     p5.color(c)
+                                // ),
+                                loadedChainTiles,
+                                chains
+                            );
+
+                            startChain(
+                                p5,
+                                baseTileStart.x + (tileSize / 16) * 7,
+                                baseTileStart.y +
+                                    baseTileStart.ySize * tileSize,
+                                "left-down",
+                                tileSize,
+                                mainPalette.hexColors.map((c) => p5.color(c)),
+                                // secondaryPalette.hexColors.map((c) =>
+                                //     p5.color(c)
+                                // ),
+                                loadedChainTiles,
+                                chains
+                            );
                         }
                     }
                 }
@@ -817,15 +922,6 @@ const sketch = (p5: P5) => {
             graphicGridDrawn = true;
         }
 
-        p5.fill("#444");
-        p5.textFont(font1);
-        p5.textSize(tileSize / 2);
-        p5.textLeading(tileSize / 1.6);
-
-        p5.blendMode(p5.BLEND);
-
-        p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
-
         if (!corbelsDrawn) {
             p5.blendMode(p5.BLEND);
             for (let i = 0; i < corbels.length; i++) {
@@ -910,9 +1006,9 @@ const sketch = (p5: P5) => {
                             prevColorPalette: thisTile.prevColors,
                             nextColorPalette: thisTile.nextColors,
                             secondaryPalettesDensity:
-                                Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
-                                grid[i].tiles.length /
-                                2,
+                                (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
+                                    grid[i].tiles.length) *
+                                0.65,
                             secondaryColorPalette: thisTile.colors2,
                             glitchDensity:
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
@@ -931,6 +1027,35 @@ const sketch = (p5: P5) => {
             if (p5.frameCount > grid.length + 1) {
                 gridDrawn = true;
             }
+        }
+
+        if (!chainsDrawn) {
+            p5.blendMode(p5.BLEND);
+            for (let i = 0; i < chains.length; i++) {
+                const thisChain = chains[i];
+                console.log(thisChain);
+
+                if (thisChain.image) {
+                    // console.log("drawing chain");
+                    drawImageWithBrushes({
+                        p5: p5,
+                        x: thisChain.x,
+                        y: thisChain.y,
+                        image: thisChain.image,
+                        brushMode: "rectangle",
+                        brushSize: Math.ceil(tileSize / 16),
+                        mainColorPalette: thisChain.colors,
+                        prevColorPalette: thisChain.prevColors,
+                        nextColorPalette: thisChain.nextColors,
+                        secondaryPalettesDensity: 0,
+                        secondaryColorPalette: thisChain.colors,
+                        glitchDensity: 0,
+                        dontGlitch: true,
+                        mirroredY: thisChain.mirroredY,
+                    });
+                }
+            }
+            chainsDrawn = true;
         }
 
         if (!humanDrawn) {
@@ -954,12 +1079,54 @@ const sketch = (p5: P5) => {
 
                     accentImage: human.accentImage,
                     accentImageColorPalette: human.colors2,
-                    mirrored: human.mirrored,
+                    mirroredX: human.mirroredX,
                 });
 
                 humanDrawn = true;
             }
         }
+
+        p5.fill(
+            p5.color(
+                secondaryPalette.hexColors[
+                    Math.floor(secondaryPalette.hexColors.length - 2)
+                ]
+            )
+        );
+        p5.textFont(font1);
+        p5.textSize(tileSize / 2);
+        p5.textLeading(tileSize / 1.6);
+
+        p5.blendMode(p5.BLEND);
+
+        p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
+
+        p5.textSize(tileSize);
+
+        p5.textFont(font2);
+
+        textVertical(
+            p5,
+            "lalalala mergem la pescuit",
+            p5.width - tileSize * 2,
+            tileSize
+        );
+
+        p5.textFont(font1);
+
+        // p5.noFill();
+        // p5.stroke(
+        //     secondaryPalette.hexColors[
+        //         Math.floor(secondaryPalette.hexColors.length / 2)
+        //     ]
+        // );
+        // p5.strokeWeight(tileSize / 16);
+        // p5.rect(
+        //     tileSize / 2,
+        //     tileSize / 2,
+        //     p5.width - tileSize,
+        //     p5.height - tileSize
+        // );
 
         //end of draw
         if (p5.frameCount > 3000) {
