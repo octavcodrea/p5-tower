@@ -1,0 +1,129 @@
+body {
+  background-color: #222;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100vh;
+  margin: 0;
+}
+
+body * {
+  font-family: "Courier New", Courier, monospace;
+}
+
+button {
+  cursor: pointer;
+  font-size: 2vh;
+  padding: 1vh 2vh;
+  background-color: #222;
+  color: white;
+  border: 1px solid #777;
+  margin: 0.5vh;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+button:active {
+  background-color: #444;
+}
+
+.container {
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.container canvas {
+  border: 1px solid #777;
+}
+
+.container #menu {
+  font-size: 2vh;
+  margin-left: 20px;
+  padding: 0.5vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border: 1px solid #777;
+}
+
+.container #menu input {
+  font-size: 2vh;
+  padding: 0.5vh;
+}
+
+.container #menu #new-seed {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.my-20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.dev-mode-label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 10px;
+}
+
+.dev-mode-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.dev-mode-label .checkmark {
+  position: relative;
+  margin: 0 0.5vh;
+  display: inline-block;
+  width: 2vh;
+  height: 2vh;
+  border: 1px solid #777;
+  border-radius: 10%;
+  cursor: pointer;
+}
+
+.dev-mode-label input:checked ~ .checkmark {
+  background-color: #2196f3;
+  color: white;
+}
+
+.dev-mode-label input:checked ~ .checkmark:after {
+  content: "Y";
+  position: absolute;
+  display: block;
+  left: 20%;
+}
+
+.dev-mode-label .checkmark:after {
+  content: "N";
+  position: absolute;
+  display: block;
+  left: 20%;
+}
+/*# sourceMappingURL=styles.css.map */

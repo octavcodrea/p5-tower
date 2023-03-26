@@ -11,14 +11,21 @@ import PaletteGroups from "./assets/palette-groups";
 
 import { store } from "./store";
 import { setupHtml, updateHtml } from "./utils";
-import { drawingAgent, treetrunkAgent } from "./agents-ukiyoe";
 import { drawImageWithBrushes, textVertical } from "./utils/p5utils";
 import { tilesets } from "./assets/tilesets/tilesets";
 import { corbelTiles } from "./assets/corbels/corbels";
 import { chainTiles } from "./assets/chains/chains";
 import { groundItemTiles } from "./assets/ground-items/ground-items";
+import { symbolTiles } from "./assets/symbols/symbols";
 import { humans } from "./assets/humans/humans";
-import { GraphicGrid2D, Grid, GridTile, Tile, TileSet } from "./types";
+import {
+    GraphicGrid2D,
+    Grid,
+    GridColumn,
+    GridTile,
+    Tile,
+    TileSet,
+} from "./types";
 import {
     addGridLayer,
     addMazeLine,
@@ -43,8 +50,11 @@ import {
 
 let { canvasWidth, canvasHeight } = store.getState();
 
+const tileSize = 64;
+console.log("tileSize: ", tileSize);
+const totalYTiles = Math.ceil(canvasHeight / tileSize);
+
 const unit = canvasWidth / 1000;
-let deltaTime = 0;
 
 export function u(x: number) {
     if (typeof x === "number") {
@@ -60,6 +70,40 @@ let corbels: GridTile[] = [];
 let groundItems: GridTile[] = [];
 let human: GridTile | undefined = undefined;
 let chains: GridTile[] = [];
+let symbols: GridColumn[] = [
+    { xIndex: 0, x: 0, xSize: 1, ySize: totalYTiles, tiles: [] },
+    { xIndex: 1, x: tileSize, xSize: 1, ySize: totalYTiles, tiles: [] },
+    {
+        xIndex: 2,
+        x: canvasWidth - 2 * tileSize,
+        xSize: 1,
+        ySize: totalYTiles,
+        tiles: [],
+    },
+    {
+        xIndex: 3,
+        x: canvasWidth - tileSize,
+        xSize: 1,
+        ySize: totalYTiles,
+        tiles: [],
+    },
+];
+
+for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < totalYTiles; j++) {
+        symbols[i].tiles.push({
+            x: symbols[i].x,
+            y: j * tileSize,
+            xIndex: i,
+            yIndex: j,
+            xSize: 1,
+            ySize: 1,
+            colors: [],
+            colors2: [],
+            isUsed: false,
+        });
+    }
+}
 
 let dotsDrawn = false;
 let gridDrawn = false;
@@ -68,6 +112,7 @@ let groundItemsDrawn = false;
 let graphicGridDrawn = false;
 let humanDrawn = false;
 let chainsDrawn = false;
+let symbolsDrawn = false;
 let allowedTilesets = tilesets;
 
 let mainPalette = getPaletteByName(PaletteGroups[0].palettes[0]);
@@ -189,9 +234,7 @@ const sketch = (p5: P5) => {
     let loadedGroundItemTiles: Tile[] = [];
     let loadedHumanTiles: Tile[] = [];
     let loadedChainTiles: Tile[] = [];
-
-    const tileSize = 64;
-    console.log("tileSize: ", tileSize);
+    let loadedSymbolTiles: Tile[] = [];
 
     p5.preload = () => {
         noiseImgColor =
@@ -270,6 +313,16 @@ const sketch = (p5: P5) => {
             };
         });
 
+        loadedSymbolTiles = symbolTiles.map((symbol) => {
+            return {
+                ...symbol,
+                image: p5.loadImage(symbol.imageSrc),
+                accentImage: symbol.accentImageSrc
+                    ? p5.loadImage(symbol.accentImageSrc)
+                    : undefined,
+            };
+        });
+
         store.setState({ selectedPalette: selectedPaletteGroup });
     };
 
@@ -287,6 +340,46 @@ const sketch = (p5: P5) => {
             corbels = [];
             groundItems = [];
             chains = [];
+            symbols = [
+                { xIndex: 0, x: 0, xSize: 1, ySize: totalYTiles, tiles: [] },
+                {
+                    xIndex: 1,
+                    x: tileSize,
+                    xSize: 1,
+                    ySize: totalYTiles,
+                    tiles: [],
+                },
+                {
+                    xIndex: 2,
+                    x: canvasWidth - 2 * tileSize,
+                    xSize: 1,
+                    ySize: totalYTiles,
+                    tiles: [],
+                },
+                {
+                    xIndex: 3,
+                    x: canvasWidth - tileSize,
+                    xSize: 1,
+                    ySize: totalYTiles,
+                    tiles: [],
+                },
+            ];
+
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < totalYTiles; j++) {
+                    symbols[i].tiles.push({
+                        x: symbols[i].x,
+                        y: j * tileSize,
+                        xIndex: i,
+                        yIndex: j,
+                        xSize: 1,
+                        ySize: 1,
+                        colors: [],
+                        colors2: [],
+                        isUsed: false,
+                    });
+                }
+            }
             human = undefined;
 
             p5.frameCount = 0;
@@ -299,6 +392,7 @@ const sketch = (p5: P5) => {
             graphicGridDrawn = false;
             humanDrawn = false;
             chainsDrawn = false;
+            symbolsDrawn = false;
 
             allowedTilesets = [];
 
@@ -541,8 +635,20 @@ const sketch = (p5: P5) => {
                     const prevLevel = grid[i - 1].totalTilesWidth;
                     const prevPrevLevel = grid[i - 2].totalTilesWidth;
 
+                    const nextLevel =
+                        grid[i + 1] !== undefined
+                            ? grid[i + 1].totalTilesWidth
+                            : 99;
+                    const nextNextLevel =
+                        grid[i + 2] !== undefined
+                            ? grid[i + 2].totalTilesWidth
+                            : 99;
+
                     const prevLevelDifference = thisLevel - prevLevel;
                     const prevPrevLevelDifference = thisLevel - prevPrevLevel;
+
+                    const nextLevelDifference = thisLevel - nextLevel;
+                    const nextNextLevelDifference = thisLevel - nextNextLevel;
 
                     let humanOnThisLevel = false;
 
@@ -709,10 +815,10 @@ const sketch = (p5: P5) => {
                         }
                     } else {
                         if (
-                            thisLevel > prevLevel &&
-                            prevLevelDifference > 2 &&
-                            thisLevel > prevPrevLevel &&
-                            prevPrevLevelDifference > 2
+                            thisLevel > nextLevel &&
+                            nextLevelDifference > 2 &&
+                            thisLevel > nextNextLevel &&
+                            nextNextLevelDifference > 2
                         ) {
                             startChain(
                                 p5,
@@ -742,6 +848,133 @@ const sketch = (p5: P5) => {
                                 loadedChainTiles,
                                 chains
                             );
+                        }
+                    }
+                }
+            }
+
+            //symbols
+            console.log("totalYTiles", totalYTiles);
+
+            const hugeTiles = loadedSymbolTiles.filter(
+                (t) => t.id && t.id.includes("huge")
+            );
+
+            const bigTiles = loadedSymbolTiles.filter(
+                (t) => t.id && t.id.includes("big")
+            );
+            const medTiles = loadedSymbolTiles.filter(
+                (t) => t.id && t.id.includes("med")
+            );
+            const smallTiles = loadedSymbolTiles.filter(
+                (t) => t.id && t.id.includes("small")
+            );
+
+            const bigAndHuge = [...bigTiles, ...hugeTiles];
+            for (let i = 0; i < symbols[0].ySize - 1; i++) {
+                for (let j = 0; j < 4; j += 2) {
+                    if (p5.random() > 0.6) {
+                        const symbolTile =
+                            bigAndHuge[
+                                Math.floor(
+                                    bigAndHuge.length * sre(i, i + seed + j)
+                                )
+                            ];
+
+                        const targetIndex = symbols[j].tiles.findIndex(
+                            (t) => t.yIndex === i && t.xIndex === j
+                        );
+
+                        if (
+                            targetIndex !== -1 &&
+                            symbols[j].tiles[targetIndex] &&
+                            !symbols[j].tiles[targetIndex].isUsed
+                        ) {
+                            symbols[j].tiles[targetIndex].image =
+                                symbolTile.image;
+                            symbols[j].tiles[targetIndex].colors =
+                                secondaryPalette.hexColors.map((c) =>
+                                    p5.color(c)
+                                );
+                            symbols[j].tiles[targetIndex].mirroredY =
+                                sr(j + seed + i) > 0.65;
+                            symbols[j].tiles[targetIndex].isUsed = true;
+
+                            symbols[j + 1].tiles[targetIndex].isUsed = true;
+
+                            symbols[j].tiles[targetIndex + 1].isUsed = true;
+                            symbols[j + 1].tiles[targetIndex + 1].isUsed = true;
+
+                            if (
+                                symbolTile.id &&
+                                symbolTile.id.includes("huge") &&
+                                symbols[j].tiles[targetIndex + 2]
+                            ) {
+                                symbols[j].tiles[targetIndex + 2].isUsed = true;
+                                symbols[j + 1].tiles[targetIndex + 2].isUsed =
+                                    true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (let i = 0; i < symbols.length; i++) {
+                for (let j = 0; j < symbols[i].tiles.length; j++) {
+                    if (!symbols[i].tiles[j].isUsed) {
+                        if (
+                            symbols[i].tiles[j + 1] &&
+                            !symbols[i].tiles[j + 1].isUsed
+                        ) {
+                            if (p5.random() > 0.5) {
+                                const symbolTile =
+                                    medTiles[
+                                        Math.floor(
+                                            medTiles.length *
+                                                sre(i, i + seed + j)
+                                        )
+                                    ];
+
+                                symbols[i].tiles[j].image = symbolTile.image;
+                                symbols[i].tiles[j].colors =
+                                    secondaryPalette.hexColors.map((c) =>
+                                        p5.color(c)
+                                    );
+
+                                symbols[i].tiles[j].isUsed = true;
+                                symbols[i].tiles[j + 1].isUsed = true;
+                            } else {
+                                const symbolTile =
+                                    smallTiles[
+                                        Math.floor(
+                                            smallTiles.length *
+                                                sre(i, i + seed + j)
+                                        )
+                                    ];
+
+                                symbols[i].tiles[j].image = symbolTile.image;
+                                symbols[i].tiles[j].colors =
+                                    secondaryPalette.hexColors.map((c) =>
+                                        p5.color(c)
+                                    );
+
+                                symbols[i].tiles[j].isUsed = true;
+                            }
+                        } else {
+                            const symbolTile =
+                                smallTiles[
+                                    Math.floor(
+                                        smallTiles.length * sre(i, j + seed + i)
+                                    )
+                                ];
+
+                            symbols[i].tiles[j].image = symbolTile.image;
+                            symbols[i].tiles[j].colors =
+                                secondaryPalette.hexColors.map((c) =>
+                                    p5.color(c)
+                                );
+
+                            symbols[i].tiles[j].isUsed = true;
                         }
                     }
                 }
@@ -880,8 +1113,6 @@ const sketch = (p5: P5) => {
     };
 
     p5.draw = () => {
-        deltaTime++;
-
         const frameCountUI = document.getElementById("frame-count");
         if (frameCountUI) {
             frameCountUI.innerHTML = p5.frameCount.toString();
@@ -951,6 +1182,7 @@ const sketch = (p5: P5) => {
                         secondaryColorPalette: thisCorbel.colors,
                         glitchDensity: 0,
                         dontGlitch: true,
+                        seed: seed + i,
                     });
                 }
             }
@@ -979,6 +1211,7 @@ const sketch = (p5: P5) => {
                         secondaryColorPalette: thisItem.colors2,
                         glitchDensity: 0,
                         dontGlitch: true,
+                        seed: seed + i,
                     });
                 }
             }
@@ -1018,6 +1251,7 @@ const sketch = (p5: P5) => {
 
                             accentImage: thisTile.accentImage,
                             accentImageColorPalette: thisTile.colors2,
+                            seed: seed + i + j,
                         });
                         // }
                     }
@@ -1033,7 +1267,7 @@ const sketch = (p5: P5) => {
             p5.blendMode(p5.BLEND);
             for (let i = 0; i < chains.length; i++) {
                 const thisChain = chains[i];
-                console.log(thisChain);
+                // console.log(thisChain);
 
                 if (thisChain.image) {
                     // console.log("drawing chain");
@@ -1052,6 +1286,7 @@ const sketch = (p5: P5) => {
                         glitchDensity: 0,
                         dontGlitch: true,
                         mirroredY: thisChain.mirroredY,
+                        seed: seed + i,
                     });
                 }
             }
@@ -1080,16 +1315,55 @@ const sketch = (p5: P5) => {
                     accentImage: human.accentImage,
                     accentImageColorPalette: human.colors2,
                     mirroredX: human.mirroredX,
+                    seed: seed + 1,
                 });
 
                 humanDrawn = true;
             }
         }
 
+        if (gridDrawn && !symbolsDrawn) {
+            p5.blendMode(p5.BLEND);
+
+            for (let i = 0; i < symbols.length; i++) {
+                for (let j = 0; j < symbols[i].tiles.length; j++) {
+                    const thisTile = symbols[i].tiles[j];
+                    if (thisTile.image) {
+                        drawImageWithBrushes({
+                            p5: p5,
+                            x: thisTile.x,
+                            y: thisTile.y,
+                            image: thisTile.image,
+                            brushMode: "rectangle",
+                            brushSize: Math.ceil(tileSize / 16),
+                            mainColorPalette: thisTile.colors,
+                            prevColorPalette: thisTile.prevColors,
+                            nextColorPalette: thisTile.nextColors,
+                            secondaryPalettesDensity: 0,
+                            secondaryColorPalette: thisTile.colors,
+                            glitchDensity: 0,
+                            dontGlitch: true,
+                            seed: seed + i + j,
+                            mirroredY: thisTile.mirroredY,
+                        });
+                    }
+                }
+            }
+            symbolsDrawn = true;
+        }
+
+        // p5.fill(p5.color(mainPalette.hexColors[2]));
+        // p5.rect(
+        //     tileSize * 2.5,
+        //     p5.height - tileSize * 3,
+        //     tileSize * 6,
+        //     tileSize * 3
+        // );
+
         p5.fill(
             p5.color(
                 secondaryPalette.hexColors[
-                    Math.floor(secondaryPalette.hexColors.length - 2)
+                    Math.floor(secondaryPalette.hexColors.length - 6)
                 ]
             )
         );
@@ -1099,34 +1373,18 @@ const sketch = (p5: P5) => {
 
         p5.blendMode(p5.BLEND);
 
-        p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize / 2, tileSize);
+        p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize * 2.5, tileSize);
 
-        p5.textSize(tileSize);
+        // p5.textSize(tileSize);
+        // p5.textFont(font2);
 
-        p5.textFont(font2);
-
-        textVertical(
-            p5,
-            "lalalala mergem la pescuit",
-            p5.width - tileSize * 2,
-            tileSize
-        );
+        // p5.text(
+        //     "It went on\nendlessly,\nup and down,\nTartarus.",
+        //     tileSize * 2.7,
+        //     p5.height - tileSize * 2.5
+        // );
 
         p5.textFont(font1);
-
-        // p5.noFill();
-        // p5.stroke(
-        //     secondaryPalette.hexColors[
-        //         Math.floor(secondaryPalette.hexColors.length / 2)
-        //     ]
-        // );
-        // p5.strokeWeight(tileSize / 16);
-        // p5.rect(
-        //     tileSize / 2,
-        //     tileSize / 2,
-        //     p5.width - tileSize,
-        //     p5.height - tileSize
-        // );
 
         //end of draw
         if (p5.frameCount > 3000) {

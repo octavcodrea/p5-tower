@@ -15,13 +15,13 @@ export const humans: Tile[] = [
         ySize: 2,
         type: "human",
     },
-    {
-        imageSrc: Human2,
-        // accentImageSrc: Human2Acc,
-        xSize: 2,
-        ySize: 2,
-        type: "human",
-    },
+    // {
+    //     imageSrc: Human2,
+    //     // accentImageSrc: Human2Acc,
+    //     xSize: 2,
+    //     ySize: 2,
+    //     type: "human",
+    // },
     // {
     //     imageSrc: Human3,
     //     // accentImageSrc: Human3Acc,

@@ -52,6 +52,7 @@ export type GridTile = {
 
     image?: p5.Image;
     accentImage?: p5.Image;
+    isUsed?: boolean;
 
     colors: p5.Color[];
     prevColors?: p5.Color[];
@@ -77,6 +78,15 @@ export type GridLayer = {
     shouldMatchNextWidth: boolean;
 };
 
+export type GridColumn = {
+    xIndex: number;
+    x: number;
+    xSize: number;
+    ySize: number;
+
+    tiles: GridTile[];
+};
+
 export type Tile = {
     id?: string;
     imageSrc: string;
@@ -94,7 +104,8 @@ export type Tile = {
         | "corbel"
         | "ground-item"
         | "human"
-        | "chain";
+        | "chain"
+        | "symbol";
 };
 
 export type TileSet = {

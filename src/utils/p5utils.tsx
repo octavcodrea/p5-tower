@@ -1486,6 +1486,7 @@ export const drawImageWithBrushes = (params: {
     brushMode: "rectangle";
     brushSize: number;
     mainColorPalette: P5.Color[];
+    seed: number | string;
 
     secondaryColorPalette: P5.Color[];
     secondaryPalettesDensity: number;
@@ -1518,12 +1519,14 @@ export const drawImageWithBrushes = (params: {
         accentImageColorPalette,
         mirroredX,
         mirroredY,
+        seed,
     } = params;
 
     const imageWidth = image.width;
     const imageHeight = image.height;
 
     let imageGrid = gridFromImage(image);
+    let accentImageGrid = accentImage ? gridFromImage(accentImage) : undefined;
     let glitchedCorners = {
         topLeft: "",
         topRight: "",
@@ -1532,7 +1535,22 @@ export const drawImageWithBrushes = (params: {
     };
 
     if (glitchDensity && p5.random() < glitchDensity && !params.dontGlitch) {
-        const glitched = glitchImageGrid(imageGrid, [], "random");
+        const glitched = glitchImageGrid(
+            imageGrid,
+            [],
+            "random",
+            seed.toString()
+        );
+        if (accentImageGrid) {
+            const glitchedAccent = glitchImageGrid(
+                accentImageGrid,
+                [],
+                "random",
+                seed.toString()
+            );
+
+            accentImageGrid = glitchedAccent.grid;
+        }
         imageGrid = glitched.grid;
         glitchedCorners = glitched.glitchedCorners;
 
@@ -1656,9 +1674,7 @@ export const drawImageWithBrushes = (params: {
                     fcInt(Math.floor(r / 32), 0, paletteToUse.length - 1)
                 ];
 
-            if (accentImage && accentImageColorPalette) {
-                let accentImageGrid = gridFromImage(accentImage);
-
+            if (accentImageGrid && accentImageColorPalette) {
                 if (accentImageGrid[i] && accentImageGrid[i][j]) {
                     const accentImagePixel = accentImageGrid[i][j];
 
@@ -1757,7 +1773,8 @@ type ImageCorner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 function glitchImageGrid(
     grid: Rgba[][],
     cornersToGlitch: ImageCorner[],
-    glitchMode: "letter" | "color" | "random"
+    glitchMode: "letter" | "color" | "random",
+    seed: string
 ) {
     const imageWidth = grid[0].length;
     const imageHeight = grid.length;
@@ -1771,12 +1788,10 @@ function glitchImageGrid(
     };
     let corners = cornersToGlitch.length
         ? cornersToGlitch
-        : randomElementFromArray([
-              "topLeft",
-              "topRight",
-              "bottomLeft",
-              "bottomRight",
-          ]);
+        : randomElementFromArrayWithSeed(
+              ["topLeft", "topRight", "bottomLeft", "bottomRight"],
+              seed
+          );
 
     let glitchedCorners = {
         topLeft: "",
@@ -1788,7 +1803,10 @@ function glitchImageGrid(
     if (corners.includes("topLeft")) {
         const modeToUse =
             glitchMode === "random"
-                ? randomElementFromArray(["letter", "color"])
+                ? randomElementFromArrayWithSeed(
+                      ["letter", "color", "letter", "color"],
+                      seed
+                  )
                 : glitchMode;
 
         glitchedCorners.topLeft = modeToUse;
@@ -1810,7 +1828,10 @@ function glitchImageGrid(
     if (corners.includes("topRight")) {
         const modeToUse =
             glitchMode === "random"
-                ? randomElementFromArray(["letter", "color"])
+                ? randomElementFromArrayWithSeed(
+                      ["letter", "color", "letter", "color"],
+                      seed
+                  )
                 : glitchMode;
 
         glitchedCorners.topRight = modeToUse;
@@ -1832,7 +1853,10 @@ function glitchImageGrid(
     if (corners.includes("bottomLeft")) {
         const modeToUse =
             glitchMode === "random"
-                ? randomElementFromArray(["letter", "color"])
+                ? randomElementFromArrayWithSeed(
+                      ["letter", "color", "letter", "color"],
+                      seed
+                  )
                 : glitchMode;
 
         glitchedCorners.bottomLeft = modeToUse;
@@ -1854,7 +1878,10 @@ function glitchImageGrid(
     if (corners.includes("bottomRight")) {
         const modeToUse =
             glitchMode === "random"
-                ? randomElementFromArray(["letter", "color"])
+                ? randomElementFromArrayWithSeed(
+                      ["letter", "color", "letter", "color"],
+                      seed
+                  )
                 : glitchMode;
 
         glitchedCorners.bottomRight = modeToUse;
@@ -1884,6 +1911,18 @@ function glitchImageGrid(
 
 export function randomElementFromArray(array: any[]) {
     return array[Math.floor(Math.random() * array.length)];
+}
+
+export function randomElementFromArrayWithSeed(
+    array: any[],
+    seed: number | string
+) {
+    return array[
+        Math.floor(
+            sre(typeof seed === "string" ? parseInt(seed[0]) : seed, seed) *
+                array.length
+        )
+    ];
 }
 
 export function randomSymbol() {

@@ -149,6 +149,11 @@ import LionMiddle from "./lion/middle.png";
 import LionMiddle2 from "./lion/middle2.png";
 import LionRight from "./lion/right.png";
 
+import LionLeftAcc from "./lion/left - Copy.png";
+import LionMiddleAcc from "./lion/middle - Copy.png";
+import LionMiddle2Acc from "./lion/middle2 - Copy.png";
+import LionRightAcc from "./lion/right - Copy.png";
+
 import AngelMiddleAcc from "./angel/middle - Copy.png";
 
 import ColumnsLeft from "./columns/left.png";
@@ -1087,6 +1092,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: LionLeft,
+            accentImageSrc: LionLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -1094,12 +1100,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: LionMiddle,
+                accentImageSrc: LionMiddleAcc,
                 xSize: 1,
                 ySize: 2,
                 type: "middle",
             },
             {
                 imageSrc: LionMiddle2,
+                accentImageSrc: LionMiddle2Acc,
                 xSize: 3,
                 ySize: 2,
                 type: "middle",
@@ -1107,6 +1115,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: LionRight,
+            accentImageSrc: LionRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
