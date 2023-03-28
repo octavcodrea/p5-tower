@@ -69,6 +69,7 @@ export type GridTile = {
 export type GridLayer = {
     ySize: number;
     tiles: GridTile[];
+    tilesetName: string;
 
     yIndex?: number;
     y?: number;

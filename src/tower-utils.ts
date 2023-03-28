@@ -29,6 +29,7 @@ export const createGridLayer = (params: {
     } = params;
 
     const gridLayer: GridLayer = {
+        tilesetName: tileset.name,
         ySize: 1,
         tiles: [],
         totalTilesWidth: 0,

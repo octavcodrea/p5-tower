@@ -122,6 +122,11 @@ let secondaryPalette =
         ? getPaletteByName(PaletteGroups[0].palettes[1])
         : mainPalette;
 
+let tertiaryPalette =
+    PaletteGroups[0].palettes[0] !== undefined
+        ? getPaletteByName(PaletteGroups[0].palettes[2])
+        : mainPalette;
+
 const sketch = (p5: P5) => {
     let seed = Math.floor(Math.random() * 1000000000000000).toString();
     let newSeed = seed;
@@ -436,6 +441,13 @@ const sketch = (p5: P5) => {
                       )
                     : mainPalette;
 
+            tertiaryPalette =
+                PaletteGroups[selectedPaletteGroup].palettes[2] !== undefined
+                    ? getPaletteByName(
+                          PaletteGroups[selectedPaletteGroup].palettes[2]
+                      )
+                    : mainPalette;
+
             let prevTl: TileSet | undefined = undefined;
 
             for (let i = 0; i < 35; i++) {
@@ -485,16 +497,25 @@ const sketch = (p5: P5) => {
             for (let i = 0; i < grid.length; i++) {
                 for (let j = 0; j < grid[i].tiles.length; j++) {
                     let thisTile = grid[i].tiles[j];
+                    let thisTilesetIndex = allowedTilesets.findIndex((t) => {
+                        return t.name === grid[i].tilesetName;
+                    });
 
                     let mainPaletteToUse = mainPalette.hexColors.map((c) => {
                         return p5.color(c);
                     });
 
-                    let secPaletteToUse = secondaryPalette.hexColors.map(
-                        (c) => {
-                            return p5.color(c);
-                        }
-                    );
+                    let secPaletteToUse: P5.Color[] = [];
+
+                    // if (thisTilesetIndex % 2 === 0) {
+                    secPaletteToUse = secondaryPalette.hexColors.map((c) => {
+                        return p5.color(c);
+                    });
+                    // } else {
+                    //     secPaletteToUse = tertiaryPalette.hexColors.map((c) => {
+                    //         return p5.color(c);
+                    //     });
+                    // }
 
                     thisTile.colors = getTileColors(
                         grid[i].tiles.length,
@@ -755,8 +776,23 @@ const sketch = (p5: P5) => {
                                 y:
                                     grid[i].tiles[2].y -
                                     tileSize * humanTile.ySize,
-                                colors: grid[i].tiles[2].colors,
-                                colors2: grid[i].tiles[2].colors2,
+                                // colors: grid[i].tiles[2].colors,
+                                // colors2: grid[i].tiles[2].colors2,
+
+                                colors: getTileColors(
+                                    10,
+                                    5,
+                                    mainPalette.hexColors.map((c) =>
+                                        p5.color(c)
+                                    )
+                                ),
+                                colors2: getTileColors(
+                                    10,
+                                    5,
+                                    tertiaryPalette.hexColors.map((c) =>
+                                        p5.color(c)
+                                    )
+                                ),
                                 image: humanImg,
                                 accentImage: humanAccentImg,
                                 xSize: humanTile.xSize,
@@ -1373,7 +1409,9 @@ const sketch = (p5: P5) => {
 
         p5.blendMode(p5.BLEND);
 
-        p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize * 2.5, tileSize);
+        // p5.text("t\na\nr\nt\na\nr\nu\ns", tileSize * 2.5, tileSize);
+        textVertical(p5, "tartarus", tileSize * 2.5, tileSize);
+        // textVertical(p5, seed, p5.width - tileSize * 2.95, tileSize);
 
         // p5.textSize(tileSize);
         // p5.textFont(font2);

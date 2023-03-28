@@ -220,6 +220,8 @@ export const updateHtml = (params: {
             downloadButton.id = "download-button";
             downloadButton.innerHTML = "Download";
             downloadButton.onclick = () => {
+                const seed = store.getState().seed;
+
                 //date for title
                 p5.saveCanvas(
                     `${seed.toString()}-${new Date().toLocaleDateString(

@@ -9,6 +9,11 @@ import MiauMiddle from "./miau/middle.png";
 import MiauMiddle2 from "./miau/middle2.png";
 import MiauRight from "./miau/right.png";
 
+import MiauLeftAcc from "./miau/left - Copy.png";
+import MiauMiddleAcc from "./miau/middle - Copy.png";
+import MiauMiddle2Acc from "./miau/middle2 - Copy.png";
+import MiauRightAcc from "./miau/right - Copy.png";
+
 import EyesLeft from "./eyes/left.png";
 import EyesMiddle from "./eyes/middle.png";
 import EyesRight from "./eyes/right.png";
@@ -21,10 +26,14 @@ import Eyes2Left from "./eyes2/left.png";
 import Eyes2Middle from "./eyes2/middle.png";
 import Eyes2Right from "./eyes2/right.png";
 
+import Eyes2MiddleAcc from "./eyes2/middle - Copy.png";
+
 import SkullLeft from "./skull/left.png";
 import SkullMiddle from "./skull/middle.png";
 import SkullMiddle2 from "./skull/middle2.png";
 import SkullRight from "./skull/right.png";
+
+import SkullMiddle2Acc from "./skull/middle2 - Copy.png";
 
 import ChainLeft from "./chain/left.png";
 import ChainMiddle from "./chain/middle.png";
@@ -33,6 +42,14 @@ import ChainRight from "./chain/right.png";
 import ChainLeftAcc from "./chain/left - Copy.png";
 import ChainMiddleAcc from "./chain/middle - Copy.png";
 import ChainRightAcc from "./chain/right - Copy.png";
+
+import HeartLeft from "./heart/left.png";
+import HeartMiddle from "./heart/middle.png";
+import HeartMiddle2 from "./heart/middle2.png";
+import HeartRight from "./heart/right.png";
+
+import HeartMiddleAcc from "./heart/middle - Copy.png";
+import HeartMiddle2Acc from "./heart/middle2 - Copy.png";
 
 import DoorknobLeft from "./doorknob/left.png";
 import DoorknobMiddle from "./doorknob/middle.png";
@@ -160,6 +177,10 @@ import ColumnsLeft from "./columns/left.png";
 import ColumnsMiddle from "./columns/middle.png";
 import ColumnsRight from "./columns/right.png";
 
+import ColumnsLeftAcc from "./columns/left - Copy.png";
+import ColumnsMiddleAcc from "./columns/middle - Copy.png";
+import ColumnsRightAcc from "./columns/right - Copy.png";
+
 import GargoyleLeft from "./gargoyle/left.png";
 import GargoyleMiddle from "./gargoyle/middle.png";
 import GargoyleMiddle2 from "./gargoyle/middle2.png";
@@ -175,6 +196,10 @@ import SpiralMiddle from "./spiral/middle.png";
 import SpiralMiddle2 from "./spiral/middle2.png";
 import SpiralRight from "./spiral/right.png";
 
+import SpiralLeftAcc from "./spiral/left - Copy.png";
+import SpiralMiddleAcc from "./spiral/middle - Copy.png";
+import SpiralRightAcc from "./spiral/right - Copy.png";
+
 import BranchesLeft from "./branches/left.png";
 import BranchesMiddle from "./branches/middle.png";
 import BranchesRight from "./branches/right.png";
@@ -182,6 +207,14 @@ import BranchesRight from "./branches/right.png";
 import DiamondLeft from "./diamond/left.png";
 import DiamondMiddle from "./diamond/middle.png";
 import DiamondRight from "./diamond/right.png";
+
+// import DiamondLeftAcc from "./diamond/left - Copy.png";
+// import DiamondMiddleAcc from "./diamond/middle - Copy.png";
+// import DiamondRightAcc from "./diamond/right - Copy.png";
+
+import CastleLeft from "./castle/left.png";
+import CastleMiddle from "./castle/middle.png";
+import CastleRight from "./castle/right.png";
 
 import BonesLeftAcc from "./bones/left - Copy.png";
 import BonesMiddleAcc from "./bones/middle - Copy.png";
@@ -230,6 +263,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: MiauLeft,
+            accentImageSrc: MiauLeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -237,12 +271,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: MiauMiddle,
+                accentImageSrc: MiauMiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
             },
             {
                 imageSrc: MiauMiddle2,
+                accentImageSrc: MiauMiddle2Acc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -250,6 +286,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: MiauRight,
+            accentImageSrc: MiauRightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
@@ -297,6 +334,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: Eyes2Middle,
+                accentImageSrc: Eyes2MiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
@@ -900,6 +938,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: ColumnsLeft,
+            accentImageSrc: ColumnsLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -907,6 +946,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: ColumnsMiddle,
+                accentImageSrc: ColumnsMiddleAcc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -914,6 +954,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: ColumnsRight,
+            accentImageSrc: ColumnsRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -964,6 +1005,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: SpiralLeft,
+            accentImageSrc: SpiralLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -977,6 +1019,7 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: SpiralMiddle,
+                accentImageSrc: SpiralMiddleAcc,
                 xSize: 1,
                 ySize: 2,
                 type: "middle",
@@ -984,6 +1027,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: SpiralRight,
+            accentImageSrc: SpiralRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -1129,6 +1173,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: DiamondLeft,
+            // accentImageSrc: DiamondLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -1136,6 +1181,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: DiamondMiddle,
+                // accentImageSrc: DiamondMiddleAcc,
                 xSize: 3,
                 ySize: 2,
                 type: "middle",
@@ -1143,6 +1189,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: DiamondRight,
+            // accentImageSrc: DiamondRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -1151,36 +1198,65 @@ export const tilesets: TileSet[] = [
         matchPreviousWidth: true,
     },
 
-    // {
-    //     name: "gears",
-    //     ySize: 2,
-    //     leftEdge: {
-    //         imageSrc: GearsLeft,
-    //         xSize: 1,
-    //         ySize: 2,
-    //         type: "left-edge",
-    //     },
-    //     middle: [
-    //         {
-    //             imageSrc: GearsMiddle,
-    //             xSize: 1,
-    //             ySize: 2,
-    //             type: "middle",
-    //         },
-    //         {
-    //             imageSrc: GearsMiddle2,
-    //             xSize: 2,
-    //             ySize: 2,
-    //             type: "middle",
-    //         },
-    //     ],
-    //     rightEdge: {
-    //         imageSrc: GearsRight,
-    //         xSize: 1,
-    //         ySize: 2,
-    //         type: "right-edge",
-    //     },
-    //     matchNextWidth: false,
-    //     matchPreviousWidth: false,
-    // },
+    {
+        name: "castle",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: CastleLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: CastleMiddle,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: CastleRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "heart",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: HeartLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: HeartMiddle,
+                accentImageSrc: HeartMiddleAcc,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+            {
+                imageSrc: HeartMiddle2,
+                // accentImageSrc: HeartMiddle2Acc,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: HeartRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
 ];

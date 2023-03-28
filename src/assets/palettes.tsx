@@ -591,6 +591,7 @@ const Palettes: Palette[] = [
             "#f4dfa5",
             "#fce7a7",
             "#fcf7d4",
+            "#fefef6",
         ],
     },
 
