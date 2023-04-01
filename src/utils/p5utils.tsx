@@ -1499,6 +1499,9 @@ export const drawImageWithBrushes = (params: {
     accentImage?: P5.Image;
     accentImageColorPalette?: P5.Color[];
 
+    accentImage2?: P5.Image;
+    accentImage2ColorPalette?: P5.Color[];
+
     mirroredX?: boolean;
     mirroredY?: boolean;
 }) => {
@@ -1517,6 +1520,8 @@ export const drawImageWithBrushes = (params: {
         nextColorPalette,
         accentImage,
         accentImageColorPalette,
+        accentImage2,
+        accentImage2ColorPalette,
         mirroredX,
         mirroredY,
         seed,
@@ -1527,6 +1532,9 @@ export const drawImageWithBrushes = (params: {
 
     let imageGrid = gridFromImage(image);
     let accentImageGrid = accentImage ? gridFromImage(accentImage) : undefined;
+    let accentImage2Grid = accentImage2
+        ? gridFromImage(accentImage2)
+        : undefined;
     let glitchedCorners = {
         topLeft: "",
         topRight: "",
@@ -1689,6 +1697,30 @@ export const drawImageWithBrushes = (params: {
                                 )
                             ],
                             accentImagePixel.a / 255
+                        );
+                        brushColor = RGBAToP5Color(
+                            p5,
+                            normal(brushColorRgba, accentColor)
+                        );
+                    }
+                }
+            }
+
+            if (accentImage2Grid && accentImage2ColorPalette) {
+                if (accentImage2Grid[i] && accentImage2Grid[i][j]) {
+                    const accentImage2Pixel = accentImage2Grid[i][j];
+
+                    if (accentImage2Pixel.a > 0) {
+                        const brushColorRgba = p5ColorToRgba(brushColor);
+                        const accentColor = p5ColorToRgba(
+                            accentImage2ColorPalette[
+                                fcInt(
+                                    Math.floor(r / 32),
+                                    0,
+                                    paletteToUse.length - 1
+                                )
+                            ],
+                            accentImage2Pixel.a / 255
                         );
                         brushColor = RGBAToP5Color(
                             p5,

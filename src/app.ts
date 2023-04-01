@@ -42,6 +42,7 @@ import {
     fcInt,
     getPaletteByName,
     roundDecimals,
+    seedShuffle,
     sr,
     sre,
     srInt,
@@ -100,6 +101,7 @@ for (let i = 0; i < 4; i++) {
             ySize: 1,
             colors: [],
             colors2: [],
+
             isUsed: false,
         });
     }
@@ -264,6 +266,9 @@ const sketch = (p5: P5) => {
                 accentImage: leftEdge.accentImageSrc
                     ? p5.loadImage(leftEdge.accentImageSrc)
                     : undefined,
+                accentImage2: leftEdge.accentImage2Src
+                    ? p5.loadImage(leftEdge.accentImage2Src)
+                    : undefined,
             };
             const loadedMiddle = middle.map((m) => {
                 return {
@@ -272,6 +277,9 @@ const sketch = (p5: P5) => {
                     accentImage: m.accentImageSrc
                         ? p5.loadImage(m.accentImageSrc)
                         : undefined,
+                    accentImage2: m.accentImage2Src
+                        ? p5.loadImage(m.accentImage2Src)
+                        : undefined,
                 };
             });
             const loadedRightEdge = {
@@ -279,6 +287,9 @@ const sketch = (p5: P5) => {
                 image: p5.loadImage(rightEdge.imageSrc),
                 accentImage: rightEdge.accentImageSrc
                     ? p5.loadImage(rightEdge.accentImageSrc)
+                    : undefined,
+                accentImage2: rightEdge.accentImage2Src
+                    ? p5.loadImage(rightEdge.accentImage2Src)
                     : undefined,
             };
 
@@ -401,10 +412,12 @@ const sketch = (p5: P5) => {
 
             allowedTilesets = [];
 
-            while (allowedTilesets.length < 10) {
+            const shuffledLoadedTilesets = seedShuffle(loadedTilesets, seed);
+
+            while (allowedTilesets.length < 12) {
                 const randomTileset =
-                    loadedTilesets[
-                        Math.floor(p5.random(loadedTilesets.length))
+                    shuffledLoadedTilesets[
+                        Math.floor(p5.random(shuffledLoadedTilesets.length))
                     ];
 
                 if (!allowedTilesets.includes(randomTileset)) {
@@ -507,8 +520,14 @@ const sketch = (p5: P5) => {
 
                     let secPaletteToUse: P5.Color[] = [];
 
+                    let terPaletteToUse: P5.Color[] = [];
+
                     // if (thisTilesetIndex % 2 === 0) {
                     secPaletteToUse = secondaryPalette.hexColors.map((c) => {
+                        return p5.color(c);
+                    });
+
+                    terPaletteToUse = tertiaryPalette.hexColors.map((c) => {
                         return p5.color(c);
                     });
                     // } else {
@@ -527,6 +546,12 @@ const sketch = (p5: P5) => {
                         grid[i].tiles.length,
                         j,
                         secPaletteToUse
+                    );
+
+                    thisTile.colors3 = getTileColors(
+                        grid[i].tiles.length,
+                        j,
+                        terPaletteToUse
                     );
 
                     thisTile.prevColors = getTileColors(
@@ -910,16 +935,27 @@ const sketch = (p5: P5) => {
             for (let i = 0; i < symbols[0].ySize - 1; i++) {
                 for (let j = 0; j < 4; j += 2) {
                     if (p5.random() > 0.6) {
-                        const symbolTile =
-                            bigAndHuge[
-                                Math.floor(
-                                    bigAndHuge.length * sre(i, i + seed + j)
-                                )
-                            ];
+                        let availableTiles = [...bigAndHuge];
 
                         const targetIndex = symbols[j].tiles.findIndex(
                             (t) => t.yIndex === i && t.xIndex === j
                         );
+
+                        if (
+                            symbols[j].tiles[targetIndex].y >
+                            p5.height - tileSize * 3
+                        ) {
+                            availableTiles = availableTiles.filter(
+                                (t) => t.id && !t.id.includes("huge")
+                            );
+                        }
+
+                        const symbolTile =
+                            availableTiles[
+                                Math.floor(
+                                    availableTiles.length * sre(i, i + seed + j)
+                                )
+                            ];
 
                         if (
                             targetIndex !== -1 &&
@@ -1287,6 +1323,9 @@ const sketch = (p5: P5) => {
 
                             accentImage: thisTile.accentImage,
                             accentImageColorPalette: thisTile.colors2,
+
+                            accentImage2: thisTile.accentImage2,
+                            accentImage2ColorPalette: thisTile.colors3,
                             seed: seed + i + j,
                         });
                         // }

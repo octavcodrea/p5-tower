@@ -496,7 +496,7 @@ const Palettes: Palette[] = [
         hexColors: [
             "#190e25",
             "#261933",
-            "#272249",
+            // "#272249",
             "#322b64",
             "#3d3c93",
             "#5c58b6",
@@ -592,6 +592,65 @@ const Palettes: Palette[] = [
             "#fce7a7",
             "#fcf7d4",
             "#fefef6",
+        ],
+    },
+
+    {
+        background: "#000",
+        name: "steel",
+
+        hexColors: [
+            "#1d0424",
+            "#21112d",
+            "#28243a",
+            "#313848",
+            "#425059",
+            "#566468",
+            "#76817e",
+            "#9aa096",
+            "#abafa1",
+            "#cbc9b5",
+            "#ede5cb",
+            "#fbf1d3",
+        ],
+    },
+
+    {
+        background: "#000",
+        name: "iron",
+
+        hexColors: [
+            "#0e0811",
+            "#1f1424",
+            "#2a1b31",
+            "#382544",
+            "#563e68",
+            "#715d87",
+            "#9283a6",
+            "#af9db4",
+            "#dfc5c4",
+            "#feedd3",
+            "#fefad9",
+            "#feffdb",
+        ],
+    },
+
+    {
+        background: "#000",
+        name: "iron",
+
+        hexColors: [
+            "#0c0526",
+            "#141832",
+            "#1e3143",
+            "#2a5058",
+            "#438278",
+            "#5b9b87",
+            "#8bae8e",
+            "#acbd90",
+            "#ccd2a0",
+            "#dadfb8",
+            "#e3e8ca",
         ],
     },
 

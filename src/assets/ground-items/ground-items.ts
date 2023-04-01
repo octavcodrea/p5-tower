@@ -13,6 +13,8 @@ import GroundItem11 from "./ground-items11.png";
 import GroundItem12 from "./ground-items12.png";
 import GroundItem13 from "./ground-items13.png";
 import GroundItem14 from "./ground-items14.png";
+import GroundItem15 from "./ground-items15.png";
+import GroundItem16 from "./ground-items16.png";
 
 export const groundItemTiles: Tile[] = [
     { imageSrc: GroundItem1, xSize: 1, ySize: 1, type: "ground-item" },
@@ -29,4 +31,6 @@ export const groundItemTiles: Tile[] = [
     { imageSrc: GroundItem12, xSize: 1, ySize: 1, type: "ground-item" },
     { imageSrc: GroundItem13, xSize: 1, ySize: 1, type: "ground-item" },
     { imageSrc: GroundItem14, xSize: 1, ySize: 1, type: "ground-item" },
+    { imageSrc: GroundItem15, xSize: 1, ySize: 1, type: "ground-item" },
+    { imageSrc: GroundItem16, xSize: 1, ySize: 1, type: "ground-item" },
 ];

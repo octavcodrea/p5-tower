@@ -52,6 +52,7 @@ export type GridTile = {
 
     image?: p5.Image;
     accentImage?: p5.Image;
+    accentImage2?: p5.Image;
     isUsed?: boolean;
 
     colors: p5.Color[];
@@ -95,6 +96,9 @@ export type Tile = {
 
     accentImageSrc?: string;
     accentImage?: p5.Image;
+
+    accentImage2Src?: string;
+    accentImage2?: p5.Image;
 
     xSize: number;
     ySize: number;

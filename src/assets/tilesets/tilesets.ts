@@ -43,6 +43,17 @@ import ChainLeftAcc from "./chain/left - Copy.png";
 import ChainMiddleAcc from "./chain/middle - Copy.png";
 import ChainRightAcc from "./chain/right - Copy.png";
 
+import SwordLeft from "./sword/left.png";
+import SwordMiddle from "./sword/middle.png";
+import SwordRight from "./sword/right.png";
+
+import SphereLeft from "./sphere/left.png";
+import SphereMiddle from "./sphere/middle.png";
+import SphereMiddle2 from "./sphere/middle2.png";
+import SphereRight from "./sphere/right.png";
+
+import SphereMiddleAcc from "./sphere/middle - Copy.png";
+
 import HeartLeft from "./heart/left.png";
 import HeartMiddle from "./heart/middle.png";
 import HeartMiddle2 from "./heart/middle2.png";
@@ -61,6 +72,11 @@ import DoorknobMiddle2Acc from "./doorknob/middle2 - Copy.png";
 import PillarsLeft from "./pillars/left.png";
 import PillarsMiddle from "./pillars/middle.png";
 import PillarsRight from "./pillars/right.png";
+
+import GearLeft from "./gear/left.png";
+import GearMiddle from "./gear/middle.png";
+import GearMiddle2 from "./gear/middle2.png";
+import GearRight from "./gear/right.png";
 
 import Face1Left from "./face1/left.png";
 import Face1Middle from "./face1/middle.png";
@@ -100,6 +116,8 @@ import ThornsRightAcc from "./thorns/right - Copy.png";
 import WindowLeft from "./window/left.png";
 import WindowMiddle from "./window/middle.png";
 import WindowRight from "./window/right.png";
+
+import WindowMiddleAcc from "./window/middle - Copy.png";
 
 import TeethLeft from "./teeth/left.png";
 import TeethMiddle from "./teeth/middle.png";
@@ -161,6 +179,8 @@ import AngelMiddle from "./angel/middle.png";
 import AngelMiddle2 from "./angel/middle2.png";
 import AngelRight from "./angel/right.png";
 
+import AngelMiddleAcc2 from "./angel/middle - Copy.png";
+
 import LionLeft from "./lion/left.png";
 import LionMiddle from "./lion/middle.png";
 import LionMiddle2 from "./lion/middle2.png";
@@ -170,8 +190,6 @@ import LionLeftAcc from "./lion/left - Copy.png";
 import LionMiddleAcc from "./lion/middle - Copy.png";
 import LionMiddle2Acc from "./lion/middle2 - Copy.png";
 import LionRightAcc from "./lion/right - Copy.png";
-
-import AngelMiddleAcc from "./angel/middle - Copy.png";
 
 import ColumnsLeft from "./columns/left.png";
 import ColumnsMiddle from "./columns/middle.png";
@@ -212,19 +230,20 @@ import DiamondRight from "./diamond/right.png";
 // import DiamondMiddleAcc from "./diamond/middle - Copy.png";
 // import DiamondRightAcc from "./diamond/right - Copy.png";
 
+// import DiamondMiddleAcc2 from "./diamond/middle - Copy (2).png";
+
 import CastleLeft from "./castle/left.png";
 import CastleMiddle from "./castle/middle.png";
 import CastleRight from "./castle/right.png";
+
+import SquareLeft from "./square/left.png";
+import SquareMiddle from "./square/middle.png";
+import SquareRight from "./square/right.png";
 
 import BonesLeftAcc from "./bones/left - Copy.png";
 import BonesMiddleAcc from "./bones/middle - Copy.png";
 import BonesMiddle2Acc from "./bones/middle2 - Copy.png";
 import BonesRightAcc from "./bones/right - Copy.png";
-
-// import GearsLeft from "./gears/left.png";
-// import GearsMiddle from "./gears/middle.png";
-// import GearsMiddle2 from "./gears/middle2.png";
-// import GearsRight from "./gears/right.png";
 
 // import Hand1Left from "./hand1/left.png";
 // import Hand1Middle from "./hand1/middle.png";
@@ -588,6 +607,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: WindowMiddle,
+                accentImageSrc: WindowMiddleAcc,
                 xSize: 1,
                 ySize: 2,
                 type: "middle",
@@ -841,6 +861,8 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: AngelMiddle,
+                accentImage2Src: AngelMiddleAcc2,
+
                 // accentImageSrc: AngelMiddleAcc,
                 xSize: 3,
                 ySize: 1,
@@ -1182,6 +1204,7 @@ export const tilesets: TileSet[] = [
             {
                 imageSrc: DiamondMiddle,
                 // accentImageSrc: DiamondMiddleAcc,
+                // accentImage2Src: DiamondMiddleAcc2,
                 xSize: 3,
                 ySize: 2,
                 type: "middle",
@@ -1254,6 +1277,128 @@ export const tilesets: TileSet[] = [
             imageSrc: HeartRight,
             xSize: 1,
             ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "square",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: SquareLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: SquareMiddle,
+                xSize: 3,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: SquareRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "gear",
+        ySize: 2,
+        leftEdge: {
+            imageSrc: GearLeft,
+            xSize: 1,
+            ySize: 2,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: GearMiddle,
+                xSize: 2,
+                ySize: 2,
+                type: "middle",
+            },
+
+            {
+                imageSrc: GearMiddle2,
+                xSize: 1,
+                ySize: 2,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: GearRight,
+            xSize: 1,
+            ySize: 2,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "sphere",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: SphereLeft,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: SphereMiddle,
+                accentImageSrc: SphereMiddleAcc,
+                xSize: 2,
+                ySize: 1,
+                type: "middle",
+            },
+            {
+                imageSrc: SphereMiddle2,
+                xSize: 2,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: SphereRight,
+            xSize: 1,
+            ySize: 1,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
+
+    {
+        name: "sword",
+        ySize: 1,
+        leftEdge: {
+            imageSrc: SwordLeft,
+            xSize: 1,
+            ySize: 1,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: SwordMiddle,
+                xSize: 3,
+                ySize: 1,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: SwordRight,
+            xSize: 1,
+            ySize: 1,
             type: "right-edge",
         },
         matchNextWidth: true,
