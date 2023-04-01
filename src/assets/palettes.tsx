@@ -483,6 +483,7 @@ const Palettes: Palette[] = [
             "#305d42",
             "#4d8061",
             "#89a257",
+            "#94b356",
             "#bedc7f",
             "#dcf7a6",
             "#eeffcc",
@@ -612,6 +613,7 @@ const Palettes: Palette[] = [
             "#cbc9b5",
             "#ede5cb",
             "#fbf1d3",
+            "#fdfaf1",
         ],
     },
 
@@ -637,20 +639,43 @@ const Palettes: Palette[] = [
 
     {
         background: "#000",
-        name: "iron",
+        name: "jade",
 
         hexColors: [
             "#0c0526",
             "#141832",
+            "#152537",
             "#1e3143",
-            "#2a5058",
-            "#438278",
-            "#5b9b87",
-            "#8bae8e",
-            "#acbd90",
+            "#274c54",
+            "#337166",
+            "#459279",
+            "#7daa7e",
+            "#a8bf88",
             "#ccd2a0",
             "#dadfb8",
             "#e3e8ca",
+            "#f5f8e7",
+        ],
+    },
+
+    {
+        background: "#000",
+        name: "sand",
+
+        hexColors: [
+            "#140e0c",
+            // "#191515",
+            "#272120",
+            "#332924",
+            "#53392a",
+            "#7a4d32",
+            "#9d673f",
+            "#b1824f",
+            "#c2a162",
+            "#cfbe77",
+            "#d9d287",
+            "#edebc4",
+            "#f1efd4",
         ],
     },
 

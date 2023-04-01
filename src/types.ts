@@ -124,6 +124,8 @@ export type TileSet = {
     matchPreviousWidth: boolean;
     matchNextWidth: boolean;
     dontGlitch?: boolean;
+
+    threeSymmetry?: boolean;
 };
 
 export type Grid = GridLayer[];

@@ -1542,7 +1542,7 @@ export const drawImageWithBrushes = (params: {
         bottomRight: "",
     };
 
-    if (glitchDensity && p5.random() < glitchDensity && !params.dontGlitch) {
+    if (glitchDensity && sre(3, seed) < glitchDensity && !params.dontGlitch) {
         const glitched = glitchImageGrid(
             imageGrid,
             [],
@@ -1585,7 +1585,7 @@ export const drawImageWithBrushes = (params: {
             for (let i = 1; i <= rows; i++) {
                 for (let j = 1; j <= columns; j++) {
                     p5.text(
-                        randomSymbol(),
+                        randomSymbol(seed.toString() + i + j),
                         x + letterSize * (j - 1),
                         y + letterSize * i
                     );
@@ -1595,7 +1595,7 @@ export const drawImageWithBrushes = (params: {
             for (let i = 1; i <= rows; i++) {
                 for (let j = 1; j <= columns; j++) {
                     p5.text(
-                        randomSymbol(),
+                        randomSymbol(seed.toString() + i + j),
                         x + (imageWidth / 2) * brushSize + letterSize * (j - 1),
                         y + letterSize * i
                     );
@@ -1605,7 +1605,7 @@ export const drawImageWithBrushes = (params: {
             for (let i = 1; i <= rows; i++) {
                 for (let j = 1; j <= columns; j++) {
                     p5.text(
-                        randomSymbol(),
+                        randomSymbol(seed.toString() + i + j),
                         x + letterSize * (j - 1),
                         y + (imageHeight / 2) * brushSize + letterSize * i
                     );
@@ -1615,7 +1615,7 @@ export const drawImageWithBrushes = (params: {
             for (let i = 1; i <= rows; i++) {
                 for (let j = 1; j <= columns; j++) {
                     p5.text(
-                        randomSymbol(),
+                        randomSymbol(seed.toString() + i + j),
                         x + (imageWidth / 2) * brushSize + letterSize * (j - 1),
                         y + (imageHeight / 2) * brushSize + letterSize * i
                     );
@@ -1642,24 +1642,14 @@ export const drawImageWithBrushes = (params: {
                 p5.noise(roundToDivisible(xPos, 6), roundToDivisible(yPos, 6)) <
                 secondaryPalettesDensity
             ) {
-                if (p5.random() > 0.5) {
+                if (sre(j, seed.toString() + i + j) > 0.5) {
                     paletteToUse = secondaryColorPalette;
                 }
             } else {
-                // if (j < imageWidth / 4 && prevColorPalette) {
-                //     if (p5.random() > 0.5) {
-                //         paletteToUse = prevColorPalette;
-                //     }
-                // } else if (j > (imageWidth * 3) / 4 && nextColorPalette) {
-                //     if (p5.random() > 0.5) {
-                //         paletteToUse = nextColorPalette;
-                //     }
-                // }
-
                 if (j < imageWidth / 2 && prevColorPalette) {
                     // the closer to the beginning of the image, the more likely it is to use the previous color palette. max 50%;
                     const probability = p5.map(j, 0, imageWidth / 2, 0.5, 0);
-                    if (p5.random() < probability) {
+                    if (sre(j, i + seed.toString() + j) < probability) {
                         paletteToUse = prevColorPalette;
                     }
                 } else if (j > imageWidth / 2 && nextColorPalette) {
@@ -1671,7 +1661,7 @@ export const drawImageWithBrushes = (params: {
                         0,
                         0.5
                     );
-                    if (p5.random() < probability) {
+                    if (sre(j, j + seed.toString() + i) < probability) {
                         paletteToUse = nextColorPalette;
                     }
                 }
@@ -1949,55 +1939,54 @@ export function randomElementFromArrayWithSeed(
     array: any[],
     seed: number | string
 ) {
-    return array[
-        Math.floor(
-            sre(typeof seed === "string" ? parseInt(seed[0]) : seed, seed) *
-                array.length
-        )
-    ];
+    const index = Math.floor(
+        sre(typeof seed === "string" ? parseInt(seed[0]) : seed, seed) *
+            array.length
+    );
+    return array[index];
 }
 
-export function randomSymbol() {
-    const symbols = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "0",
-    ];
+const symbols = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+];
 
-    return randomElementFromArray(symbols);
+export function randomSymbol(seed: string) {
+    return randomElementFromArrayWithSeed(symbols, seed);
 }
 
 export function averageColorFromImage(

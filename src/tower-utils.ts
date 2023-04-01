@@ -9,6 +9,8 @@ import {
 } from "./types";
 import { sr, sre } from "./utils/common";
 
+const threeSymmetryAllowedNumbers = [3, 5, 9, 13, 17, 21];
+
 export const createGridLayer = (params: {
     tileSize: number;
     p5: p5;
@@ -63,6 +65,16 @@ export const createGridLayer = (params: {
     if (numberOfTiles < 3) {
         numberOfTiles = 3;
     }
+
+    if (tileset.threeSymmetry) {
+        if (!threeSymmetryAllowedNumbers.includes(numberOfTiles)) {
+            numberOfTiles =
+                threeSymmetryAllowedNumbers[
+                    Math.floor(sr(seed) * threeSymmetryAllowedNumbers.length)
+                ];
+        }
+    }
+
     let totalWidth = 0;
 
     const middleTiles = numberOfTiles - 2;

@@ -33,6 +33,22 @@ import SkullMiddle from "./skull/middle.png";
 import SkullMiddle2 from "./skull/middle2.png";
 import SkullRight from "./skull/right.png";
 
+import AtlasLeft from "./atlas/left.png";
+import AtlasMiddle from "./atlas/middle.png";
+import AtlasMiddle2 from "./atlas/middle2.png";
+import AtlasMiddle3 from "./atlas/middle3.png";
+import AtlasRight from "./atlas/right.png";
+
+import AtlasMiddleAcc from "./atlas/middle - Copy.png";
+
+import TorchLeft from "./torch/left.png";
+import TorchMiddle from "./torch/middle1.png";
+import TorchMiddle2 from "./torch/middle2.png";
+import TorchMiddle3 from "./torch/middle3.png";
+import TorchRight from "./torch/right.png";
+
+import TorchMiddleAcc from "./torch/middle - Copy.png";
+
 import SkullMiddle2Acc from "./skull/middle2 - Copy.png";
 
 import ChainLeft from "./chain/left.png";
@@ -495,6 +511,49 @@ export const tilesets: TileSet[] = [
     },
 
     {
+        name: "atlas",
+        ySize: 3,
+        leftEdge: {
+            imageSrc: AtlasLeft,
+            xSize: 1,
+            ySize: 3,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: AtlasMiddle2,
+                xSize: 1,
+                ySize: 3,
+                type: "middle",
+            },
+            {
+                imageSrc: AtlasMiddle,
+                accentImageSrc: AtlasMiddleAcc,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+
+            {
+                imageSrc: AtlasMiddle3,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: AtlasRight,
+            xSize: 1,
+            ySize: 3,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+
+        threeSymmetry: true,
+    },
+
+    {
         name: "human1",
         ySize: 2,
         leftEdge: {
@@ -579,7 +638,7 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: Face1Middle3,
-                accentImageSrc: Face1Middle3Acc,
+                accentImage2Src: Face1Middle3Acc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -725,7 +784,7 @@ export const tilesets: TileSet[] = [
         ySize: 1,
         leftEdge: {
             imageSrc: Head1Left,
-            accentImageSrc: Head1LeftAcc,
+            accentImage2Src: Head1LeftAcc,
             xSize: 1,
             ySize: 1,
             type: "left-edge",
@@ -733,14 +792,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: Head1Middle,
-                accentImageSrc: Head1MiddleAcc,
+                accentImage2Src: Head1MiddleAcc,
                 xSize: 1,
                 ySize: 1,
                 type: "middle",
             },
             {
                 imageSrc: Head1Middle2,
-                accentImageSrc: Head1Middle2Acc,
+                accentImage2Src: Head1Middle2Acc,
                 xSize: 2,
                 ySize: 1,
                 type: "middle",
@@ -748,7 +807,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: Head1Right,
-            accentImageSrc: Head1RightAcc,
+            accentImage2Src: Head1RightAcc,
             xSize: 1,
             ySize: 1,
             type: "right-edge",
@@ -1158,7 +1217,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: LionLeft,
-            accentImageSrc: LionLeftAcc,
+            // accentImageSrc: LionLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -1166,14 +1225,14 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: LionMiddle,
-                accentImageSrc: LionMiddleAcc,
+                accentImage2Src: LionMiddleAcc,
                 xSize: 1,
                 ySize: 2,
                 type: "middle",
             },
             {
                 imageSrc: LionMiddle2,
-                accentImageSrc: LionMiddle2Acc,
+                accentImage2Src: LionMiddle2Acc,
                 xSize: 3,
                 ySize: 2,
                 type: "middle",
@@ -1181,7 +1240,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: LionRight,
-            accentImageSrc: LionRightAcc,
+            // accentImageSrc: LionRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -1284,6 +1343,48 @@ export const tilesets: TileSet[] = [
     },
 
     {
+        name: "torch",
+        ySize: 3,
+        leftEdge: {
+            imageSrc: TorchLeft,
+            xSize: 1,
+            ySize: 3,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: TorchMiddle3,
+                xSize: 1,
+                ySize: 3,
+                type: "middle",
+            },
+            {
+                imageSrc: TorchMiddle,
+                accentImageSrc: TorchMiddleAcc,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+
+            {
+                imageSrc: TorchMiddle2,
+                accentImageSrc: TorchMiddleAcc,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: TorchRight,
+            xSize: 1,
+            ySize: 3,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: false,
+    },
+
+    {
         name: "square",
         ySize: 2,
         leftEdge: {
@@ -1356,7 +1457,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: SphereMiddle,
-                accentImageSrc: SphereMiddleAcc,
+                accentImage2Src: SphereMiddleAcc,
                 xSize: 2,
                 ySize: 1,
                 type: "middle",

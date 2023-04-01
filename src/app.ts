@@ -42,6 +42,7 @@ import {
     fcInt,
     getPaletteByName,
     roundDecimals,
+    roundToDivisible,
     seedShuffle,
     sr,
     sre,
@@ -351,6 +352,7 @@ const sketch = (p5: P5) => {
 
         function doSetup() {
             seed = store.getState().seed;
+            console.log("cock");
             grid = [];
             graphicGrid = [];
             corbels = [];
@@ -413,12 +415,17 @@ const sketch = (p5: P5) => {
             allowedTilesets = [];
 
             const shuffledLoadedTilesets = seedShuffle(loadedTilesets, seed);
+            let i = 0;
 
             while (allowedTilesets.length < 12) {
                 const randomTileset =
+                    // shuffledLoadedTilesets[
+                    //     Math.floor(p5.random(shuffledLoadedTilesets.length))
+                    // ];
                     shuffledLoadedTilesets[
-                        Math.floor(p5.random(shuffledLoadedTilesets.length))
+                        srInt(seed + i, shuffledLoadedTilesets.length)
                     ];
+                i++;
 
                 if (!allowedTilesets.includes(randomTileset)) {
                     allowedTilesets.push(randomTileset);
@@ -932,9 +939,13 @@ const sketch = (p5: P5) => {
             );
 
             const bigAndHuge = [...bigTiles, ...hugeTiles];
+
+            const colors = secondaryPalette.hexColors.map((c) => p5.color(c));
+            // const colors = tertiaryPalette.hexColors.map((c) => p5.color(c));
+
             for (let i = 0; i < symbols[0].ySize - 1; i++) {
                 for (let j = 0; j < 4; j += 2) {
-                    if (p5.random() > 0.6) {
+                    if (sr(seed + i + j) > 0.6) {
                         let availableTiles = [...bigAndHuge];
 
                         const targetIndex = symbols[j].tiles.findIndex(
@@ -964,10 +975,7 @@ const sketch = (p5: P5) => {
                         ) {
                             symbols[j].tiles[targetIndex].image =
                                 symbolTile.image;
-                            symbols[j].tiles[targetIndex].colors =
-                                secondaryPalette.hexColors.map((c) =>
-                                    p5.color(c)
-                                );
+                            symbols[j].tiles[targetIndex].colors = colors;
                             symbols[j].tiles[targetIndex].mirroredY =
                                 sr(j + seed + i) > 0.65;
                             symbols[j].tiles[targetIndex].isUsed = true;
@@ -998,7 +1006,7 @@ const sketch = (p5: P5) => {
                             symbols[i].tiles[j + 1] &&
                             !symbols[i].tiles[j + 1].isUsed
                         ) {
-                            if (p5.random() > 0.5) {
+                            if (sr(seed + i + j) > 0.5) {
                                 const symbolTile =
                                     medTiles[
                                         Math.floor(
@@ -1008,10 +1016,7 @@ const sketch = (p5: P5) => {
                                     ];
 
                                 symbols[i].tiles[j].image = symbolTile.image;
-                                symbols[i].tiles[j].colors =
-                                    secondaryPalette.hexColors.map((c) =>
-                                        p5.color(c)
-                                    );
+                                symbols[i].tiles[j].colors = colors;
 
                                 symbols[i].tiles[j].isUsed = true;
                                 symbols[i].tiles[j + 1].isUsed = true;
@@ -1025,10 +1030,7 @@ const sketch = (p5: P5) => {
                                     ];
 
                                 symbols[i].tiles[j].image = symbolTile.image;
-                                symbols[i].tiles[j].colors =
-                                    secondaryPalette.hexColors.map((c) =>
-                                        p5.color(c)
-                                    );
+                                symbols[i].tiles[j].colors = colors;
 
                                 symbols[i].tiles[j].isUsed = true;
                             }
@@ -1041,10 +1043,7 @@ const sketch = (p5: P5) => {
                                 ];
 
                             symbols[i].tiles[j].image = symbolTile.image;
-                            symbols[i].tiles[j].colors =
-                                secondaryPalette.hexColors.map((c) =>
-                                    p5.color(c)
-                                );
+                            symbols[i].tiles[j].colors = colors;
 
                             symbols[i].tiles[j].isUsed = true;
                         }
@@ -1071,14 +1070,21 @@ const sketch = (p5: P5) => {
                         color: p5.color(mainPalette.hexColors[colorIndex]),
                     };
 
-                    colorIndex += Math.round(
-                        srn(i.toString() + charA + j.toString() + charB + seed)
+                    // colorIndex += Math.round(
+                    //     srn(i.toString() + charA + j.toString() + charB + seed)
+                    // );
+                    colorIndex = Math.floor(
+                        p5.noise(
+                            roundToDivisible(i, 2),
+                            roundToDivisible(j, 2)
+                        ) * 5
                     );
-                    if (colorIndex >= 4) {
-                        colorIndex = 4;
+
+                    if (colorIndex > 4) {
+                        colorIndex = 3;
                     }
                     if (colorIndex < 0) {
-                        colorIndex = 0;
+                        colorIndex = 1;
                     }
                 }
             }
@@ -1185,6 +1191,7 @@ const sketch = (p5: P5) => {
     };
 
     p5.draw = () => {
+        // console.log("starting draw");
         const frameCountUI = document.getElementById("frame-count");
         if (frameCountUI) {
             frameCountUI.innerHTML = p5.frameCount.toString();
@@ -1196,8 +1203,8 @@ const sketch = (p5: P5) => {
                 p5.noStroke();
                 p5.fill(mainPalette.hexColors[4]);
                 p5.rect(
-                    p5.random(p5.width),
-                    p5.random(p5.height),
+                    Math.floor(sre(2, seed + i) * p5.width),
+                    Math.floor(sre(3, seed + i) * p5.height),
                     tileSize / 16,
                     tileSize / 16
                 );
@@ -1313,12 +1320,12 @@ const sketch = (p5: P5) => {
                             secondaryPalettesDensity:
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                     grid[i].tiles.length) *
-                                0.65,
+                                0.85,
                             secondaryColorPalette: thisTile.colors2,
                             glitchDensity:
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                     grid[i].tiles.length) *
-                                2,
+                                2.3,
                             dontGlitch: thisTile.dontGlitch,
 
                             accentImage: thisTile.accentImage,
@@ -1434,6 +1441,8 @@ const sketch = (p5: P5) => {
         //     tileSize * 6,
         //     tileSize * 3
         // );
+
+        // console.log("drawing");
 
         p5.fill(
             p5.color(

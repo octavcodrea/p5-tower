@@ -1,17 +1,17 @@
 import { PaletteGroup } from "../types";
 
 const PaletteGroups: PaletteGroup[] = [
-    // {
-    //     name: "Default",
-    //     palettes: ["red", "gray", "blue"],
-    // },
+    {
+        name: "Default",
+        palettes: ["red", "gray", "blue"],
+    },
     // {
     //     name: "Custom",
     //     palettes: ["blue", "green", "gold"],
     // },
     // {
     //     name: "Custom 2",
-    //     palettes: ["blue", "red", "green"],
+    //     palettes: ["blue", "red", "gold"],
     // },
     // {
     //     name: "Custom 3",
@@ -19,7 +19,7 @@ const PaletteGroups: PaletteGroup[] = [
     // },
     // {
     //     name: "Custom 4",
-    //     palettes: ["gray", "red", "blue"],
+    //     palettes: ["gray", "red", "violet"],
     // },
     // {
     //     name: "Custom 5",
@@ -37,10 +37,14 @@ const PaletteGroups: PaletteGroup[] = [
     //     name: "Custom 5",
     //     palettes: ["iron", "gold", "red"],
     // },
-    {
-        name: "Custom 5",
-        palettes: ["jade", "gold", "red"],
-    },
+    // {
+    //     name: "Custom 5",
+    //     palettes: ["jade", "gold", "red"],
+    // },
+    // {
+    //     name: "Custom 5",
+    //     palettes: ["sand", "gold", "blue"],
+    // },
 ];
 
 export default PaletteGroups;
