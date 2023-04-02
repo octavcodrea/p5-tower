@@ -679,6 +679,27 @@ const Palettes: Palette[] = [
         ],
     },
 
+    {
+        background: "#000",
+        name: "brick",
+
+        hexColors: [
+            "#150e0c",
+            "#22110d",
+            "#4b1b11",
+            "#672114",
+            "#973420",
+            "#bc4935",
+            "#cf6d3f",
+            "#db8c48",
+            "#dfa777",
+            "#edba8c",
+            "#f3cfb0",
+            "#fae6cb",
+            "#fef3d8",
+        ],
+    },
+
     // {
     //     background: "#DADCE8",
     //     accent: "#8d8cca",

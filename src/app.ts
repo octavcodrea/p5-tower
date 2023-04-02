@@ -469,15 +469,34 @@ const sketch = (p5: P5) => {
                     : mainPalette;
 
             let prevTl: TileSet | undefined = undefined;
+            let ySoFar = 0;
 
             for (let i = 0; i < 35; i++) {
                 const prevTileset: TileSet | undefined = prevTl;
 
                 let theseTilesets: TileSet[] = allowedTilesets.filter((t) => {
-                    return (
-                        (prevTileset && t.name !== prevTileset?.name) ||
-                        !prevTileset
-                    );
+                    if (ySoFar < p5.height - tileSize * 2) {
+                        return (
+                            (prevTileset && t.name !== prevTileset?.name) ||
+                            !prevTileset
+                        );
+                    } else {
+                        if (ySoFar > p5.height - tileSize * 2) {
+                            return (
+                                ((prevTileset &&
+                                    t.name !== prevTileset?.name) ||
+                                    !prevTileset) &&
+                                t.ySize < 2
+                            );
+                        } else {
+                            return (
+                                ((prevTileset &&
+                                    t.name !== prevTileset?.name) ||
+                                    !prevTileset) &&
+                                t.ySize < 3
+                            );
+                        }
+                    }
                 });
 
                 let thisTileset =
@@ -508,6 +527,8 @@ const sketch = (p5: P5) => {
                         p5.width,
                         p5.height
                     );
+
+                    ySoFar += thisLayer.ySize * tileSize;
 
                     shouldMatchNextWidth = thisTileset.matchNextWidth;
                     previousLayerWidth = thisLayer.totalTilesWidth;
@@ -1329,7 +1350,7 @@ const sketch = (p5: P5) => {
                             glitchDensity:
                                 (Math.abs(j + 0.5 - grid[i].tiles.length / 2) /
                                     grid[i].tiles.length) *
-                                2.3,
+                                2,
                             dontGlitch: thisTile.dontGlitch,
 
                             accentImage: thisTile.accentImage,

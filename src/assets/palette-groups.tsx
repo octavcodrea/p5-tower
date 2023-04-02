@@ -2,49 +2,45 @@ import { PaletteGroup } from "../types";
 
 const PaletteGroups: PaletteGroup[] = [
     // {
-    //     name: "Default",
+    //     name: "Crimson",
     //     palettes: ["red", "gray", "blue"],
     // },
     // {
-    //     name: "Custom",
-    //     palettes: ["blue", "green", "gold"],
+    //     name: "Frozen",
+    //     palettes: ["blue", "gray", "gold"],
     // },
     // {
-    //     name: "Custom 2",
-    //     palettes: ["blue", "red", "gold"],
-    // },
-    // {
-    //     name: "Custom 3",
-    //     palettes: ["violet", "orange", "gold"],
-    // },
-    // {
-    //     name: "Custom 4",
+    //     name: "Arcane",
     //     palettes: ["gray", "red", "violet"],
     // },
     // {
-    //     name: "Custom 5",
+    //     name: "Gilded",
     //     palettes: ["gold", "green", "blue"],
     // },
     // {
-    //     name: "Custom 5",
-    //     palettes: ["purple", "red", "gold"],
+    //     name: "Graveyard",
+    //     palettes: ["purple", "gray", "orange"],
     // },
     // {
-    //     name: "Custom 5",
+    //     name: "Dynamo",
     //     palettes: ["steel", "orange", "green"],
     // },
-    {
-        name: "Custom 5",
-        palettes: ["iron", "gold", "red"],
-    },
     // {
-    //     name: "Custom 5",
+    //     name: "Empire",
+    //     palettes: ["iron", "gold", "red"],
+    // },
+    // {
+    //     name: "Emerald",
     //     palettes: ["jade", "gold", "red"],
     // },
     // {
-    //     name: "Custom 5",
+    //     name: "Relic",
     //     palettes: ["sand", "gray", "blue"],
     // },
+    {
+        name: "Relic",
+        palettes: ["brick", "blue", "gold"],
+    },
 ];
 
 export default PaletteGroups;

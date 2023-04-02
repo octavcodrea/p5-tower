@@ -423,7 +423,7 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
-        matchNextWidth: false,
+        matchNextWidth: true,
         matchPreviousWidth: false,
     },
 
