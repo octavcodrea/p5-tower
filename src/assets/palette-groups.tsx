@@ -1,10 +1,10 @@
 import { PaletteGroup } from "../types";
 
 const PaletteGroups: PaletteGroup[] = [
-    {
-        name: "Default",
-        palettes: ["red", "gray", "blue"],
-    },
+    // {
+    //     name: "Default",
+    //     palettes: ["red", "gray", "blue"],
+    // },
     // {
     //     name: "Custom",
     //     palettes: ["blue", "green", "gold"],
@@ -33,17 +33,17 @@ const PaletteGroups: PaletteGroup[] = [
     //     name: "Custom 5",
     //     palettes: ["steel", "orange", "green"],
     // },
-    // {
-    //     name: "Custom 5",
-    //     palettes: ["iron", "gold", "red"],
-    // },
+    {
+        name: "Custom 5",
+        palettes: ["iron", "gold", "red"],
+    },
     // {
     //     name: "Custom 5",
     //     palettes: ["jade", "gold", "red"],
     // },
     // {
     //     name: "Custom 5",
-    //     palettes: ["sand", "gold", "blue"],
+    //     palettes: ["sand", "gray", "blue"],
     // },
 ];
 

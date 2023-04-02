@@ -76,6 +76,8 @@ import HeartMiddle2 from "./heart/middle2.png";
 import HeartRight from "./heart/right.png";
 
 import HeartMiddleAcc from "./heart/middle - Copy.png";
+import HeartLeftAcc from "./heart/left - Copy.png";
+import HeartRightAcc from "./heart/right - Copy.png";
 import HeartMiddle2Acc from "./heart/middle2 - Copy.png";
 
 import DoorknobLeft from "./doorknob/left.png";
@@ -93,6 +95,19 @@ import GearLeft from "./gear/left.png";
 import GearMiddle from "./gear/middle.png";
 import GearMiddle2 from "./gear/middle2.png";
 import GearRight from "./gear/right.png";
+
+import PipesLeft from "./pipes/left.png";
+import PipesMiddle from "./pipes/middle.png";
+import PipesMiddle2 from "./pipes/middle2.png";
+import PipesRight from "./pipes/right.png";
+
+import PipesMiddleAcc from "./pipes/middle - Copy.png";
+import PipesMiddle2Acc from "./pipes/middle2 - Copy.png";
+
+import GearLeftAcc from "./gear/left - Copy.png";
+import GearMiddleAcc from "./gear/middle - Copy.png";
+import GearMiddle2Acc from "./gear/middle2 - Copy.png";
+import GearRightAcc from "./gear/right - Copy.png";
 
 import Face1Left from "./face1/left.png";
 import Face1Middle from "./face1/middle.png";
@@ -548,7 +563,7 @@ export const tilesets: TileSet[] = [
             type: "right-edge",
         },
         matchNextWidth: false,
-        matchPreviousWidth: false,
+        matchPreviousWidth: true,
 
         threeSymmetry: true,
     },
@@ -1276,7 +1291,7 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: true,
     },
 
@@ -1303,7 +1318,7 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: false,
     },
 
@@ -1312,6 +1327,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: HeartLeft,
+            accentImageSrc: HeartLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -1326,7 +1342,7 @@ export const tilesets: TileSet[] = [
             },
             {
                 imageSrc: HeartMiddle2,
-                // accentImageSrc: HeartMiddle2Acc,
+                accentImageSrc: HeartMiddle2Acc,
                 xSize: 3,
                 ySize: 2,
                 type: "middle",
@@ -1334,6 +1350,7 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: HeartRight,
+            accentImageSrc: HeartRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -1380,7 +1397,7 @@ export const tilesets: TileSet[] = [
             ySize: 3,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: false,
     },
 
@@ -1407,7 +1424,7 @@ export const tilesets: TileSet[] = [
             ySize: 2,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: false,
     },
 
@@ -1416,6 +1433,7 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: GearLeft,
+            accentImageSrc: GearLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -1423,6 +1441,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: GearMiddle,
+                accentImageSrc: GearMiddleAcc,
                 xSize: 2,
                 ySize: 2,
                 type: "middle",
@@ -1430,6 +1449,7 @@ export const tilesets: TileSet[] = [
 
             {
                 imageSrc: GearMiddle2,
+                accentImageSrc: GearMiddle2Acc,
                 xSize: 1,
                 ySize: 2,
                 type: "middle",
@@ -1437,12 +1457,49 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: GearRight,
+            accentImageSrc: GearRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: false,
+    },
+
+    {
+        name: "pipes",
+        ySize: 3,
+        leftEdge: {
+            imageSrc: PipesLeft,
+            xSize: 1,
+            ySize: 3,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: PipesMiddle,
+                accentImageSrc: PipesMiddleAcc,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+
+            {
+                imageSrc: PipesMiddle2,
+                accentImageSrc: PipesMiddle2Acc,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: PipesRight,
+            xSize: 1,
+            ySize: 3,
+            type: "right-edge",
+        },
+        matchNextWidth: true,
+        matchPreviousWidth: true,
     },
 
     {
@@ -1475,7 +1532,7 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: false,
     },
 
@@ -1502,7 +1559,7 @@ export const tilesets: TileSet[] = [
             ySize: 1,
             type: "right-edge",
         },
-        matchNextWidth: true,
+        matchNextWidth: false,
         matchPreviousWidth: false,
     },
 ];

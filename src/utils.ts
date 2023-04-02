@@ -7,6 +7,7 @@ export const intensityWords = [
 ];
 export const numberWords = ["Very few", "Few", "Medium", "Many", "Very many"];
 import Palettes from "./assets/palettes";
+import PaletteGroups from "./assets/palette-groups";
 import { map } from "./utils/p5utils";
 
 import { store } from "./store";
@@ -32,7 +33,8 @@ export const setupHtml = (params: {
     charF: number;
     charG: number;
     charH: number;
-    selectedPalette: number;
+    // selectedPalette: number;
+    selectedPaletteGroup: number;
 }) => {
     const {
         charA,
@@ -43,7 +45,7 @@ export const setupHtml = (params: {
         charF,
         charG,
         charH,
-        selectedPalette,
+        selectedPaletteGroup,
     } = params;
 
     const prog = document.getElementById("progress");
@@ -55,24 +57,25 @@ export const setupHtml = (params: {
 
     const htmlcolor = document.getElementById("info-color");
     if (htmlcolor) {
-        const paletteName = Palettes[selectedPalette].name || "Unknown";
+        const paletteName =
+            PaletteGroups[selectedPaletteGroup].name || "Unknown";
         htmlcolor.innerHTML = paletteName;
     }
 
-    const htmlstyle = document.getElementById("info-style");
-    if (htmlstyle) {
-        const styleName = charC % 3 === 0 ? "Sharp" : "Smooth";
-        htmlstyle.innerHTML = styleName;
-    }
+    // const htmlstyle = document.getElementById("info-style");
+    // if (htmlstyle) {
+    //     const styleName = charC % 3 === 0 ? "Sharp" : "Smooth";
+    //     htmlstyle.innerHTML = styleName;
+    // }
 
-    const htmlsizevariance = document.getElementById("info-size");
-    if (htmlsizevariance) {
-        const sizeName =
-            intensityWords[
-                Math.floor(map(charE, 0, 100, 0, intensityWords.length, "exp"))
-            ];
-        htmlsizevariance.innerHTML = sizeName;
-    }
+    // const htmlsizevariance = document.getElementById("info-size");
+    // if (htmlsizevariance) {
+    //     const sizeName =
+    //         intensityWords[
+    //             Math.floor(map(charE, 0, 100, 0, intensityWords.length, "exp"))
+    //         ];
+    //     htmlsizevariance.innerHTML = sizeName;
+    // }
 
     // const htmldirection = document.getElementById("info-direction");
     // if (htmldirection) {
@@ -80,34 +83,34 @@ export const setupHtml = (params: {
     //     htmldirection.innerHTML = directionName;
     // }
 
-    const htmllines = document.getElementById("info-lines");
-    if (htmllines) {
-        const linesName =
-            numberWords[
-                Math.floor(map(charB, 0, 100, 0, numberWords.length, "linear"))
-            ];
-        htmllines.innerHTML = linesName;
-    }
+    // const htmllines = document.getElementById("info-lines");
+    // if (htmllines) {
+    //     const linesName =
+    //         numberWords[
+    //             Math.floor(map(charB, 0, 100, 0, numberWords.length, "linear"))
+    //         ];
+    //     htmllines.innerHTML = linesName;
+    // }
 
-    const htmlrandomness = document.getElementById("info-randomness");
-    if (htmlrandomness) {
-        const randomnessName =
-            intensityWords[
-                Math.floor(
-                    map(charA, 0, 100, 0, intensityWords.length, "linear")
-                )
-            ];
-        htmlrandomness.innerHTML = randomnessName;
-    }
+    // const htmlrandomness = document.getElementById("info-randomness");
+    // if (htmlrandomness) {
+    //     const randomnessName =
+    //         intensityWords[
+    //             Math.floor(
+    //                 map(charA, 0, 100, 0, intensityWords.length, "linear")
+    //             )
+    //         ];
+    //     htmlrandomness.innerHTML = randomnessName;
+    // }
 
-    const htmlspread = document.getElementById("info-spread");
-    if (htmlspread) {
-        const spreadName =
-            intensityWords[
-                Math.floor(map(charC, 0, 100, 0, intensityWords.length, "exp"))
-            ];
-        htmlspread.innerHTML = spreadName;
-    }
+    // const htmlspread = document.getElementById("info-spread");
+    // if (htmlspread) {
+    //     const spreadName =
+    //         intensityWords[
+    //             Math.floor(map(charC, 0, 100, 0, intensityWords.length, "exp"))
+    //         ];
+    //     htmlspread.innerHTML = spreadName;
+    // }
 };
 
 export const updateHtml = (params: {

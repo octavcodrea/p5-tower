@@ -1160,7 +1160,7 @@ const sketch = (p5: P5) => {
                 charG: charG,
                 charH: charH,
 
-                selectedPalette: selectedPaletteGroup,
+                selectedPaletteGroup: selectedPaletteGroup,
             });
 
             p5.blendMode(p5.BLEND);
@@ -1196,6 +1196,10 @@ const sketch = (p5: P5) => {
         if (frameCountUI) {
             frameCountUI.innerHTML = p5.frameCount.toString();
         }
+
+        p5.textFont(font1);
+        p5.textSize(tileSize / 2);
+        p5.textLeading(tileSize / 1.6);
 
         if (!dotsDrawn) {
             p5.blendMode(p5.BLEND);
@@ -1365,8 +1369,8 @@ const sketch = (p5: P5) => {
                         nextColorPalette: thisChain.nextColors,
                         secondaryPalettesDensity: 0,
                         secondaryColorPalette: thisChain.colors,
-                        glitchDensity: 0,
-                        dontGlitch: true,
+                        glitchDensity: 0.1,
+                        dontGlitch: false,
                         mirroredY: thisChain.mirroredY,
                         seed: seed + i,
                     });

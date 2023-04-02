@@ -1549,17 +1549,33 @@ export const drawImageWithBrushes = (params: {
             "random",
             seed.toString()
         );
-        if (accentImageGrid) {
+
+        imageGrid = glitched.grid;
+
+        if (accentImageGrid && glitched.hasGlitched.length) {
             const glitchedAccent = glitchImageGrid(
                 accentImageGrid,
-                [],
+                glitched.hasGlitched,
                 "random",
-                seed.toString()
+                seed.toString(),
+                true
             );
 
             accentImageGrid = glitchedAccent.grid;
         }
-        imageGrid = glitched.grid;
+
+        if (accentImage2Grid && glitched.hasGlitched.length) {
+            const glitchedAccent2 = glitchImageGrid(
+                accentImage2Grid,
+                glitched.hasGlitched,
+                "random",
+                seed.toString(),
+                true
+            );
+
+            accentImage2Grid = glitchedAccent2.grid;
+        }
+
         glitchedCorners = glitched.glitchedCorners;
 
         const rows = Math.round(imageHeight / 16);
@@ -1581,6 +1597,7 @@ export const drawImageWithBrushes = (params: {
         p5.fill(textColor);
         p5.textSize(letterSize);
         p5.textLeading(0);
+
         if (glitchedCorners.topLeft === "letter") {
             for (let i = 1; i <= rows; i++) {
                 for (let j = 1; j <= columns; j++) {
@@ -1795,8 +1812,9 @@ type ImageCorner = "topLeft" | "topRight" | "bottomLeft" | "bottomRight";
 function glitchImageGrid(
     grid: Rgba[][],
     cornersToGlitch: ImageCorner[],
-    glitchMode: "letter" | "color" | "random",
-    seed: string
+    glitchMode: "letter" | "color" | "aberration" | "random",
+    seed: string,
+    isAccentImage?: boolean
 ) {
     const imageWidth = grid[0].length;
     const imageHeight = grid.length;
@@ -1826,7 +1844,7 @@ function glitchImageGrid(
         const modeToUse =
             glitchMode === "random"
                 ? randomElementFromArrayWithSeed(
-                      ["letter", "color", "letter", "color"],
+                      ["letter", "color", "letter", "letter", "letter"],
                       seed
                   )
                 : glitchMode;
@@ -1836,7 +1854,7 @@ function glitchImageGrid(
         for (let i = 0; i < imageHeight; i++) {
             for (let j = 0; j < imageWidth; j++) {
                 if (i < imageHeight / 2 && j < imageWidth / 2) {
-                    if (modeToUse === "letter") {
+                    if (modeToUse === "letter" || isAccentImage) {
                         newGrid[i][j].a = 0;
                     } else if (modeToUse === "color") {
                         newGrid[i][j].r = newColor.r;
@@ -1851,7 +1869,7 @@ function glitchImageGrid(
         const modeToUse =
             glitchMode === "random"
                 ? randomElementFromArrayWithSeed(
-                      ["letter", "color", "letter", "color"],
+                      ["letter", "color", "letter", "letter", "letter"],
                       seed
                   )
                 : glitchMode;
@@ -1861,7 +1879,7 @@ function glitchImageGrid(
         for (let i = 0; i < imageHeight; i++) {
             for (let j = 0; j < imageWidth; j++) {
                 if (i < imageHeight / 2 && j > imageWidth / 2) {
-                    if (modeToUse === "letter") {
+                    if (modeToUse === "letter" || isAccentImage) {
                         newGrid[i][j].a = 0;
                     } else if (glitchMode === "color") {
                         newGrid[i][j].r = newColor.r;
@@ -1876,7 +1894,7 @@ function glitchImageGrid(
         const modeToUse =
             glitchMode === "random"
                 ? randomElementFromArrayWithSeed(
-                      ["letter", "color", "letter", "color"],
+                      ["letter", "color", "letter", "letter", "letter"],
                       seed
                   )
                 : glitchMode;
@@ -1886,7 +1904,7 @@ function glitchImageGrid(
         for (let i = 0; i < imageHeight; i++) {
             for (let j = 0; j < imageWidth; j++) {
                 if (i > imageHeight / 2 && j < imageWidth / 2) {
-                    if (modeToUse === "letter") {
+                    if (modeToUse === "letter" || isAccentImage) {
                         newGrid[i][j].a = 0;
                     } else if (glitchMode === "color") {
                         newGrid[i][j].r = newColor.r;
@@ -1901,7 +1919,7 @@ function glitchImageGrid(
         const modeToUse =
             glitchMode === "random"
                 ? randomElementFromArrayWithSeed(
-                      ["letter", "color", "letter", "color"],
+                      ["letter", "color", "letter", "letter", "letter"],
                       seed
                   )
                 : glitchMode;
@@ -1911,7 +1929,7 @@ function glitchImageGrid(
         for (let i = 0; i < imageHeight; i++) {
             for (let j = 0; j < imageWidth; j++) {
                 if (i > imageHeight / 2 && j > imageWidth / 2) {
-                    if (modeToUse === "letter") {
+                    if (modeToUse === "letter" || isAccentImage) {
                         newGrid[i][j].a = 0;
                     } else if (glitchMode === "color") {
                         newGrid[i][j].r = newColor.r;
@@ -1928,6 +1946,7 @@ function glitchImageGrid(
     return {
         grid: newGrid,
         glitchedCorners: glitchedCorners,
+        hasGlitched: corners as ImageCorner[],
     };
 }
 
@@ -2082,4 +2101,55 @@ export function textVertical(p5: P5, text: string, x: number, y: number) {
     const newText = text.split("").join("\n");
 
     p5.text(newText, x, y);
+}
+
+export function chromaticAberration(
+    grid: Rgba[][],
+    direction: "up" | "down" | "left" | "right" | "random",
+    amount: number,
+    seed: string
+) {
+    const newGrid = [...grid];
+
+    const imageHeight = grid.length;
+    const imageWidth = grid[0].length;
+
+    const directionToUse =
+        direction === "random"
+            ? randomElementFromArrayWithSeed(
+                  ["up", "down", "left", "right"],
+                  seed
+              )
+            : direction;
+    //make an array from the keys of the grid without a
+    const colorArray = Object.keys(grid[0][0]).filter((key) => key !== "a");
+    //pick a random color to use
+    const colorToUse = randomElementFromArrayWithSeed(colorArray, seed) as
+        | "r"
+        | "g"
+        | "b";
+
+    for (let i = 0; i < imageHeight; i++) {
+        for (let j = 0; j < imageWidth; j++) {
+            if (directionToUse === "up") {
+                if (i - amount > 0) {
+                    newGrid[i][j][colorToUse] = grid[i - amount][j][colorToUse];
+                }
+            } else if (directionToUse === "down") {
+                if (i + amount < imageHeight) {
+                    newGrid[i][j][colorToUse] = grid[i + amount][j][colorToUse];
+                }
+            } else if (directionToUse === "left") {
+                if (j - amount > 0) {
+                    newGrid[i][j][colorToUse] = grid[i][j - amount][colorToUse];
+                }
+            } else if (directionToUse === "right") {
+                if (j + amount < imageWidth) {
+                    newGrid[i][j][colorToUse] = grid[i][j + amount][colorToUse];
+                }
+            }
+        }
+    }
+
+    return newGrid;
 }
