@@ -39,7 +39,14 @@ import AtlasMiddle2 from "./atlas/middle2.png";
 import AtlasMiddle3 from "./atlas/middle3.png";
 import AtlasRight from "./atlas/right.png";
 
+import DiasquareLeft from "./diasquare/left.png";
+import DiasquareMiddle from "./diasquare/middle1.png";
+import DiasquareMiddle2 from "./diasquare/middle2.png";
+import DiasquareMiddle3 from "./diasquare/middle3.png";
+import DiasquareRight from "./diasquare/right.png";
+
 import AtlasMiddleAcc from "./atlas/middle - Copy.png";
+import AtlasMiddle3Acc from "./atlas/middle3 - Copy.png";
 
 import TorchLeft from "./torch/left.png";
 import TorchMiddle from "./torch/middle1.png";
@@ -62,6 +69,7 @@ import ChainRightAcc from "./chain/right - Copy.png";
 import SwordLeft from "./sword/left.png";
 import SwordMiddle from "./sword/middle.png";
 import SwordRight from "./sword/right.png";
+import SwordMiddleAcc from "./sword/middle - Copy.png";
 
 import SphereLeft from "./sphere/left.png";
 import SphereMiddle from "./sphere/middle.png";
@@ -204,6 +212,13 @@ import MothLeftAcc from "./moth/left - Copy.png";
 import MothMiddleAcc from "./moth/middle - Copy.png";
 import MothMiddle2Acc from "./moth/middle2 - Copy.png";
 import MothRightAcc from "./moth/right - Copy.png";
+
+import MaskLeft from "./mask/left.png";
+import MaskMiddle from "./mask/middle1.png";
+import MaskMiddle2 from "./mask/middle2.png";
+import MaskRight from "./mask/right.png";
+
+import MaskMiddleAcc from "./mask/middle1 - Copy.png";
 
 import AngelLeft from "./angel/left.png";
 import AngelMiddle from "./angel/middle.png";
@@ -551,6 +566,7 @@ export const tilesets: TileSet[] = [
 
             {
                 imageSrc: AtlasMiddle3,
+                accentImageSrc: AtlasMiddle3Acc,
                 xSize: 2,
                 ySize: 3,
                 type: "middle",
@@ -1232,7 +1248,6 @@ export const tilesets: TileSet[] = [
         ySize: 2,
         leftEdge: {
             imageSrc: LionLeft,
-            // accentImageSrc: LionLeftAcc,
             xSize: 1,
             ySize: 2,
             type: "left-edge",
@@ -1255,7 +1270,6 @@ export const tilesets: TileSet[] = [
         ],
         rightEdge: {
             imageSrc: LionRight,
-            // accentImageSrc: LionRightAcc,
             xSize: 1,
             ySize: 2,
             type: "right-edge",
@@ -1548,6 +1562,7 @@ export const tilesets: TileSet[] = [
         middle: [
             {
                 imageSrc: SwordMiddle,
+                accentImageSrc: SwordMiddleAcc,
                 xSize: 3,
                 ySize: 1,
                 type: "middle",
@@ -1562,4 +1577,78 @@ export const tilesets: TileSet[] = [
         matchNextWidth: false,
         matchPreviousWidth: false,
     },
+
+    {
+        name: "diasquare",
+        ySize: 3,
+        leftEdge: {
+            imageSrc: DiasquareLeft,
+            xSize: 1,
+            ySize: 3,
+            type: "left-edge",
+        },
+        middle: [
+            {
+                imageSrc: DiasquareMiddle3,
+                xSize: 1,
+                ySize: 3,
+                type: "middle",
+            },
+            {
+                imageSrc: DiasquareMiddle,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+            {
+                imageSrc: DiasquareMiddle2,
+                xSize: 2,
+                ySize: 3,
+                type: "middle",
+            },
+        ],
+        rightEdge: {
+            imageSrc: DiasquareRight,
+            xSize: 1,
+            ySize: 3,
+            type: "right-edge",
+        },
+        matchNextWidth: false,
+        matchPreviousWidth: false,
+        threeSymmetry: true,
+    },
+
+    // {
+    //     name: "mask",
+    //     ySize: 3,
+    //     leftEdge: {
+    //         imageSrc: MaskLeft,
+    //         xSize: 1,
+    //         ySize: 3,
+    //         type: "left-edge",
+    //     },
+    //     middle: [
+    //         {
+    //             imageSrc: MaskMiddle,
+    //             accentImageSrc: MaskMiddleAcc,
+    //             xSize: 2,
+    //             ySize: 3,
+    //             type: "middle",
+    //         },
+    //         {
+    //             imageSrc: MaskMiddle2,
+    //             xSize: 2,
+    //             ySize: 3,
+    //             type: "middle",
+    //         },
+    //     ],
+    //     rightEdge: {
+    //         imageSrc: MaskRight,
+    //         xSize: 1,
+    //         ySize: 3,
+    //         type: "right-edge",
+    //     },
+    //     matchNextWidth: false,
+    //     matchPreviousWidth: false,
+    // },
 ];
