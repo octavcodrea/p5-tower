@@ -30,9 +30,10 @@ export type ColorSet = Array<ColorObject[]>;
 
 export type Palette = {
     background: string;
-    name?: string;
-
     hexColors: string[];
+
+    name?: string;
+    titleIndex?: number;
 };
 
 export type PaletteGroup = {

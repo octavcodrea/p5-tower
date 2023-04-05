@@ -779,9 +779,9 @@ const sketch = (p5: P5) => {
                     // human
                     if (
                         thisLevel > prevLevel &&
-                        prevLevelDifference > 4 &&
+                        prevLevelDifference > 3 &&
                         thisLevel > prevPrevLevel &&
-                        prevPrevLevelDifference > 4
+                        prevPrevLevelDifference > 3
                     ) {
                         const difference = Math.min(
                             thisLevel - prevLevel,
@@ -790,13 +790,13 @@ const sketch = (p5: P5) => {
 
                         const thisLevelY = grid[i].tiles[0].y;
                         console.log(
-                            p5.height * 0.3,
-                            p5.height * 0.6,
+                            p5.height * 0.33,
+                            p5.height * 0.66,
                             "thisLevelY",
                             thisLevelY,
                             tileSize * 6,
-                            p5.height * 0.3 - thisLevelY,
-                            p5.height * 0.6 - thisLevelY
+                            p5.height * 0.33 - thisLevelY,
+                            p5.height * 0.66 - thisLevelY
                         );
 
                         if (
@@ -1472,7 +1472,11 @@ const sketch = (p5: P5) => {
         p5.fill(
             p5.color(
                 secondaryPalette.hexColors[
-                    Math.floor(secondaryPalette.hexColors.length - 6)
+                    Math.floor(
+                        secondaryPalette.hexColors.length -
+                            1 -
+                            (secondaryPalette.titleIndex ?? 5)
+                    )
                 ]
             )
         );

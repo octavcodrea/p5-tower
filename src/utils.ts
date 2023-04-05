@@ -160,6 +160,30 @@ export const updateHtml = (params: {
         store.setState({ seed });
     };
 
+    const generate = () => {
+        let generatedSeed = Math.floor(
+            Math.random() * 1000000000000000
+        ).toString();
+
+        setSeed(generatedSeed);
+        setNewSeed(generatedSeed);
+
+        setupFromSeed();
+        doSetup();
+
+        const seedInput = document.getElementById("new-seed-input");
+        if (seedInput && seedInput instanceof HTMLInputElement) {
+            seedInput.value = generatedSeed;
+        }
+    };
+
+    //add listener for spacebar, that will trigger generate
+    p5.keyPressed = () => {
+        if (p5.keyCode === 32) {
+            generate();
+        }
+    };
+
     const htmlnewseed = document.getElementById("new-seed");
     if (htmlnewseed) {
         if (!document.getElementById("new-seed-button")) {
@@ -197,22 +221,7 @@ export const updateHtml = (params: {
             const generateButton = document.createElement("button");
             generateButton.id = "generate-button";
             generateButton.innerHTML = "Generate";
-            generateButton.onclick = () => {
-                let generatedSeed = Math.floor(
-                    Math.random() * 1000000000000000
-                ).toString();
-
-                setSeed(generatedSeed);
-                setNewSeed(generatedSeed);
-
-                setupFromSeed();
-                doSetup();
-
-                const seedInput = document.getElementById("new-seed-input");
-                if (seedInput && seedInput instanceof HTMLInputElement) {
-                    seedInput.value = generatedSeed;
-                }
-            };
+            generateButton.onclick = generate;
 
             htmlnewseed.appendChild(generateButton);
         }

@@ -409,6 +409,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "blue",
+        titleIndex: 4,
 
         hexColors: [
             "#030716",
@@ -454,6 +455,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "red",
+        titleIndex: 5,
 
         hexColors: [
             // "#020312",
@@ -474,6 +476,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "green",
+        titleIndex: 4,
 
         hexColors: [
             "#040c06",
@@ -493,6 +496,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "purple",
+        titleIndex: 5,
 
         hexColors: [
             "#190e25",
@@ -514,6 +518,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "violet",
+        titleIndex: 5,
 
         hexColors: [
             "#130d25",
@@ -534,6 +539,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "orange",
+        titleIndex: 6,
 
         hexColors: [
             // "#191615",
@@ -557,6 +563,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "gold",
+        titleIndex: 5,
 
         hexColors: [
             "#100e0e",
@@ -577,6 +584,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "gray",
+        titleIndex: 6,
 
         hexColors: [
             "#100d0c",
@@ -599,6 +607,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "steel",
+        titleIndex: 4,
 
         hexColors: [
             "#1d0424",
@@ -620,6 +629,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "iron",
+        titleIndex: 5,
 
         hexColors: [
             "#0e0811",
@@ -640,6 +650,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "jade",
+        titleIndex: 5,
 
         hexColors: [
             "#0c0526",
@@ -661,6 +672,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "sand",
+        titleIndex: 4,
 
         hexColors: [
             "#140e0c",
@@ -682,6 +694,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "brick",
+        titleIndex: 5,
 
         hexColors: [
             "#150e0c",
@@ -703,6 +716,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "frozen",
+        titleIndex: 5,
 
         hexColors: [
             "#060b12",
@@ -726,6 +740,7 @@ const Palettes: Palette[] = [
     {
         background: "#000",
         name: "port",
+        titleIndex: 5,
 
         hexColors: [
             "#16171a",
